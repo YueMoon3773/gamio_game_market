@@ -1,5 +1,3 @@
-$carouselBtnTwoSideDistance: clamp(10px, 1.2rem, 14px);
-
 .gameDetailsWrapper {
     width: 100%;
     height: 100%;
@@ -13,7 +11,7 @@ $carouselBtnTwoSideDistance: clamp(10px, 1.2rem, 14px);
 
     .navigatePrevPage {
         @include flexCenter;
-        font-size: $fs_normal_lg;
+        font-size: calc($fs_normal_lg * 0.96);
         font-weight: 600;
         color: var(--text_color);
 
@@ -36,7 +34,7 @@ $carouselBtnTwoSideDistance: clamp(10px, 1.2rem, 14px);
     }
 
     .detailsName {
-        font-size: $fs_heading_xxl;
+        font-size: $fs_heading_xl;
         color: var(--text_color);
         margin: 0;
         transition: $transition_effect_md;
@@ -48,7 +46,7 @@ $carouselBtnTwoSideDistance: clamp(10px, 1.2rem, 14px);
     flex: 1;
     @include displayGrid;
     grid-template-columns: 8fr 4fr;
-    gap: clamp(20px, 2.6rem, 30px);
+    gap: clamp(16px, 2rem, 24px);
 }
 
 .detailsImgCarouselWrapper {
@@ -56,39 +54,78 @@ $carouselBtnTwoSideDistance: clamp(10px, 1.2rem, 14px);
     margin: 0 auto;
     overflow: hidden;
     position: relative;
-    border-radius: 16px;
+    border-radius: $carouselBorderRadius;
     background-color: var(--bg_color);
     box-shadow: 0 12px 24px color-mix(in srgb, var(--out_focus_gray) 8%, transparent);
+    z-index: 0;
 }
 
 .detailsImgCarousel {
     width: 100%;
     height: 100%;
+    z-index: 0;
+
     .detailsImgWrapper {
         width: 100%;
         height: 100%;
+        z-index: 0;
 
-        .gameDetailImg {
-            // max-width: 100%;
-            // max-height: 100%;
+        .thumbnailImgWrapper {
+            position: absolute;
+            height: 16%;
             width: 100%;
-            height: 100%;
-            width: 100%;
-            border-radius: 0.75rem;
-            object-fit: cover;
-            transition:
-                opacity 0.5s ease,
-                transform 0.5s ease;
+            padding: 0 60px;
+            bottom: 0;
+            background: linear-gradient(0deg, #141414a3 30%, #0fe7fa00 100%);
+            @include flexCenter;
+            flex-wrap: wrap;
+            gap: clamp(14px, 1.6rem, 16px);
+            z-index: 10;
 
-            &.hidden {
-                display: none;
-            }
+            .gameImgThumbnail {
+                flex: 1;
+                aspect-ratio: $carouselThumbnailAspect;
+                max-width: 80px;
+                object-fit: cover;
+                object-position: center;
+                transition: $transition_effect_md;
 
-            &.show {
-                display: block;
-                animation: imgFadeIn 0.6s ease;
+                border-radius: 4px;
+                border: 2px solid $snow_white_color;
+                cursor: pointer;
+
+                &.active {
+                    transform: scale(1.036);
+                    border-color: $primary_color;
+                }
+
+                &.inactive {
+                    transform: scale(0.76);
+                }
             }
         }
+    }
+}
+
+.gameDetailImg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    width: 100%;
+    border-radius: 0.75rem;
+    object-fit: cover;
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
+    z-index: 3;
+
+    &.hidden {
+        display: none;
+    }
+
+    &.show {
+        display: block;
+        animation: imgFadeIn 260ms ease;
     }
 }
 
@@ -98,6 +135,7 @@ $carouselBtnTwoSideDistance: clamp(10px, 1.2rem, 14px);
     transform: translateY(-50%);
     background-color: transparent;
     @include flexCenter;
+    z-index: 10;
 
     &.carouselBtnLeft {
         left: $carouselBtnTwoSideDistance;
@@ -108,10 +146,205 @@ $carouselBtnTwoSideDistance: clamp(10px, 1.2rem, 14px);
     }
 
     svg {
-        color: var(--text_color);
-        height: $fs_heading_xl;
+        color: $snow_white_color;
+        height: $fs_heading_xxl;
+    }
+
+    &:hover {
+        svg {
+            color: $primary_dark_color;
+        }
     }
 }
 
 .detailsInfoWrapper {
+    @include flexColumn;
+    justify-content: space-between;
+}
+
+.detailsInfoTopWrapper {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 660px;
+    @include flexColumn;
+}
+
+.infoSection {
+    @include flexColumn;
+    padding: $topInfoSectionPadding;
+    transition: $transition_effect_md;
+
+    &.top {
+        border-top-left-radius: $topInfoSectionBorderRadius;
+        border-top-right-radius: $topInfoSectionBorderRadius;
+        background: var(--basic_info_bg_color);
+    }
+
+    &.bottom {
+        border-bottom-left-radius: $topInfoSectionBorderRadius;
+        border-bottom-right-radius: $topInfoSectionBorderRadius;
+        background: var(--more_info_bg_color);
+    }
+}
+
+.sectionHeading {
+    color: var(--text_color);
+    font-size: $fs_normal_lg;
+    font-weight: 700;
+    transition: $transition_effect_md;
+    margin-bottom: 0.26em;
+}
+
+.descriptionText {
+    color: var(--text_color);
+    font-size: $fs_normal_sm;
+    line-height: 1.6;
+    text-align: justify;
+    max-width: 75ch;
+    transition: $transition_effect_md;
+}
+
+.moreInfoList {
+    @include flexColumn;
+    gap: clamp(3px, 0.36rem, 4px);
+    overflow: hidden;
+    transition: $transition_effect_md;
+
+    &.expand {
+        max-height: 500px;
+        opacity: 1;
+    }
+
+    &.hidden {
+        max-height: 0;
+        opacity: 0;
+    }
+}
+
+.moreInfoItem {
+    @include flexCenter;
+    justify-content: flex-start;
+    gap: clamp(4px, 0.6rem, 8px);
+}
+
+.infoWrapper {
+    @include flexCenter;
+    gap: clamp(4px, 0.6rem, 8px);
+}
+
+.infoText {
+    @include flexCenter;
+
+    svg {
+        height: $fs_normal_ssm;
+        fill: currentColor;
+        color: $dark_yellow_color;
+    }
+}
+
+.infoLinkWrapper {
+    @include flexCenter;
+
+    a {
+        &:hover {
+            text-decoration: underline;
+            text-underline-offset: 0.16em;
+            color: $primary_light_color;
+        }
+    }
+}
+
+.infoItemHeading,
+.infoText,
+.infoText span,
+.infoLinkWrapper,
+.infoLinkWrapper a {
+    font-size: $fs_normal_ssm;
+    color: var(--text_color);
+    font-weight: 300;
+    transition: $transition_effect_md;
+
+    span {
+        font-size: $fs_normal_ssm;
+    }
+}
+
+.infoItemHeading {
+    font-size: $fs_normal_3sm;
+}
+
+.expandMoreInfoListBtn {
+    @include flexCenter;
+    justify-content: flex-end;
+    font-size: $fs_normal_sm;
+    font-weight: 600;
+    color: var(--text_color);
+    padding: 0.6em;
+    gap: 0.3em;
+    transition: $transition_effect_md;
+    background-color: transparent;
+
+    svg {
+        height: $fs_normal_lg;
+        transition: inherit;
+
+        &.rotate {
+            transform: rotate(-180deg);
+        }
+    }
+
+    &:hover {
+        color: $primary_color;
+
+        svg {
+            color: $primary_color;
+        }
+    }
+}
+
+.detailsInfoBottomWrapper {
+    @include flexCenter;
+    justify-content: space-between;
+    padding: $detailsBottomPadding 0;
+    border-radius: $detailsBottomBorderRadius;
+    background: var(--details_bottom_bg_color);
+    transition: $transition_effect_md;
+}
+
+.detailsInfoPricesWrapper {
+    @include flexCenter;
+    gap: clamp(8px, 1rem, 14px);
+
+    .newDetailsInfoPrice {
+        font-size: $fs_normal_lg;
+        font-weight: 700;
+        color: $primary_color;
+    }
+
+    .oldDetailsInfoPrice {
+        font-size: $fs_normal_md;
+        text-decoration: line-through;
+        font-weight: 500;
+        color: color-mix(in srgb, var(--text_color) 56%, transparent);
+        transition: $transition_effect_md;
+    }
+}
+
+.addToCartBtnDetailsInfo {
+    @include flexCenter;
+    padding: 0.6em 2.2em;
+    background-color: transparent;
+
+    span {
+        font-size: $fs_normal_lg;
+        font-weight: 600;
+        color: var(--text_color);
+        transition: $transition_effect_md;
+    }
+
+    &:hover {
+        span {
+            color: $primary_light_color;
+        }
+    }
 }

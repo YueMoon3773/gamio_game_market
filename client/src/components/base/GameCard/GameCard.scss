@@ -1,11 +1,3 @@
-$game_card_img_width: 280px;
-$game_card_img_height: 160px;
-$game_card_info_padding: 16px 16px 24px;
-$game_card_extra_info_padding_bottom: 28px;
-$game_card_img_navigator_height: 6px;
-$game_card_border_radius: 12px;
-$game_card_hover_scale: scale(1.06) translateY(10px);
-
 .gameCardWrapper {
     z-index: 10;
     transition: $transition_effect_md;

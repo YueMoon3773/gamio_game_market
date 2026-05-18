@@ -86,6 +86,43 @@
         color: var(--text_color);
         transition: $transition_effect_md;
 
+        &.moonHeaderIcon,
+        &.sunHeaderIcon {
+            &:hover {
+                fill: currentColor;
+
+                path,
+                line,
+                polyline {
+                    stroke: currentColor;
+                }
+            }
+        }
+
+        &.moonHeaderIcon {
+            &:hover {
+                color: $purple_color;
+
+                path,
+                line,
+                polyline {
+                    stroke: $dark_purple_color;
+                }
+            }
+        }
+
+        &.sunHeaderIcon {
+            &:hover {
+                color: $yellow_color;
+
+                path,
+                line,
+                polyline {
+                    stroke: $dark_yellow_color;
+                }
+            }
+        }
+
         .sunRays,
         .moonBody,
         .starOfMoon {

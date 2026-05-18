@@ -23,6 +23,9 @@ $dark_yellow_color: #fdb833;
 $blue_color: #329cf4;
 $light_blue_color: #64b5f6;
 $dark_blue_color: #1976d2;
+$purple_color: #815ac0;
+$light_purple_color: #a06cd5;
+$dark_purple_color: #7251b5;
 
 $primary_color: #fd3010;
 $primary_light_color: #ff5339;
@@ -63,7 +66,7 @@ $distance_3sm: 4px;
 /* WEB SPECIFIC VARIABLES SET UP  */
 /* =============================================== */
 $transition_effect_md: all 360ms ease-in-out;
-$header_padding_top_bottom: clamp(14px, 1.6rem, 20px);
+$header_padding_top_bottom: clamp(12px, 1.4rem, 18px);
 $page_padding_left_right: clamp(30px, 3.6rem, 42px);
 $page_content_padding_content_top: clamp(28px, 3rem, 36px);
 
@@ -77,6 +80,35 @@ $side_bar_icon_wrapper_size: clamp(42px, 4.26rem, 46px);
 $game_card_masonry_gap: 36px;
 
 /* =============================================== */
+/* GAME CARD VARIABLES  */
+/* =============================================== */
+$game_card_img_width: 280px;
+$game_card_img_height: 160px;
+$game_card_info_padding: 16px 16px 24px;
+$game_card_extra_info_padding_bottom: 28px;
+$game_card_img_navigator_height: 6px;
+$game_card_border_radius: 12px;
+$game_card_hover_scale: scale(1.06) translateY(10px);
+
+/* =============================================== */
+/* GAME DETAILS VARIABLES  */
+/* =============================================== */
+$carouselBorderRadius: 16px;
+$carouselBtnTwoSideDistance: clamp(10px, 1.2rem, 14px);
+$carouselThumbnailAspect: 4.5 / 3;
+$topInfoSectionPadding: 1em 1.6em;
+$topInfoSectionBorderRadius: 12px;
+$detailsBottomPadding: 1.2em;
+$detailsBottomBorderRadius: 16px;
+
+$basicInfoBgColorDarkTheme: linear-gradient(45deg, #00000000 0%, #bababa08 63%, #bababa0d 100%);
+$basicInfoBgColorBrightTheme: linear-gradient(45deg, #00000000 0%, #33333308 63%, #3333330d 100%);
+$moreInfoBgColorDarkTheme: linear-gradient(60deg, #00000000 0%, #bababa17 75%, #bababa1f 100%);
+$moreInfoBgColorBrightTheme: linear-gradient(60deg, #00000000 0%, #3333331f 75%, #33333338 100%);
+$bottomDetailsBgColorBrightTheme:  linear-gradient(90deg, #00000000 0%, #33333317 86%, #33333321 100%);
+$bottomDetailsBgColorDarkTheme: linear-gradient(90deg, #00000000 0%, #bababa17 86%, #bababa21 100%);
+
+/* =============================================== */
 /* THEME SET UP  */
 /* =============================================== */
 [data-theme='light'] {
@@ -88,6 +120,9 @@ $game_card_masonry_gap: 36px;
     --text_hover_brightness: brightness(0.9);
     --out_focus_gray: #{$gray_color};
     --in_focus_gray: #{$dark_gray_color};
+    --basic_info_bg_color: #{$basicInfoBgColorBrightTheme};
+    --more_info_bg_color: #{$moreInfoBgColorBrightTheme};
+    --details_bottom_bg_color: #{$bottomDetailsBgColorBrightTheme};
 }
 
 [data-theme='dark'] {
@@ -99,4 +134,7 @@ $game_card_masonry_gap: 36px;
     --text_hover_brightness: brightness(1.16);
     --out_focus_gray: #{$dark_gray_color};
     --in_focus_gray: #{$light_gray_color};
+    --basic_info_bg_color: #{$basicInfoBgColorDarkTheme};
+    --more_info_bg_color: #{$moreInfoBgColorDarkTheme};
+    --details_bottom_bg_color: #{$bottomDetailsBgColorDarkTheme};
 }

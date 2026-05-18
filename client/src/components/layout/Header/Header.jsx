@@ -102,8 +102,8 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
             <div className="headerControllerWrapper">
                 {pageType !== 'introPage' && pageType !== 'errorPage' && (
                     <button className="themeBtn" onClick={toggleTheme}>
-                        {theme === 'light' && <MoonIcon></MoonIcon>}
-                        {theme === 'dark' && <SunIcon></SunIcon>}
+                        {theme === 'light' && <MoonIcon iconClassName="moonHeaderIcon"></MoonIcon>}
+                        {theme === 'dark' && <SunIcon iconClassName="sunHeaderIcon"></SunIcon>}
                     </button>
                 )}
 

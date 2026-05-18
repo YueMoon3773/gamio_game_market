@@ -163,7 +163,6 @@ export const BackBtnIcon = ({ iconClassName = '' }) => {
             strokeLinejoin="round"
             className={`customSvgIcon ${iconClassName}`}
         >
-            {/* <circle cx="12" cy="12" r="10" /> */}
             <path d="m12 8-4 4 4 4" />
             <path d="M16 12H8" />
         </svg>
@@ -201,7 +200,6 @@ export const PrevImgInMediaLibraryIcon = ({ iconClassName = '' }) => {
             strokeLinejoin="round"
             className={`customSvgIcon ${iconClassName}`}
         >
-            {/* <circle cx="12" cy="12" r="10" /> */}
             <path d="m14 16-4-4 4-4" />
         </svg>
     );
@@ -237,7 +235,6 @@ export const NextImgInMediaLibraryIcon = ({ iconClassName = '' }) => {
             strokeLinejoin="round"
             className={`customSvgIcon ${iconClassName}`}
         >
-            {/* <circle cx="12" cy="12" r="10" /> */}
             <path d="m10 8 4 4-4 4" />
         </svg>
     );
@@ -257,6 +254,23 @@ export const NextImgInMediaLibraryHoverIcon = ({ iconClassName = '' }) => {
         >
             <circle cx="12" cy="12" r="10" />
             <path d="m10 8 4 4-4 4" />
+        </svg>
+    );
+};
+
+export const ExpandInfoBtnIcon = ({ iconClassName = '' }) => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={`customSvgIcon ${iconClassName}`}
+        >
+            <path d="m6 9 6 6 6-6" />
         </svg>
     );
 };

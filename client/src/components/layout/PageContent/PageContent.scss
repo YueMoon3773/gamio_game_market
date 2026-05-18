@@ -36,7 +36,8 @@
 
     &.normalPage {
         // padding: $page_content_padding_content_top $page_padding_left_right;
-        padding: calc($page_content_padding_content_top * 0.3) $page_padding_left_right
-            $page_content_padding_content_top;
+        // padding: calc($page_content_padding_content_top * 0.3) $page_padding_left_right
+        //     $page_content_padding_content_top;
+        padding: calc($page_content_padding_content_top * 0.3) $page_padding_left_right;
     }
 }
