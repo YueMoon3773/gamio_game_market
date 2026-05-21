@@ -21,6 +21,7 @@ import NoImgAvailable from '../../../assets/img/prj/no_image_found.png';
 import apiHelper from '../../../utils/apiHelper';
 
 import PageLayout from '../../layout/PageLayout/PageLayout';
+import FavGameBtn from '../../base/FavGameBtn/FavGameBtn';
 
 import pageBaseStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './GameDetails.scss';
@@ -37,6 +38,7 @@ const GameDetails = () => {
     const locationStates = location.state;
 
     const [navigatePrevPageBtnHover, setNavigatePrevPageBtnHover] = useState(false);
+    const [isGameFav, setIsGameFav] = useState(false);
 
     const [carouselBtnLeftBtnHover, setCarouselBtnLeftBtnHover] = useState(false);
     const [carouselBtnRightBtnHover, setCarouselBtnRightBtnHover] = useState(false);
@@ -51,6 +53,7 @@ const GameDetails = () => {
     // console.log({ locationStates });
     // console.log({ imgList });
     // console.log({ currentImgIndex });
+    console.log({ isGameFav });
 
     useEffect(() => {
         if (gameDetailsImgData !== null) {
@@ -85,6 +88,10 @@ const GameDetails = () => {
         return () => clearTimeout(changeImgTimer);
     }, [currentImgIndex, imgList]);
 
+    const favGameBtnOnClickHandle = () => {
+        setIsGameFav((prev) => !prev);
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, x: -60 }}
@@ -108,7 +115,14 @@ const GameDetails = () => {
                             )}
                             Go back
                         </Link>
-                        <h1 className="detailsName">{gameDetailsData.name}</h1>
+                        <div className="gameDetailsTopRight">
+                            <h1 className="detailsName">{gameDetailsData.name}</h1>
+                            <FavGameBtn
+                                gameBtnStyleClassName="gameDetailsFavBtn"
+                                isFavBtnActive={isGameFav}
+                                onClickHandler={favGameBtnOnClickHandle}
+                            ></FavGameBtn>
+                        </div>
                     </div>
 
                     <div className="detailsBottomWrapper">
@@ -367,7 +381,10 @@ const GameDetails = () => {
                                     <span className="oldDetailsInfoPrice">$90.00</span>
                                 </div>
 
-                                <button className="addToCartBtnDetailsInfo" onClick={addToCardBtnHandler}>
+                                <button
+                                    className={`addToCartBtnDetailsInfo ${isInCart ? 'active' : ''}`}
+                                    onClick={addToCardBtnHandler}
+                                >
                                     <span>{isInCart ? 'Added' : 'Add to cart'}</span>
                                 </button>
                             </div>

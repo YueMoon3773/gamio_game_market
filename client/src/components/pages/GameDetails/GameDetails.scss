@@ -33,11 +33,22 @@
         }
     }
 
-    .detailsName {
-        font-size: $fs_heading_xl;
-        color: var(--text_color);
-        margin: 0;
-        transition: $transition_effect_md;
+    .gameDetailsTopRight {
+        @include flexCenter;
+        gap: clamp(10px, 1.4rem, 16px);
+
+        .detailsName {
+            font-size: $fs_heading_xl;
+            color: var(--text_color);
+            margin: 0;
+            transition: $transition_effect_md;
+        }
+
+        .gameDetailsFavBtn {
+            svg {
+                height: $fs_heading_ssm;
+            }
+        }
     }
 }
 
@@ -318,7 +329,7 @@
     .newDetailsInfoPrice {
         font-size: $fs_normal_lg;
         font-weight: 700;
-        color: $primary_color;
+        color: $primary_light_color;
     }
 
     .oldDetailsInfoPrice {
@@ -344,7 +355,14 @@
 
     &:hover {
         span {
-            color: $primary_light_color;
+            color: $primary_color;
+            transform: scale(1.06);
+        }
+    }
+
+    &.active {
+        span {
+            color: $green_color;
         }
     }
 }

@@ -1,0 +1,44 @@
+.gameFavBtn {
+    @include flexCenter;
+    padding: 0.6em;
+    cursor: pointer;
+    background-color: transparent;
+    transition: $transition_effect_md;
+
+    svg path,
+    svg line,
+    svg polyline {
+        // fill: currentColor;
+        stroke: currentColor;
+    }
+
+    svg {
+        fill: none;
+        height: $fs_normal_md;
+        color: var(--text_color);
+        transition: $transition_effect_md;
+    }
+
+    &:hover {
+        svg {
+            color: $primary_color;
+        }
+    }
+
+    &.clickedAnimation {
+        animation: gameCardFavBtnPump 660ms ease-in-out forwards;
+    }
+
+    &.active {
+        svg {
+            fill: currentColor;
+            color: $primary_color;
+        }
+
+        &:hover {
+            svg {
+                transform: scale(0.76);
+            }
+        }
+    }
+}

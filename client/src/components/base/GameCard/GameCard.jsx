@@ -25,6 +25,8 @@ import helperFunctions from '../../../utils/helper';
 import ValidatedComponent from '../../../utils/validateComponentProps';
 import apiHelper from '../../../utils/apiHelper';
 
+import FavGameBtn from '../FavGameBtn/FavGameBtn';
+
 import pageBaseStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './GameCard.scss';
 
@@ -91,8 +93,7 @@ const GameCard = ({
     const [isCardHover, setIsCardHover] = useState(false);
     const gameCardHoverTimer = useRef(null);
     const [imgHoverIndex, setImgHoverIndex] = useState(0);
-    const [favBtnClassName, setFavBtnClassName] = useState(GAME_FAV_BTN_DEFAULT_CLASS_NAME);
-    const [isFavBtnClicked, setIsFavBtnClicked] = useState(false);
+    const [isGameFav, setIsGameFav] = useState(false);
 
     const platformIcons = !gameCardPlatforms ? null : helper.svgPlatformsSelection(gameCardPlatforms);
     const releaseDate = !gameCardReleaseDate ? null : format(gameCardReleaseDate, 'MMM d, yyyy');
@@ -106,26 +107,9 @@ const GameCard = ({
     // console.log({ gameCardMediaLibrary });
     // console.log({ gameCardSingleMediaDisplay });
 
-    // set up effect for fav btn
-    useEffect(() => {
-        let effect = null;
-
-        if (isFavBtnClicked) {
-            setFavBtnClassName(`${GAME_FAV_BTN_DEFAULT_CLASS_NAME} active clickedAnimation`);
-            effect = setTimeout(() => {
-                setFavBtnClassName(`${GAME_FAV_BTN_DEFAULT_CLASS_NAME} active`);
-            }, 460);
-        }
-        if (!isFavBtnClicked) {
-            setFavBtnClassName(`${GAME_FAV_BTN_DEFAULT_CLASS_NAME}`);
-        }
-
-        return () => {
-            if (effect !== null) {
-                clearTimeout(effect);
-            }
-        };
-    }, [isFavBtnClicked]);
+    const favGameBtnOnClickHandle = () => {
+        setIsGameFav((prev) => !prev);
+    };
 
     return (
         <div
@@ -167,7 +151,7 @@ const GameCard = ({
                                                     return (
                                                         <div
                                                             className={`imgNavigator ${imgHoverIndex === index ? 'active' : ''}`}
-                                                            key={index}
+                                                            key={index + 'z'}
                                                             onMouseEnter={() => setImgHoverIndex(index)}
                                                         ></div>
                                                     );
@@ -203,20 +187,22 @@ const GameCard = ({
                         {!isGameCardLoading && platformIcons !== null && (
                             <>
                                 {platformIcons.map((icon, index) => {
-                                    if (icon === 'pc') return <PcIcon key={index}></PcIcon>;
-                                    else if (icon === 'xbox') return <XBoxIcon key={index}></XBoxIcon>;
+                                    if (icon === 'pc') return <PcIcon key={index + icon}></PcIcon>;
+                                    else if (icon === 'xbox') return <XBoxIcon key={index + icon}></XBoxIcon>;
                                     else if (icon === 'playstation')
-                                        return <PlayStationIcon key={index}></PlayStationIcon>;
-                                    else if (icon === 'nintendo') return <NintendoIcon key={index}></NintendoIcon>;
-                                    else if (icon === 'sega') return <SegaIcon key={index}></SegaIcon>;
-                                    else if (icon === 'ios') return <IosIcon key={index}></IosIcon>;
-                                    else if (icon === 'android') return <AndroidIcon key={index}></AndroidIcon>;
-                                    else if (icon === 'macos') return <MacOsIcon key={index}></MacOsIcon>;
-                                    else if (icon === 'linux') return <LinuxIcon key={index}></LinuxIcon>;
-                                    else if (icon === 'amiga') return <AmigaIcon key={index}></AmigaIcon>;
-                                    else if (icon === '3do') return <ThreeDOIcon key={index}></ThreeDOIcon>;
-                                    else if (icon === 'web') return <WebPlatformIcon key={index}></WebPlatformIcon>;
-                                    else if (icon === 'atari') return <AtariIcon key={index}></AtariIcon>;
+                                        return <PlayStationIcon key={index + icon}></PlayStationIcon>;
+                                    else if (icon === 'nintendo')
+                                        return <NintendoIcon key={index + icon}></NintendoIcon>;
+                                    else if (icon === 'sega') return <SegaIcon key={index + icon}></SegaIcon>;
+                                    else if (icon === 'ios') return <IosIcon key={index + icon}></IosIcon>;
+                                    else if (icon === 'android') return <AndroidIcon key={index + icon}></AndroidIcon>;
+                                    else if (icon === 'macos') return <MacOsIcon key={index + icon}></MacOsIcon>;
+                                    else if (icon === 'linux') return <LinuxIcon key={index + icon}></LinuxIcon>;
+                                    else if (icon === 'amiga') return <AmigaIcon key={index + icon}></AmigaIcon>;
+                                    else if (icon === '3do') return <ThreeDOIcon key={index + icon}></ThreeDOIcon>;
+                                    else if (icon === 'web')
+                                        return <WebPlatformIcon key={index + icon}></WebPlatformIcon>;
+                                    else if (icon === 'atari') return <AtariIcon key={index + icon}></AtariIcon>;
                                 })}
                             </>
                         )}
@@ -244,9 +230,15 @@ const GameCard = ({
                         </div>
 
                         {isCardHover && (
-                            <button className={favBtnClassName} onClick={() => setIsFavBtnClicked((prev) => !prev)}>
-                                <YourFavGamesIcon></YourFavGamesIcon>
-                            </button>
+                            // <button className={favBtnClassName} onClick={() => setIsFavBtnClicked((prev) => !prev)}>
+                            //     <YourFavGamesIcon></YourFavGamesIcon>
+                            // </button>
+
+                            <FavGameBtn
+                                gameBtnStyleClassName="gameDetailsFavBtn"
+                                isFavBtnActive={isGameFav}
+                                onClickHandler={favGameBtnOnClickHandle}
+                            ></FavGameBtn>
                         )}
                     </div>
                 </div>
@@ -257,7 +249,7 @@ const GameCard = ({
                             <li className="detailInfoItem">
                                 <p className="detailInfoTitle">Release date:</p>
                                 <div className="detailInfoWrapper">
-                                    <span className="detailInfoText">{releaseDate}</span>
+                                    <span className="detailInfoText">{releaseDate ? releaseDate : 'NA'}</span>
                                 </div>
                             </li>
                             <li className="detailInfoItem">
@@ -267,8 +259,8 @@ const GameCard = ({
                                         <>
                                             {gameCardGenres.map((genre, index) => {
                                                 return (
-                                                    <p className="gameInfoLinkWrapper" key={genre.id + index}>
-                                                        <Link to={`/`} key={genre.id + index}>
+                                                    <p className="gameInfoLinkWrapper" key={genre.id + 'z' + index}>
+                                                        <Link to={`/`} key={genre.id + 'z' + index}>
                                                             {genre.name}
                                                         </Link>
                                                         {index === gameCardGenres.length - 1 ? '' : ', '}
@@ -286,9 +278,16 @@ const GameCard = ({
                                 <div className="detailInfoWrapper">
                                     <span className="detailInfoText">
                                         <StarIcon></StarIcon>
-                                        {gameCardRatingCount !== 0
+                                        {gameCardRating !== 0 &&
+                                        gameCardRating !== null &&
+                                        gameCardRatingCount !== 0 &&
+                                        gameCardRatingCount !== null
                                             ? gameCardRating + ' (' + gameCardRatingCount + ')'
-                                            : 'NA'}
+                                            : gameCardRating !== 0 &&
+                                                gameCardRating !== null &&
+                                                (gameCardRatingCount === 0 || gameCardRatingCount === null)
+                                              ? gameCardRating
+                                              : 'NA'}
                                     </span>
                                 </div>
                             </li>
@@ -299,14 +298,17 @@ const GameCard = ({
                                         <>
                                             {gameCardStores.map((store, index) => {
                                                 return (
-                                                    <p className="gameInfoLinkWrapper" key={store.store.id + index}>
+                                                    <p
+                                                        className="gameInfoLinkWrapper"
+                                                        key={store.store.id + 'z' + index}
+                                                    >
                                                         <Link
                                                             to={
                                                                 api.STORE_DOMAINS[`${store.store.slug}`] === undefined
                                                                     ? '/'
                                                                     : api.STORE_DOMAINS[`${store.store.slug}`]
                                                             }
-                                                            key={store.store.id + index}
+                                                            key={store.store.id + 'z' + index}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                         >

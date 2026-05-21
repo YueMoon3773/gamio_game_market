@@ -1,3 +1,8 @@
+import { format, subDays, startOfWeek, lastDayOfWeek, addDays, getYear } from 'date-fns';
+
+const baseGameApiUrl = import.meta.env.VITE_API_GAMES_URL;
+const gameApiUrlKey = import.meta.env.VITE_API_GAMES_URL_KEY;
+
 const helperFunctions = () => {
     const svgPlatformsSelection = (platform) => {
         const ret = [];
@@ -63,7 +68,72 @@ const helperFunctions = () => {
         return ret;
     };
 
-    return { svgPlatformsSelection };
+    const getSpecificPlatformId = (platformList, pageUrl) => {
+        const ret = platformList.find((item, index) => pageUrl.includes(item.slug));
+
+        return ret ? ret.id : null;
+    };
+
+    const getLast30Days = () => {
+        const currentDate = format(new Date(), 'yyyy-MM-dd');
+        const getLast30Days = format(subDays(currentDate, 30), 'yyyy-MM-dd');
+        // console.log({ currentDate, getLast30Days });
+
+        return { currentDate, getLast30Days };
+        // return getLast30Days + ',' + currentDate;
+    };
+
+    
+
+    const getThisWeekDates = () => {
+        const currentDate = format(new Date(), 'yyyy-MM-dd');
+        const startDateOfThisWeek = format(startOfWeek(currentDate, { weekStartsOn: 1 }), 'yyyy-MM-dd');
+        const lastDateOfThisWeek = format(lastDayOfWeek(currentDate, { weekStartsOn: 1 }), 'yyyy-MM-dd');
+        return { startDateOfThisWeek, lastDateOfThisWeek };
+    };
+
+    const getNextWeekDates = () => {
+        const currentDate = format(new Date(), 'yyyy-MM-dd');
+        const lastDateOfThisWeek = format(lastDayOfWeek(currentDate, { weekStartsOn: 1 }), 'yyyy-MM-dd');
+        const startDateOfNextWeek = format(addDays(lastDateOfThisWeek, 1), 'yyyy-MM-dd');
+        const lastDateOfNextWeek = format(lastDayOfWeek(startDateOfNextWeek, { weekStartsOn: 1 }), 'yyyy-MM-dd');
+
+        return { startDateOfNextWeek, lastDateOfNextWeek };
+    };
+
+    const getThisYearBeginAndCurrentDates = () => {
+        const currentDate = format(new Date(), 'yyyy-MM-dd');
+        const thisYear = getYear(currentDate);
+        const startDateOfThisYear = `${thisYear}-01-01`;
+
+        return { startDateOfThisYear, currentDate };
+    };
+
+    const getThisYearAndLastYear = () => {
+        const thisYear = getYear(new Date());
+        const lastYear = thisYear - 1;
+
+        return { lastYear, thisYear };
+    };
+
+    const getLastYearStartAndLastDates = () => {
+        const lastYear = getYear(new Date()) - 1;
+        const startDateOfLastYear = `${lastYear}-01-01`;
+        const lastDateOfLastYear = `${lastYear}-12-31`;
+
+        return { startDateOfLastYear, lastDateOfLastYear };
+    };
+
+    return {
+        svgPlatformsSelection,
+        getSpecificPlatformId,
+        getLast30Days,
+        getThisWeekDates,
+        getNextWeekDates,
+        getThisYearBeginAndCurrentDates,
+        getThisYearAndLastYear,
+        getLastYearStartAndLastDates,
+    };
 };
 
 export default helperFunctions;

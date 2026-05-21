@@ -25,18 +25,8 @@ const routes = [
                 ),
             },
             {
-                path: '/games',
+                path: '/games/:types',
                 element: <ViewGames />,
-                // element: (
-                //     <motion.div
-                //         initial={{ opacity: 0, x: -60 }}
-                //         animate={{ opacity: 1, x: 0 }}
-                //         exit={{ opacity: 0, x: -60 }}
-                //         transition={{ duration: 0.66, ease: 'easeInOut' }}
-                //     >
-                //         <ViewGames />
-                //     </motion.div>
-                // ),
                 errorElement: (
                     <VideoBgChangeProvider>
                         <ErrorPage />
@@ -45,16 +35,6 @@ const routes = [
             },
             {
                 path: '/game-detail',
-                // element: (
-                //     <motion.div
-                //         initial={{ opacity: 0, x: -60 }}
-                //         animate={{ opacity: 1, x: 0 }}
-                //         exit={{ opacity: 0, x: -60 }}
-                //         transition={{ duration: 0.66, ease: 'easeInOut' }}
-                //     >
-                //         <GameDetails />
-                //     </motion.div>
-                // ),
                 element: <GameDetails />,
                 errorElement: (
                     <VideoBgChangeProvider>
