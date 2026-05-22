@@ -95,7 +95,7 @@
 
             .gameImgThumbnail {
                 flex: 1;
-                aspect-ratio: $carouselThumbnailAspect;
+                aspect-ratio: 4.5 / 3;
                 max-width: 80px;
                 object-fit: cover;
                 object-position: center;

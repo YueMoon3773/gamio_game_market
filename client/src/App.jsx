@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 import { useVideoBgChange } from './hooks/useVideoBgChange';
+import helperFunctions from './utils/helper';
+import apiHelper from './utils/apiHelper';
 
 import { GithubIcon, Last30DaysIcon, PopularInYearIcon, BestOfYearIcon, AllTimeTopIcon } from './assets/svgIcons';
 import RawgImg from './assets/img/prj/RAWG.jpg';
@@ -11,6 +13,9 @@ import PageLayout from './components/layout/PageLayout/PageLayout';
 import MainBtn from './components/base/MainBtn/MainBtn';
 
 import './App.scss';
+
+const api = apiHelper();
+const helper = helperFunctions();
 
 const App = () => {
     const { bgVideo, isBgVideoBright, bgPosterImg, changeBgVideo } = useVideoBgChange();
@@ -77,22 +82,38 @@ const App = () => {
                     transition={{ duration: 0.66, ease: 'easeInOut' }}
                 >
                     <h4>Quick navigation</h4>
-                    <Link to="/games" className="introPageBtn introQuickNavigationBtn" onClick={changeBgVideo}>
+                    <Link
+                        to={api.FILTER_LINKS.LAST_30_DAYS}
+                        className="introPageBtn introQuickNavigationBtn"
+                        onClick={changeBgVideo}
+                    >
                         <Last30DaysIcon></Last30DaysIcon>
                         <span>Last 30 days</span>
                     </Link>
 
-                    <Link to="/" className="introPageBtn introQuickNavigationBtn" onClick={changeBgVideo}>
+                    <Link
+                        to={api.FILTER_LINKS.POPULAR_LAST_YEAR}
+                        className="introPageBtn introQuickNavigationBtn"
+                        onClick={changeBgVideo}
+                    >
                         <PopularInYearIcon></PopularInYearIcon>
-                        <span>Popular in 2025</span>
+                        <span>{`Popular in ${helper.getThisYearAndLastYear().lastYear}`}</span>
                     </Link>
 
-                    <Link to="/" className="introPageBtn introQuickNavigationBtn" onClick={changeBgVideo}>
+                    <Link
+                        to={api.FILTER_LINKS.BEST_OF_THIS_YEAR}
+                        className="introPageBtn introQuickNavigationBtn"
+                        onClick={changeBgVideo}
+                    >
                         <BestOfYearIcon></BestOfYearIcon>
                         <span>Best of this year</span>
                     </Link>
 
-                    <Link to="/" className="introPageBtn introQuickNavigationBtn" onClick={changeBgVideo}>
+                    <Link
+                        to={api.FILTER_LINKS.ALL_TIME_TOP}
+                        className="introPageBtn introQuickNavigationBtn"
+                        onClick={changeBgVideo}
+                    >
                         <AllTimeTopIcon></AllTimeTopIcon>
                         <span>All time top</span>
                     </Link>

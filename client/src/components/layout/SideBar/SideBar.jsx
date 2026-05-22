@@ -1,6 +1,8 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { z } from 'zod';
+
+import { useGameHelper } from '../../../hooks/useGamesHelper';
 
 import {
     YourFavGamesIcon,
@@ -35,8 +37,11 @@ const helper = helperFunctions();
 const api = apiHelper();
 
 const SideBar = () => {
-    const [isPlatformsShowAll, setIsPlatformsShowAll] = useState(false);
-    const [isGenresShowAll, setIsGenresShowAll] = useState(false);
+    // const [isPlatformsShowAll, setIsPlatformsShowAll] = useState(false);
+    // const [isGenresShowAll, setIsGenresShowAll] = useState(false);
+
+    const { sideBarPlatformsShowAll, toggleSideBarPlatformShowAll, sideBarGenresShowAll, toggleSideBarGenresShowAll } =
+        useGameHelper();
 
     return (
         <aside className="sideBar">
@@ -153,7 +158,7 @@ const SideBar = () => {
                         <span>Xbox</span>
                     </NavLink>
 
-                    {isPlatformsShowAll && (
+                    {sideBarPlatformsShowAll && (
                         <>
                             <NavLink
                                 to={api.FILTER_LINKS.ANDROID_PLATFORM}
@@ -190,14 +195,14 @@ const SideBar = () => {
                         onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            setIsPlatformsShowAll((prev) => !prev);
+                            toggleSideBarPlatformShowAll();
                         }}
                     >
-                        <div className={`sideBarIconWrapper ${isPlatformsShowAll ? 'rotateIcon' : ''}`}>
+                        <div className={`sideBarIconWrapper ${sideBarPlatformsShowAll ? 'rotateIcon' : ''}`}>
                             <ShowAllButtonIcon iconClassName={'sideBarShowHideIcon'}></ShowAllButtonIcon>
                             {/* <ShowAllButtonIcon></ShowAllButtonIcon> */}
                         </div>
-                        <span>{isPlatformsShowAll ? 'Show less' : 'Show all'}</span>
+                        <span>{sideBarPlatformsShowAll ? 'Show less' : 'Show all'}</span>
                     </button>
                 </div>
             </section>
@@ -236,7 +241,7 @@ const SideBar = () => {
                         <span>RPG</span>
                     </NavLink>
 
-                    {isGenresShowAll && (
+                    {sideBarGenresShowAll && (
                         <>
                             <NavLink
                                 to={api.FILTER_LINKS.SHOOTER_GENRE}
@@ -291,14 +296,13 @@ const SideBar = () => {
                         onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            setIsGenresShowAll((prev) => !prev);
+                            toggleSideBarGenresShowAll();
                         }}
                     >
-                        <div className={`sideBarIconWrapper ${isGenresShowAll ? 'rotateIcon' : ''}`}>
+                        <div className={`sideBarIconWrapper ${sideBarGenresShowAll ? 'rotateIcon' : ''}`}>
                             <ShowAllButtonIcon iconClassName={'sideBarShowHideIcon'}></ShowAllButtonIcon>
-                            {/* <ShowAllButtonIcon></ShowAllButtonIcon> */}
                         </div>
-                        <span>{isGenresShowAll ? 'Show less' : 'Show all'}</span>
+                        <span>{sideBarGenresShowAll ? 'Show less' : 'Show all'}</span>
                     </button>
                 </div>
             </section>

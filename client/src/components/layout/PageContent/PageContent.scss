@@ -20,7 +20,8 @@
         @include displayGrid;
         grid-template-columns: 2.5fr 9.5fr;
         padding-bottom: $page_content_padding_content_top;
-        padding-bottom: 260px;
+        padding-bottom: 200px;
+        height: auto;
 
         .sideBar {
             grid-column: 1 / 2;
@@ -38,6 +39,7 @@
         // padding: $page_content_padding_content_top $page_padding_left_right;
         // padding: calc($page_content_padding_content_top * 0.3) $page_padding_left_right
         //     $page_content_padding_content_top;
-        padding: calc($page_content_padding_content_top * 0.3) $page_padding_left_right;
+        padding: calc($page_content_padding_content_top * 0.26) $page_padding_left_right
+            calc($page_content_padding_content_top * 0.5);
     }
 }

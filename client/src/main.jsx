@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 
 import routes from './routes/routes';
 import { ThemeProvider } from './hooks/useTheme.jsx';
+import { GameHelperProvider } from './hooks/useGamesHelper.jsx';
 
 import './index.scss';
 
@@ -13,7 +14,9 @@ createRoot(document.getElementById('root')).render(
     <StrictMode>
         {/* <App /> */}
         <ThemeProvider>
-            <RouterProvider router={router} />
+            <GameHelperProvider>
+                <RouterProvider router={router} />
+            </GameHelperProvider>
         </ThemeProvider>
     </StrictMode>,
 );

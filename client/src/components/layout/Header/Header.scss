@@ -36,7 +36,7 @@
     }
 
     .headerLogoImg {
-        width: 56px;
+        width: clamp(42px, 4.6rem, 50px);
     }
 
     &:hover {

@@ -1,0 +1,57 @@
+.sortControllerLabel {
+    font-size: $fs_normal_md;
+    font-weight: 600;
+    color: var(--text_color);
+    transition: $transition_effect_md;
+
+    @media (max-width: 1024px) {
+        font-size: $fs_normal_sm;
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_normal_ssm;
+    }
+}
+
+.sortSelection {
+    font-size: $fs_normal_md;
+    font-weight: 500;
+    color: var(--text_color);
+    padding: 0.26em 0.36em;
+    border-radius: $distance_sm;
+    margin-left: 0.6em;
+
+    background-color: transparent;
+    border: $thick_border_light_gray;
+    cursor: pointer;
+    transition: $transition_effect_md;
+
+    & > option {
+        font-size: $fs_normal_md;
+        padding: 0.26em 0.36em;
+        background-color: var(--bg_color);
+        transition: $transition_effect_md;
+        cursor: pointer;
+
+        @media (max-width: 1024px) {
+            font-size: $fs_normal_ssm;
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_3sm;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        font-size: $fs_normal_ssm;
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_normal_3sm;
+    }
+
+    &:active,
+    &:focus {
+        border-color: $primary_color;
+    }
+}
