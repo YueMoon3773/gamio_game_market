@@ -42,6 +42,19 @@ const routes = [
                     </VideoBgChangeProvider>
                 ),
             },
+            {
+                path: '/error',
+                element: (
+                    <VideoBgChangeProvider>
+                        <ErrorPage />
+                    </VideoBgChangeProvider>
+                ),
+                errorElement: (
+                    <VideoBgChangeProvider>
+                        <ErrorPage />
+                    </VideoBgChangeProvider>
+                ),
+            },
         ],
     },
 ];

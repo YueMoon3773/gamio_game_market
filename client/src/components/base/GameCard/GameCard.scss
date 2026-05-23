@@ -70,15 +70,21 @@
         @include flexCenter;
         gap: 8px;
 
-        .imgNavigator {
+        .navigatorWrapper {
             flex: 1;
-            height: $game_card_img_navigator_height;
-            border-radius: 999px;
-            background-color: rgba($color: $snow_white_color, $alpha: 0.36);
-            transition: $transition_effect_md;
 
-            &.active {
-                background-color: rgba($color: $snow_white_color, $alpha: 0.86);
+            .imgNavigator {
+                font-size: 1rem;
+                padding: 0.2em 0;
+                cursor: pointer;
+                height: $game_card_img_navigator_height;
+                border-radius: 999px;
+                background-color: rgba($color: $snow_white_color, $alpha: 0.36);
+                transition: $transition_effect_md;
+
+                &.active {
+                    background-color: rgba($color: $snow_white_color, $alpha: 0.86);
+                }
             }
         }
     }
@@ -132,6 +138,7 @@
     display: inline;
     width: fit-content;
 
+    text-wrap: pretty;
     font-size: $fs_heading_3sm;
     font-weight: 760;
     color: var(--text_color);

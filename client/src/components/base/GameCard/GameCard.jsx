@@ -87,8 +87,6 @@ const GameCard = ({
     gameCardRatingCount,
     gameCardStores,
 }) => {
-    const GAME_FAV_BTN_DEFAULT_CLASS_NAME = 'gameFavBtn';
-
     // const [isCardHover, setIsCardHover] = useState(true);
     const [isCardHover, setIsCardHover] = useState(false);
     const gameCardHoverTimer = useRef(null);
@@ -97,7 +95,7 @@ const GameCard = ({
 
     const platformIcons = !gameCardPlatforms ? null : helper.svgPlatformsSelection(gameCardPlatforms);
     const releaseDate = !gameCardReleaseDate ? null : format(gameCardReleaseDate, 'MMM d, yyyy');
-    const gameCurrentPrice = !gameCardReleaseDate ? null : '$60.00';
+    const gameCurrentPrice = !gameCardReleaseDate ? '$60.00' : '$60.00';
     const gameOldPrice = !gameCardReleaseDate ? null : '$60.00';
 
     // console.log({ gameCardName });
@@ -106,6 +104,7 @@ const GameCard = ({
     // console.log({ releaseDate });
     // console.log({ gameCardMediaLibrary });
     // console.log({ gameCardSingleMediaDisplay });
+    // console.log({ gameCardGenres });
 
     const favGameBtnOnClickHandle = () => {
         setIsGameFav((prev) => !prev);
@@ -149,11 +148,12 @@ const GameCard = ({
                                             <div className="imgNavigatorWrapper">
                                                 {gameCardMediaLibrary.map((item, index) => {
                                                     return (
-                                                        <div
-                                                            className={`imgNavigator ${imgHoverIndex === index ? 'active' : ''}`}
-                                                            key={index + 'z'}
-                                                            onMouseEnter={() => setImgHoverIndex(index)}
-                                                        ></div>
+                                                        <div className="navigatorWrapper" key={index + 'z'}>
+                                                            <div
+                                                                className={`imgNavigator ${imgHoverIndex === index ? 'active' : ''}`}
+                                                                onMouseEnter={() => setImgHoverIndex(index)}
+                                                            ></div>
+                                                        </div>
                                                     );
                                                 })}
                                             </div>
@@ -221,19 +221,15 @@ const GameCard = ({
                     )}
                     <div className="gamePricesAndLike">
                         <div className="pricesWrapper">
-                            {gameCurrentPrice ? (
-                                <span className="discountPrice">{gameCurrentPrice}</span>
-                            ) : (
+                            {isGameCardLoading ? (
                                 <div className={`${pageBaseStyles.skeletonLoading} gamePriceSkeleton`}></div>
+                            ) : (
+                                <span className="discountPrice">{gameCurrentPrice}</span>
                             )}
                             {gameOldPrice && <span className="oldPrice">{gameOldPrice}</span>}
                         </div>
 
                         {isCardHover && (
-                            // <button className={favBtnClassName} onClick={() => setIsFavBtnClicked((prev) => !prev)}>
-                            //     <YourFavGamesIcon></YourFavGamesIcon>
-                            // </button>
-
                             <FavGameBtn
                                 gameBtnStyleClassName="gameDetailsFavBtn"
                                 isFavBtnActive={isGameFav}
@@ -255,12 +251,15 @@ const GameCard = ({
                             <li className="detailInfoItem">
                                 <p className="detailInfoTitle">Genres:</p>
                                 <div className="detailInfoWrapper">
-                                    {gameCardGenres !== null ? (
+                                    {gameCardGenres !== null && gameCardGenres.length !== 0 ? (
                                         <>
                                             {gameCardGenres.map((genre, index) => {
                                                 return (
                                                     <p className="gameInfoLinkWrapper" key={genre.id + 'z' + index}>
-                                                        <Link to={`/`} key={genre.id + 'z' + index}>
+                                                        <Link
+                                                            to={api.createGenreLinkBasedOnGenreType(genre.name)}
+                                                            key={genre.id + 'z' + index}
+                                                        >
                                                             {genre.name}
                                                         </Link>
                                                         {index === gameCardGenres.length - 1 ? '' : ', '}

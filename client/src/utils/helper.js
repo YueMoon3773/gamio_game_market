@@ -68,10 +68,87 @@ const helperFunctions = () => {
         return ret;
     };
 
-    const getSpecificPlatformId = (platformList, pageUrl) => {
-        const ret = platformList.find((item, index) => pageUrl.includes(item.slug));
+    const samplePlatformIds = [
+        {
+            id: 1,
+            name: 'PC',
+            slug: 'pc',
+        },
+        {
+            id: 2,
+            name: 'PlayStation',
+            slug: 'playstation',
+        },
+        {
+            id: 3,
+            name: 'Xbox',
+            slug: 'xbox',
+        },
+        {
+            id: 4,
+            name: 'iOS',
+            slug: 'ios',
+        },
+        {
+            id: 8,
+            name: 'Android',
+            slug: 'android',
+        },
+        {
+            id: 5,
+            name: 'Apple Macintosh',
+            slug: 'mac',
+        },
+        {
+            id: 6,
+            name: 'Linux',
+            slug: 'linux',
+        },
+        {
+            id: 7,
+            name: 'Nintendo',
+            slug: 'nintendo',
+        },
+        {
+            id: 9,
+            name: 'Atari',
+            slug: 'atari',
+        },
+        {
+            id: 10,
+            name: 'Commodore / Amiga',
+            slug: 'commodore-amiga',
+        },
+        {
+            id: 11,
+            name: 'SEGA',
+            slug: 'sega',
+        },
+        {
+            id: 12,
+            name: '3DO',
+            slug: '3do',
+        },
+        {
+            id: 13,
+            name: 'Neo Geo',
+            slug: 'neo-geo',
+        },
+        {
+            id: 14,
+            name: 'Web',
+            slug: 'web',
+        },
+    ];
 
-        return ret ? ret.id : null;
+    const getSpecificPlatformId = (platformList, pageUrl) => {
+        let ret = platformList.find((item, index) => pageUrl.includes(item.slug));
+
+        if (ret === undefined) {
+            ret = samplePlatformIds.find((item, index) => pageUrl.includes(item.slug));
+        }
+        
+        return ret.id;
     };
 
     const getLast30Days = () => {
@@ -82,8 +159,6 @@ const helperFunctions = () => {
         return { currentDate, getLast30Days };
         // return getLast30Days + ',' + currentDate;
     };
-
-    
 
     const getThisWeekDates = () => {
         const currentDate = format(new Date(), 'yyyy-MM-dd');

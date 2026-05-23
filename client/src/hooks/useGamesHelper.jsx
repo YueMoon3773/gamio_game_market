@@ -14,7 +14,7 @@ export const GameHelperProvider = ({ children }) => {
         { id: 3, content: 'Most comments', value: 'mostCmt' },
         { id: 4, content: 'Fewest comments', value: 'leastCmt' },
     ];
-    const postPerPageOptsList = [
+    const gamesPerPageOptsList = [
         { id: 1, content: 20, value: 20 },
         { id: 2, content: 30, value: 30 },
         { id: 3, content: 50, value: 50 },
@@ -101,7 +101,7 @@ export const GameHelperProvider = ({ children }) => {
         <GameHelperContext.Provider
             value={{
                 orderByOptsList,
-                postPerPageOptsList,
+                gamesPerPageOptsList,
                 sideBarPlatformsShowAll,
                 toggleSideBarPlatformShowAll,
                 sideBarGenresShowAll,

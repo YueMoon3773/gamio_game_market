@@ -38,7 +38,15 @@ const apiHelper = () => {
         ADVENTURE_GENRE: '/games/adventure-genre',
         PUZZLE_GENRE: '/games/puzzle-genre',
         RACING_GENRE: '/games/racing-genre',
-        SPORT_GENRE: '/games/sport-genre',
+        SPORT_GENRE: '/games/sports-genre',
+    };
+
+    const createGenreLinkBasedOnGenreType = (genreType) => {
+        return `/games/${genreType.toLowerCase()}-genre`;
+    };
+
+    const createPlatformLinkBasedOnPlatformType = (platform) => {
+        return `/games/${platform.toLowerCase()}-platform`;
     };
 
     const getGenreFromUrl = (pageUrl) => {
@@ -83,93 +91,80 @@ const apiHelper = () => {
         let ordering = getOrder(orderValue);
         let calculatedApi = '';
 
-        switch (pageTargetUrl) {
-            case FILTER_LINKS.LAST_30_DAYS:
-                calculatedApi = getGameListUrl({
-                    dates: helper.getLast30Days().getLast30Days + ',' + helper.getLast30Days().currentDate,
-                    page_size: resultsPerPage,
-                    ordering,
-                });
-                break;
-            case FILTER_LINKS.THIS_WEEK:
-                calculatedApi = getGameListUrl({
-                    dates:
-                        helper.getThisWeekDates().startDateOfThisWeek +
-                        ',' +
-                        helper.getThisWeekDates().lastDateOfThisWeek,
-                    page_size: resultsPerPage,
-                    ordering,
-                });
-                break;
-            case FILTER_LINKS.NEXT_WEEK:
-                ordering = 'released';
-                calculatedApi = getGameListUrl({
-                    dates:
-                        helper.getNextWeekDates().startDateOfNextWeek +
-                        ',' +
-                        helper.getNextWeekDates().lastDateOfNextWeek,
-                    page_size: resultsPerPage,
-                    ordering,
-                });
-                break;
-            case FILTER_LINKS.BEST_OF_THIS_YEAR:
-                ordering = '-rating';
-                calculatedApi = getGameListUrl({
-                    dates:
-                        helper.getThisYearBeginAndCurrentDates().startDateOfThisYear +
-                        ',' +
-                        helper.getThisYearBeginAndCurrentDates().currentDate,
-                    page_size: resultsPerPage,
-                    ordering,
-                });
-                break;
-            case FILTER_LINKS.POPULAR_LAST_YEAR:
-                ordering = '-added';
-                calculatedApi = getGameListUrl({
-                    dates:
-                        helper.getLastYearStartAndLastDates().startDateOfLastYear +
-                        ',' +
-                        helper.getLastYearStartAndLastDates().lastDateOfLastYear,
-                    page_size: resultsPerPage,
-                    ordering,
-                });
-                break;
-            case FILTER_LINKS.ALL_TIME_TOP:
-                ordering = '-added';
-                calculatedApi = getGameListUrl({
-                    page_size: 30,
-                    ordering,
-                });
-                break;
-            case FILTER_LINKS.PC_PLATFORM:
-            case FILTER_LINKS.PLAYSTATION_PLATFORM:
-            case FILTER_LINKS.XBOX_PLATFORM:
-            case FILTER_LINKS.ANDROID_PLATFORM:
-            case FILTER_LINKS.IOS_PLATFORM:
-            case FILTER_LINKS.NINTENDO_PLATFORM:
-                calculatedApi = getGameListUrl({
-                    parent_platforms:
-                        platformIds !== null ? helper.getSpecificPlatformId(platformIds, location.pathname) : 1,
-                    page_size: resultsPerPage,
-                    ordering,
-                });
-                break;
-            case FILTER_LINKS.ACTION_GENRE:
-            case FILTER_LINKS.STRATEGY_GENRE:
-            case FILTER_LINKS.RPG_GENRE:
-            case FILTER_LINKS.SHOOTER_GENRE:
-            case FILTER_LINKS.ADVENTURE_GENRE:
-            case FILTER_LINKS.PUZZLE_GENRE:
-            case FILTER_LINKS.RACING_GENRE:
-            case FILTER_LINKS.SPORT_GENRE:
-                calculatedApi = getGameListUrl({
-                    genres: getGenreFromUrl(location.pathname),
-                    page_size: resultsPerPage,
-                    ordering,
-                });
-                break;
-            default:
-                break;
+        if (pageTargetUrl.includes('genre')) {
+            calculatedApi = getGameListUrl({
+                genres: getGenreFromUrl(location.pathname),
+                page_size: resultsPerPage,
+                ordering,
+            });
+        } else if (pageTargetUrl.includes('platform')) {
+            calculatedApi = getGameListUrl({
+                parent_platforms: platformIds !== null ? helper.getSpecificPlatformId(platformIds, pageTargetUrl) : 1,
+                page_size: resultsPerPage,
+                ordering,
+            });
+        } else {
+            switch (pageTargetUrl) {
+                case FILTER_LINKS.LAST_30_DAYS:
+                    calculatedApi = getGameListUrl({
+                        dates: helper.getLast30Days().getLast30Days + ',' + helper.getLast30Days().currentDate,
+                        page_size: resultsPerPage,
+                        ordering,
+                    });
+                    break;
+                case FILTER_LINKS.THIS_WEEK:
+                    calculatedApi = getGameListUrl({
+                        dates:
+                            helper.getThisWeekDates().startDateOfThisWeek +
+                            ',' +
+                            helper.getThisWeekDates().lastDateOfThisWeek,
+                        page_size: resultsPerPage,
+                        ordering,
+                    });
+                    break;
+                case FILTER_LINKS.NEXT_WEEK:
+                    ordering = 'released';
+                    calculatedApi = getGameListUrl({
+                        dates:
+                            helper.getNextWeekDates().startDateOfNextWeek +
+                            ',' +
+                            helper.getNextWeekDates().lastDateOfNextWeek,
+                        page_size: resultsPerPage,
+                        ordering,
+                    });
+                    break;
+                case FILTER_LINKS.BEST_OF_THIS_YEAR:
+                    ordering = '-rating';
+                    calculatedApi = getGameListUrl({
+                        dates:
+                            helper.getThisYearBeginAndCurrentDates().startDateOfThisYear +
+                            ',' +
+                            helper.getThisYearBeginAndCurrentDates().currentDate,
+                        page_size: resultsPerPage,
+                        ordering,
+                    });
+                    break;
+                case FILTER_LINKS.POPULAR_LAST_YEAR:
+                    ordering = '-added';
+                    calculatedApi = getGameListUrl({
+                        dates:
+                            helper.getLastYearStartAndLastDates().startDateOfLastYear +
+                            ',' +
+                            helper.getLastYearStartAndLastDates().lastDateOfLastYear,
+                        page_size: resultsPerPage,
+                        ordering,
+                    });
+                    break;
+                case FILTER_LINKS.ALL_TIME_TOP:
+                    ordering = '-added';
+                    calculatedApi = getGameListUrl({
+                        page_size: 30,
+                        ordering,
+                    });
+                    break;
+                default:
+                    break;
+            }
         }
 
         return calculatedApi;
@@ -178,6 +173,8 @@ const apiHelper = () => {
     return {
         STORE_DOMAINS,
         FILTER_LINKS,
+        createGenreLinkBasedOnGenreType,
+        createPlatformLinkBasedOnPlatformType,
         getGenreFromUrl,
         getGameListUrl,
         storeByIdUrl,
