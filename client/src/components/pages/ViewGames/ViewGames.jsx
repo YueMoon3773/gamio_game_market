@@ -13,8 +13,10 @@ import GameCard from '../../base/GameCard/GameCard';
 
 import './ViewGames.scss';
 
-// import gamesData from '../../../../data.json';
+import gamesData from '../../../../data.json';
 // const gamesData = null;
+const gamesError = null;
+const gamesLoading = false;
 import { useEffect, useState } from 'react';
 
 const baseGameApiUrl = import.meta.env.VITE_API_GAMES_URL;
@@ -55,13 +57,13 @@ const ViewGames = () => {
         setApiUrl(calculatedApi);
     }, [currentPageUrl, platformIds, orderByValue, gamesPerPageValue]);
 
-    const {
-        data: gamesData,
-        error: gamesError,
-        loading: gamesLoading,
-        refetch: gamesRefetch,
-        newFetchUrl: gameNewFetchUrl,
-    } = useFetchGetData(apiUrl);
+    // const {
+    //     data: gamesData,
+    //     error: gamesError,
+    //     loading: gamesLoading,
+    //     refetch: gamesRefetch,
+    //     newFetchUrl: gameNewFetchUrl,
+    // } = useFetchGetData(apiUrl);
 
     // console.log({ currentPageUrl });
     // console.log('api: ', apiUrl);
@@ -123,6 +125,7 @@ const ViewGames = () => {
                                 columnClassName="masonryGridColumn"
                             >
                                 {gamesData.results.map((item, index) => {
+                                    const gamePrice = helpers.calculateGamePrice(item.released);
                                     return (
                                         <GameCard
                                             key={item.id + index}
@@ -133,6 +136,7 @@ const ViewGames = () => {
                                             gameCardMediaLibrary={item.short_screenshots}
                                             gameCardPlatforms={item.platforms}
                                             gameCardName={item.name}
+                                            gameCurrentPrice={gamePrice}
                                             gameCardReleaseDate={item.released}
                                             gameCardGenres={item.genres}
                                             gameCardRating={item.rating}

@@ -1,7 +1,4 @@
-import { format, subDays, startOfWeek, lastDayOfWeek, addDays, getYear } from 'date-fns';
-
-const baseGameApiUrl = import.meta.env.VITE_API_GAMES_URL;
-const gameApiUrlKey = import.meta.env.VITE_API_GAMES_URL_KEY;
+import { format, subDays, startOfWeek, lastDayOfWeek, addDays, getYear, differenceInDays } from 'date-fns';
 
 const helperFunctions = () => {
     const svgPlatformsSelection = (platform) => {
@@ -147,7 +144,7 @@ const helperFunctions = () => {
         if (ret === undefined) {
             ret = samplePlatformIds.find((item, index) => pageUrl.includes(item.slug));
         }
-        
+
         return ret.id;
     };
 
@@ -199,6 +196,52 @@ const helperFunctions = () => {
         return { startDateOfLastYear, lastDateOfLastYear };
     };
 
+    const calculateGamePrice = (releaseDate) => {
+        const basePrice = 60;
+        if (!releaseDate) return Number(basePrice.toFixed(2));
+
+        const minPrice = 5;
+        const daysInYear = 365;
+        const currentDate = new Date();
+
+        const releaseYear = getYear(releaseDate);
+        const currentYear = getYear(currentDate);
+        const yearDifferences = currentYear - releaseYear;
+        const daysFromReleaseToNow = differenceInDays(currentDate, releaseDate);
+
+        const discountPerYear = 0.26;
+        let randomNumber = Math.floor(Math.random() * 6);
+        let discount = 0;
+
+        let newPrice = 60;
+
+        if (0 === yearDifferences) {
+            if (0 < daysFromReleaseToNow) {
+                discount =
+                    discountPerYear * randomNumber > 0.9
+                        ? discountPerYear * randomNumber
+                        : discountPerYear * randomNumber + 0.36 * randomNumber;
+            }
+        } else if (1 <= yearDifferences && 2 >= yearDifferences) {
+            if (daysFromReleaseToNow / daysInYear <= 1.5) randomNumber = Math.floor(Math.random() * 8);
+            else randomNumber = Math.floor(Math.random() * 10);
+            discount = discountPerYear * randomNumber * 0.3 + randomNumber;
+        } else if (2 < yearDifferences && 4 >= yearDifferences) {
+            randomNumber = Math.floor(Math.random() * 20);
+            discount = discountPerYear * randomNumber * 0.6 + randomNumber;
+        } else if (4 < yearDifferences && 8 >= yearDifferences) {
+            randomNumber = Math.floor(Math.random() * 35);
+            discount = discountPerYear * randomNumber * 0.8 + randomNumber;
+        } else {
+            randomNumber = Math.floor(Math.random() * 60);
+            discount = discountPerYear * randomNumber * 0.96 + randomNumber;
+        }
+
+        newPrice = basePrice * ((100 - discount) / 100);
+
+        return newPrice < minPrice ? minPrice : Number(newPrice.toFixed(2));
+    };
+
     return {
         svgPlatformsSelection,
         getSpecificPlatformId,
@@ -208,6 +251,7 @@ const helperFunctions = () => {
         getThisYearBeginAndCurrentDates,
         getThisYearAndLastYear,
         getLastYearStartAndLastDates,
+        calculateGamePrice,
     };
 };
 

@@ -79,12 +79,12 @@ export const GameHelperProvider = ({ children }) => {
                 if (!res.ok) throw new Error(res.statusText);
 
                 const data = await res.json();
-                const tmp = data.results.map((item, index) => {
+                const platformIds = data.results.map((item, index) => {
                     return { id: item.id, name: item.name, slug: item.slug };
                 });
                 // console.log({ data });
-                // console.log({ tmp });
-                setPlatformIds(tmp);
+                // console.log({ platformIds });
+                setPlatformIds(platformIds);
             } catch (e) {
                 console.log(e);
             }

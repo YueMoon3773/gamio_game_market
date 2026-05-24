@@ -39,6 +39,7 @@ const gameCardSchema = z
         gameCardMediaLibrary: z.array(z.looseObject({})).nullable().optional(),
         gameCardPlatforms: z.array(z.looseObject({})).nullable().optional(),
         gameCardName: z.string().nullable().optional(),
+        gameCurrentPrice: z.number().nullable().optional(),
         gameCardReleaseDate: z.string().nullable().optional(),
         gameCardGenres: z.array(z.looseObject({})).nullable().optional(),
         gameCardRating: z.number().nullable().optional(),
@@ -55,6 +56,7 @@ const gameCardSchema = z
                     props.gameCardMediaLibrary === undefined ||
                     props.gameCardPlatforms === undefined ||
                     props.gameCardName === undefined ||
+                    props.gameCurrentPrice === undefined ||
                     props.gameCardReleaseDate === undefined ||
                     props.gameCardGenres === undefined ||
                     props.gameCardRating === undefined ||
@@ -66,7 +68,7 @@ const gameCardSchema = z
         },
         {
             message:
-                'currentUrlLocationOfGameCard, gameCardId, gameCardSingleMediaDisplay, gameCardMediaLibrary, gameCardPlatforms, gameCardPlatformsParents, gameCardName, gameCardReleaseDate, gameCardGenres,gameCardRating, gameCardRatingCount, gameCardStores must be provided in case isGameCardLoading === false',
+                'currentUrlLocationOfGameCard, gameCardId, gameCardSingleMediaDisplay, gameCardMediaLibrary, gameCardPlatforms, gameCardPlatformsParents, gameCardName, gameCurrentPrice, gameCardReleaseDate, gameCardGenres,gameCardRating, gameCardRatingCount, gameCardStores must be provided in case isGameCardLoading === false',
         },
     );
 
@@ -81,6 +83,7 @@ const GameCard = ({
     gameCardMediaLibrary,
     gameCardPlatforms,
     gameCardName,
+    gameCurrentPrice,
     gameCardReleaseDate,
     gameCardGenres,
     gameCardRating,
@@ -95,16 +98,17 @@ const GameCard = ({
 
     const platformIcons = !gameCardPlatforms ? null : helper.svgPlatformsSelection(gameCardPlatforms);
     const releaseDate = !gameCardReleaseDate ? null : format(gameCardReleaseDate, 'MMM d, yyyy');
-    const gameCurrentPrice = !gameCardReleaseDate ? '$60.00' : '$60.00';
-    const gameOldPrice = !gameCardReleaseDate ? null : '$60.00';
+    // const gameCurrentPrice = `$${helper.calculateGamePrice(gameCardReleaseDate)}`;
+    const gameOldPrice = !gameCardReleaseDate ? null : 60;
 
-    // console.log({ gameCardName });
+    console.log({ gameCardName });
     // console.log({ platformIcons });
     // console.log({ gameCardPlatforms });
-    // console.log({ releaseDate });
+    console.log({ releaseDate });
     // console.log({ gameCardMediaLibrary });
     // console.log({ gameCardSingleMediaDisplay });
     // console.log({ gameCardGenres });
+    console.log(helper.calculateGamePrice(gameCardReleaseDate));
 
     const favGameBtnOnClickHandle = () => {
         setIsGameFav((prev) => !prev);
@@ -224,9 +228,11 @@ const GameCard = ({
                             {isGameCardLoading ? (
                                 <div className={`${pageBaseStyles.skeletonLoading} gamePriceSkeleton`}></div>
                             ) : (
-                                <span className="discountPrice">{gameCurrentPrice}</span>
+                                <span className="discountPrice">{`$${gameCurrentPrice.toFixed(2)}`}</span>
                             )}
-                            {gameOldPrice && <span className="oldPrice">{gameOldPrice}</span>}
+                            {gameOldPrice !== gameCurrentPrice && (
+                                <span className="oldPrice">{`$${gameOldPrice.toFixed(2)}`}</span>
+                            )}
                         </div>
 
                         {isCardHover && (
