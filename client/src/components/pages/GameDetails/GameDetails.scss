@@ -232,23 +232,24 @@
 
 .sectionHeading {
     color: var(--text_color);
-    font-size: $fs_normal_lg;
+    font-size: calc($fs_normal_lg * 0.9);
     font-weight: 700;
     transition: $transition_effect_md;
     margin-bottom: 0.26em;
 }
 
 .descriptionTextWrapper {
-    max-height: 160px;
+    max-height: $descriptionMaxHeight;
     overflow-y: auto;
 
     .descriptionText,
     p {
         color: var(--text_color);
-        font-size: $fs_normal_sm;
-        line-height: 1.6;
+        font-size: calc($fs_normal_sm * 0.95);
+        line-height: 1.5;
         text-align: justify;
         max-width: 75ch;
+        padding-right: 0.3em;
         transition: $transition_effect_md;
     }
 }

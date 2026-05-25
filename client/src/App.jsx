@@ -10,7 +10,6 @@ import { GithubIcon, Last30DaysIcon, PopularInYearIcon, BestOfYearIcon, AllTimeT
 import RawgImg from './assets/img/prj/RAWG.jpg';
 
 import PageLayout from './components/layout/PageLayout/PageLayout';
-import MainBtn from './components/base/MainBtn/MainBtn';
 
 import './App.scss';
 

@@ -29,17 +29,14 @@ import './GameDetails.scss';
 
 const gameDetailsSchema = z.object({});
 
-// import gameDetailsData from '../../../../details.json';
-import gameDetailsImgData from '../../../../details_img.json';
 const helper = helperFunctions();
 const api = apiHelper();
 
 const GameDetails = () => {
-    // const gameDetailsImgData = null;
     const location = useLocation();
 
     const { gameId } = useParams();
-    if (!gameId) <Navigate to="/error"></Navigate>;
+    if (!gameId) return <Navigate to="/error"></Navigate>;
 
     const locationStates = location.state;
 
@@ -54,19 +51,23 @@ const GameDetails = () => {
 
     const [isInCart, setIsInCart] = useState(false);
 
-    // console.log(api.getGameDetailsUrl(gameId));
-
     const {
         data: gameDetailsData,
         error: gameDetailsError,
         loading: gameDetailsLoading,
-        refetch: gameDetailsRefetch,
-        newFetchUrl: gameDetailsNewFetchUrl,
     } = useFetchGetData(api.getGameDetailsUrl(gameId));
 
-    console.log({ gameDetailsData, gameDetailsError, gameDetailsLoading });
+    const {
+        data: gameDetailsImgData,
+        error: gameDetailsImgError,
+        loading: gameDetailsImgLoading,
+    } = useFetchGetData(api.getGameMediaListUrl(gameId));
 
     const releaseDate = !gameDetailsData ? null : format(gameDetailsData.released, 'MMM d, yyyy');
+
+    // LOGGING
+    // console.log({ gameDetailsData, gameDetailsError, gameDetailsLoading });
+    // console.log({ gameDetailsImgData, gameDetailsImgError, gameDetailsImgLoading });
 
     // console.log({ locationStates });
     // console.log({ imgList });
@@ -98,7 +99,7 @@ const GameDetails = () => {
         setIsInCart((prev) => !prev);
     };
 
-    // auto switch game image
+    // auto switch game image in the media list
     useEffect(() => {
         const changeImgTimer = setTimeout(() => {
             if (!imgList) return;
@@ -113,7 +114,7 @@ const GameDetails = () => {
     };
 
     if (gameDetailsError !== null) {
-        <Navigate to="/error"></Navigate>;
+        return <Navigate to="/error"></Navigate>;
     } else {
         return (
             <motion.div
@@ -157,11 +158,11 @@ const GameDetails = () => {
 
                         <div className="detailsBottomWrapper">
                             <div className="detailsImgCarouselWrapper">
-                                {gameDetailsLoading === true && gameDetailsData === null ? (
+                                {gameDetailsImgLoading === true && gameDetailsImgData === null ? (
                                     <div className={`${pageBaseStyles.skeletonLoading} detailsCarouselSkeleton`}></div>
                                 ) : (
                                     <>
-                                        {imgList !== null ? (
+                                        {imgList !== null && imgList.length > 0 ? (
                                             <div className="detailsImgCarousel">
                                                 <button
                                                     className="carouselBtn carouselBtnLeft"
@@ -180,7 +181,7 @@ const GameDetails = () => {
                                                     {imgList.map((item, index) => {
                                                         return (
                                                             <img
-                                                                key={item.id + index}
+                                                                key={item.id + 'z' + index}
                                                                 className={`gameDetailImg ${currentImgIndex === index ? 'show' : 'hidden'}`}
                                                                 src={item.image}
                                                                 alt="game image"
@@ -192,7 +193,7 @@ const GameDetails = () => {
                                                         {imgList.map((item, index) => {
                                                             return (
                                                                 <img
-                                                                    key={item.id + index}
+                                                                    key={item.id + 'z' + index}
                                                                     className={`gameImgThumbnail ${currentImgIndex === index ? 'active' : 'inactive'}`}
                                                                     src={item.image}
                                                                     alt="game image thumbnail"
@@ -277,9 +278,14 @@ const GameDetails = () => {
                                                                     return (
                                                                         <p
                                                                             className="infoLinkWrapper"
-                                                                            key={genre.id + index}
+                                                                            key={genre.id + 'z' + index}
                                                                         >
-                                                                            <Link to={`/`} key={genre.id + index}>
+                                                                            <Link
+                                                                                to={api.createGenreLinkBasedOnGenreType(
+                                                                                    genre.name,
+                                                                                )}
+                                                                                key={genre.id + index}
+                                                                            >
                                                                                 {genre.name}
                                                                             </Link>
                                                                             {index === gameDetailsData.genres.length - 1
@@ -305,13 +311,13 @@ const GameDetails = () => {
                                                                         return (
                                                                             <p
                                                                                 className="infoLinkWrapper"
-                                                                                key={platform.platform.id + index}
+                                                                                key={platform.platform.id + 'z' + index}
                                                                             >
                                                                                 <Link
-                                                                                    to="/"
+                                                                                    to={api.createPlatformLinkBasedOnPlatformType(
+                                                                                        platform.platform.slug,
+                                                                                    )}
                                                                                     key={platform.platform.id + index}
-                                                                                    target="_blank"
-                                                                                    rel="noopener noreferrer"
                                                                                 >
                                                                                     {platform.platform.name}
                                                                                 </Link>
@@ -341,7 +347,7 @@ const GameDetails = () => {
                                                                     return (
                                                                         <p
                                                                             className="infoLinkWrapper"
-                                                                            key={store.store.id + index}
+                                                                            key={store.store.id + 'z' + index}
                                                                         >
                                                                             <Link
                                                                                 to={
@@ -381,7 +387,7 @@ const GameDetails = () => {
                                                                     return (
                                                                         <p
                                                                             className="infoText"
-                                                                            key={developer.id + index}
+                                                                            key={developer.id + 'z' + index}
                                                                         >
                                                                             <span>{developer.name}</span>
                                                                             {index ===
@@ -407,7 +413,7 @@ const GameDetails = () => {
                                                                     return (
                                                                         <p
                                                                             className="infoText"
-                                                                            key={publisher.id + index}
+                                                                            key={publisher.id + 'z' + index}
                                                                         >
                                                                             <span>{publisher.name}</span>
                                                                             {index ===
@@ -445,12 +451,11 @@ const GameDetails = () => {
                                             <span className="newDetailsInfoPrice">
                                                 {locationStates?.gameCurrentPrice
                                                     ? `$${locationStates.gameCurrentPrice.toFixed(2)}`
-                                                    : `$${helper.calculateGamePrice(gameDetailsData.released).toFixed(2)}`}
+                                                    : '$60.00'}
                                             </span>
                                             <span className="oldDetailsInfoPrice">
-                                                {locationStates?.gameOldPrice
-                                                    ? `$${locationStates.gameOldPrice.toFixed(2)}`
-                                                    : '$60.00'}
+                                                {locationStates?.gameOldPrice &&
+                                                    `$${locationStates.gameOldPrice.toFixed(2)}`}
                                             </span>
                                         </div>
 

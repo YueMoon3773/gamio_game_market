@@ -17,7 +17,6 @@ import {
     SegaIcon,
     ThreeDOIcon,
     WebPlatformIcon,
-    YourFavGamesIcon,
     StarIcon,
 } from '../../../assets/svgIcons';
 import NoImgAvailable from '../../../assets/img/prj/no_image_found.png';
@@ -101,6 +100,7 @@ const GameCard = ({
     // const gameCurrentPrice = `$${helper.calculateGamePrice(gameCardReleaseDate)}`;
     const gameOldPrice = !gameCardReleaseDate ? null : 60;
 
+    // LOGGING
     // console.log({ gameCardName });
     // console.log({ platformIcons });
     // console.log({ gameCardPlatforms });

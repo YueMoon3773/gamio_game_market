@@ -14,13 +14,6 @@ import GameCard from '../../base/GameCard/GameCard';
 
 import './ViewGames.scss';
 
-// const gamesData = null;
-// import gamesData from '../../../../data.json';
-// const gamesError = null;
-// const gamesLoading = false;
-
-const baseGameApiUrl = import.meta.env.VITE_API_GAMES_URL;
-const gameApiUrlKey = import.meta.env.VITE_API_GAMES_URL_KEY;
 const helpers = helperFunctions();
 const api = apiHelper();
 
@@ -57,21 +50,16 @@ const ViewGames = () => {
         setApiUrl(calculatedApi);
     }, [currentPageUrl, platformIds, orderByValue, gamesPerPageValue]);
 
-    const {
-        data: gamesData,
-        error: gamesError,
-        loading: gamesLoading,
-        refetch: gamesRefetch,
-        newFetchUrl: gameNewFetchUrl,
-    } = useFetchGetData(apiUrl);
+    const { data: gamesData, error: gamesError, loading: gamesLoading } = useFetchGetData(apiUrl);
 
+    // LOGGING
     // console.log({ currentPageUrl });
     // console.log('api: ', apiUrl);
     // console.log({ platformIds });
     // console.log({ gamesData });
 
     if (gamesData === null && gamesError !== null && gamesLoading !== false) {
-        <Navigate to="/error"></Navigate>;
+        return <Navigate to="/error"></Navigate>;
     } else {
         return (
             <motion.div
