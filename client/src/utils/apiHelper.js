@@ -93,7 +93,7 @@ const apiHelper = () => {
 
         if (pageTargetUrl.includes('genre')) {
             calculatedApi = getGameListUrl({
-                genres: getGenreFromUrl(location.pathname),
+                genres: getGenreFromUrl(pageTargetUrl),
                 page_size: resultsPerPage,
                 ordering,
             });
@@ -170,6 +170,14 @@ const apiHelper = () => {
         return calculatedApi;
     };
 
+    const getGameDetailsUrl = (gameId) => {
+        return `${baseGameApiUrl}/games/${gameId}?key=${gameApiUrlKey}`;
+    };
+
+    const getGameMediaListUrl = (gameId) => {
+        return `${baseGameApiUrl}/games/${gameId}/screenshots?key=${gameApiUrlKey}`;
+    };
+
     return {
         STORE_DOMAINS,
         FILTER_LINKS,
@@ -181,6 +189,8 @@ const apiHelper = () => {
         getApiBasedOnPageUrl,
         getOrder,
         getParentPlatformApi,
+        getGameDetailsUrl,
+        getGameMediaListUrl,
     };
 };
 

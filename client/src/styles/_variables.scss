@@ -65,6 +65,9 @@ $distance_3sm: 4px;
 /* =============================================== */
 /* WEB SPECIFIC VARIABLES SET UP  */
 /* =============================================== */
+$scroll_bar_width: 6px;
+$scroll_bar_border_radius: 8px;
+
 $transition_effect_md: all 360ms ease-in-out;
 $header_padding_top_bottom: clamp(10px, 1.2rem, 16px);
 $page_padding_left_right: clamp(30px, 3.6rem, 42px);
@@ -112,10 +115,12 @@ $topInfoSectionBorderRadius: 12px;
 $detailsBottomPadding: 1.2em;
 $detailsBottomBorderRadius: 10px;
 
-$basicInfoBgColorDarkTheme: linear-gradient(45deg, #00000000 0%, #bababa08 63%, #bababa0d 100%);
-$basicInfoBgColorBrightTheme: linear-gradient(45deg, #00000000 0%, #33333308 63%, #3333330d 100%);
+$basicInfoBgColorDarkTheme: linear-gradient(45deg, #00000000 3%, #bababa08 63%, #bababa0d 100%);
+$basicInfoBgColorBrightTheme: linear-gradient(45deg, #00000000 3%, #3333330b 63%, #33333315 100%);
+
 $moreInfoBgColorDarkTheme: linear-gradient(60deg, #00000000 0%, #bababa17 75%, #bababa1f 100%);
 $moreInfoBgColorBrightTheme: linear-gradient(60deg, #00000000 0%, #3333331f 75%, #33333338 100%);
+
 $bottomDetailsBgColorBrightTheme: linear-gradient(90deg, #00000000 0%, #33333317 86%, #33333321 100%);
 $bottomDetailsBgColorDarkTheme: linear-gradient(90deg, #00000000 0%, #bababa17 86%, #bababa21 100%);
 

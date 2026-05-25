@@ -44,6 +44,16 @@
             transition: $transition_effect_md;
         }
 
+        &:has(.detailsNameSkeleton) {
+            align-self: stretch;
+            align-items: stretch;
+
+            .detailsNameSkeleton {
+                width: 360px;
+                height: 100%;
+            }
+        }
+
         .gameDetailsFavBtn {
             svg {
                 height: $fs_heading_ssm;
@@ -53,11 +63,14 @@
 }
 
 .detailsBottomWrapper {
-    flex-shrink: 1;
     flex: 1;
     @include displayGrid;
     grid-template-columns: 8fr 4fr;
     gap: clamp(16px, 2rem, 24px);
+
+    & > * {
+        min-width: 0;
+    }
 }
 
 .detailsImgCarouselWrapper {
@@ -69,6 +82,16 @@
     background-color: var(--bg_color);
     box-shadow: 0 12px 24px color-mix(in srgb, var(--out_focus_gray) 8%, transparent);
     z-index: 0;
+
+    &:has(.detailsCarouselSkeleton) {
+        width: 100%;
+        height: 100%;
+
+        .detailsCarouselSkeleton {
+            width: 100%;
+            height: 100%;
+        }
+    }
 }
 
 .detailsImgCarousel {
@@ -171,6 +194,14 @@
 .detailsInfoWrapper {
     @include flexColumn;
     justify-content: space-between;
+
+    &:has(.detailsInfoSkeleton) {
+        height: 30%;
+        .detailsInfoSkeleton {
+            width: 100%;
+            height: 100%;
+        }
+    }
 }
 
 .detailsInfoTopWrapper {
@@ -195,6 +226,7 @@
         border-bottom-left-radius: $topInfoSectionBorderRadius;
         border-bottom-right-radius: $topInfoSectionBorderRadius;
         background: var(--more_info_bg_color);
+        overflow-y: auto;
     }
 }
 
@@ -206,13 +238,19 @@
     margin-bottom: 0.26em;
 }
 
-.descriptionText {
-    color: var(--text_color);
-    font-size: $fs_normal_sm;
-    line-height: 1.6;
-    text-align: justify;
-    max-width: 75ch;
-    transition: $transition_effect_md;
+.descriptionTextWrapper {
+    max-height: 160px;
+    overflow-y: auto;
+
+    .descriptionText,
+    p {
+        color: var(--text_color);
+        font-size: $fs_normal_sm;
+        line-height: 1.6;
+        text-align: justify;
+        max-width: 75ch;
+        transition: $transition_effect_md;
+    }
 }
 
 .moreInfoList {
@@ -235,12 +273,15 @@
 .moreInfoItem {
     @include flexCenter;
     justify-content: flex-start;
-    gap: clamp(4px, 0.6rem, 8px);
+    align-items: flex-start;
+    gap: clamp(6px, 0.8rem, 10px);
 }
 
 .infoWrapper {
     @include flexCenter;
     gap: clamp(4px, 0.6rem, 8px);
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
 .infoText {
@@ -255,6 +296,7 @@
 
 .infoLinkWrapper {
     @include flexCenter;
+    text-wrap: nowrap;
 
     a {
         &:hover {

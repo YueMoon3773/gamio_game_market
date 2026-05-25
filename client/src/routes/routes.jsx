@@ -34,7 +34,7 @@ const routes = [
                 ),
             },
             {
-                path: '/game-detail',
+                path: '/game-detail/:gameId',
                 element: <GameDetails />,
                 errorElement: (
                     <VideoBgChangeProvider>
@@ -43,13 +43,8 @@ const routes = [
                 ),
             },
             {
-                path: '/error',
+                path: '*',
                 element: (
-                    <VideoBgChangeProvider>
-                        <ErrorPage />
-                    </VideoBgChangeProvider>
-                ),
-                errorElement: (
                     <VideoBgChangeProvider>
                         <ErrorPage />
                     </VideoBgChangeProvider>

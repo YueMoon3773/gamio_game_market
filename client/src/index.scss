@@ -72,27 +72,27 @@ h6 {
 }
 
 // SCROLLBAR SET UP
-// ::-webkit-scrollbar {
-//     width: $scroll_bar_width;
-//     height: $scroll_bar_width;
-// }
+::-webkit-scrollbar {
+    width: $scroll_bar_width;
+    height: $scroll_bar_width;
+}
 
-// ::-webkit-scrollbar-track {
-//     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.36);
-//     -webkit-border-radius: $scroll_bar_border_radius;
-//     border-radius: $scroll_bar_border_radius;
-// }
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.36);
+    -webkit-border-radius: $scroll_bar_border_radius;
+    border-radius: $scroll_bar_border_radius;
+}
 
-// ::-webkit-scrollbar-thumb {
-//     -webkit-border-radius: $scroll_bar_border_radius;
-//     border-radius: $scroll_bar_border_radius;
-//     background: $light_blue_color;
-//     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.36);
-// }
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: $scroll_bar_border_radius;
+    border-radius: $scroll_bar_border_radius;
+    background: $primary_light_color;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.36);
+}
 
-// ::-webkit-scrollbar-thumb:window-inactive {
-//     background: $light_blue_color;
-// }
+::-webkit-scrollbar-thumb:window-inactive {
+    background: $primary_light_color;
+}
 
 /* =============================================== */
 /* WEB APP SETUP  */

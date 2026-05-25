@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Masonry from 'react-masonry-css';
@@ -13,11 +14,10 @@ import GameCard from '../../base/GameCard/GameCard';
 
 import './ViewGames.scss';
 
-import gamesData from '../../../../data.json';
 // const gamesData = null;
-const gamesError = null;
-const gamesLoading = false;
-import { useEffect, useState } from 'react';
+// import gamesData from '../../../../data.json';
+// const gamesError = null;
+// const gamesLoading = false;
 
 const baseGameApiUrl = import.meta.env.VITE_API_GAMES_URL;
 const gameApiUrlKey = import.meta.env.VITE_API_GAMES_URL_KEY;
@@ -57,13 +57,13 @@ const ViewGames = () => {
         setApiUrl(calculatedApi);
     }, [currentPageUrl, platformIds, orderByValue, gamesPerPageValue]);
 
-    // const {
-    //     data: gamesData,
-    //     error: gamesError,
-    //     loading: gamesLoading,
-    //     refetch: gamesRefetch,
-    //     newFetchUrl: gameNewFetchUrl,
-    // } = useFetchGetData(apiUrl);
+    const {
+        data: gamesData,
+        error: gamesError,
+        loading: gamesLoading,
+        refetch: gamesRefetch,
+        newFetchUrl: gameNewFetchUrl,
+    } = useFetchGetData(apiUrl);
 
     // console.log({ currentPageUrl });
     // console.log('api: ', apiUrl);

@@ -101,14 +101,13 @@ const GameCard = ({
     // const gameCurrentPrice = `$${helper.calculateGamePrice(gameCardReleaseDate)}`;
     const gameOldPrice = !gameCardReleaseDate ? null : 60;
 
-    console.log({ gameCardName });
+    // console.log({ gameCardName });
     // console.log({ platformIcons });
     // console.log({ gameCardPlatforms });
-    console.log({ releaseDate });
+    // console.log({ releaseDate });
     // console.log({ gameCardMediaLibrary });
     // console.log({ gameCardSingleMediaDisplay });
     // console.log({ gameCardGenres });
-    console.log(helper.calculateGamePrice(gameCardReleaseDate));
 
     const favGameBtnOnClickHandle = () => {
         setIsGameFav((prev) => !prev);
@@ -217,8 +216,13 @@ const GameCard = ({
                     {!isGameCardLoading && (gameCardName !== null || gameCardName !== undefined) && (
                         <Link
                             className="gameName"
-                            to="/game-detail"
-                            state={{ gameMediaLibrary: gameCardMediaLibrary, fromUrl: currentUrlLocationOfGameCard }}
+                            to={`/game-detail/${gameCardId}`}
+                            state={{
+                                gameMediaLibrary: gameCardMediaLibrary,
+                                gameCurrentPrice: gameCurrentPrice,
+                                gameOldPrice,
+                                fromUrl: currentUrlLocationOfGameCard,
+                            }}
                         >
                             {gameCardName}
                         </Link>
@@ -230,7 +234,7 @@ const GameCard = ({
                             ) : (
                                 <span className="discountPrice">{`$${gameCurrentPrice.toFixed(2)}`}</span>
                             )}
-                            {gameOldPrice !== gameCurrentPrice && (
+                            {gameOldPrice !== null && gameOldPrice !== gameCurrentPrice && (
                                 <span className="oldPrice">{`$${gameOldPrice.toFixed(2)}`}</span>
                             )}
                         </div>
