@@ -1,8 +1,11 @@
 import { z } from 'zod';
 
+import { useInfoBadge } from '../../../hooks/useInfoBadge';
+
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
 import SideBar from '../SideBar/SideBar';
+import InfoBadge from '../../base/InfoBadge/InfoBadge';
 
 import basePageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './PageContent.scss';
@@ -31,15 +34,23 @@ const PageContent = ({ pageType, children }) => {
             pageContentClassName = `${basePageStyles.pageContent} pageContentWrapper`;
     }
 
+    const { isShowBadge, badgeType, badgeMsg } = useInfoBadge();
+
     return (
         <div className={pageContentClassName}>
             {pageType === 'viewGamesPage' && (
                 <>
                     <SideBar></SideBar>
                     <div className="contentWrapper">{children}</div>
+                    <InfoBadge badgeType={badgeType} isBadgeShow={isShowBadge} badgeMsg={badgeMsg}></InfoBadge>
                 </>
             )}
-            {(pageType === 'introPage' || pageType === 'errorPage' || pageType === 'normalPage') && <>{children}</>}
+            {(pageType === 'introPage' || pageType === 'errorPage' || pageType === 'normalPage') && (
+                <>
+                    {children}
+                    <InfoBadge badgeType={badgeType} isBadgeShow={isShowBadge} badgeMsg={badgeMsg}></InfoBadge>
+                </>
+            )}
         </div>
     );
 };

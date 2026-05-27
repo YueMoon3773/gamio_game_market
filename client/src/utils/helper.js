@@ -1,7 +1,7 @@
 import { format, subDays, startOfWeek, lastDayOfWeek, addDays, getYear, differenceInDays } from 'date-fns';
 
 const helperFunctions = () => {
-    const svgPlatformsSelection = (platform) => {
+    const platformListBasedOnDevices = (platform) => {
         const ret = [];
 
         if (platform === null) return null;
@@ -243,7 +243,7 @@ const helperFunctions = () => {
     };
 
     return {
-        svgPlatformsSelection,
+        platformListBasedOnDevices,
         getSpecificPlatformId,
         getLast30Days,
         getThisWeekDates,

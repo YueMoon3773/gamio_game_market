@@ -25,7 +25,7 @@ const routes = [
                 ),
             },
             {
-                path: '/games/:types',
+                path: '/games/:viewTypes',
                 element: <ViewGames />,
                 errorElement: (
                     <VideoBgChangeProvider>

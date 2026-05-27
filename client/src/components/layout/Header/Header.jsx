@@ -22,6 +22,7 @@ const headerSchema = z.object({
 });
 
 const Header = ({ pageType, isPageInBrightBg = false }) => {
+    const navigate = useNavigate();
     const { theme, toggleTheme, changeToDarkTheme } = useTheme();
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
     const lastScrollY = useRef(0);
@@ -78,6 +79,18 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
         setSearchInpVal(e.target.value);
     };
 
+    const clearSearchInpBtnOnClickHandler = () => {
+        setSearchInpVal('');
+    };
+
+    const searchBtnOnClickHandler = () => {
+        navigate(`/games/search?game-name=${searchInpVal}`);
+    };
+
+    const searchInpOnEnterHandler = () => {
+        navigate(`/games/search?game-name=${searchInpVal}`);
+    };
+
     return (
         <header
             className={`${basePageStyles.pageHeader} header ${pageType === 'normalPage' || pageType === 'viewGamesPage' ? 'normalPageHeader' : ''} ${isHeaderHidden ? 'hidden' : ''}`}
@@ -93,10 +106,12 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
             <SearchInp
                 isHeaderSearchInp={true}
                 isSearchInpInBrightBg={isPageInBrightBg}
-                searchInpPlaceHolder={'Search game, genre, ...'}
+                searchInpPlaceHolder={'Search game...'}
                 searchInpVal={searchInpVal}
                 searchInpOnChangeHandler={searchInpOnChangeHandle}
-                funcChangeSearchInpVal={setSearchInpVal}
+                searchInpOnEnterHandler={searchInpOnEnterHandler}
+                clearSearchInpBtnOnClick={clearSearchInpBtnOnClickHandler}
+                searchBtnOnClick={searchBtnOnClickHandler}
             ></SearchInp>
 
             <div className="headerControllerWrapper">

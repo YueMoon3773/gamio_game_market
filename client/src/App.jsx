@@ -82,7 +82,7 @@ const App = () => {
                 >
                     <h4>Quick navigation</h4>
                     <Link
-                        to={api.FILTER_LINKS.LAST_30_DAYS}
+                        to={api.FILTER_LINKS.LAST_30_DAYS.value}
                         className="introPageBtn introQuickNavigationBtn"
                         onClick={changeBgVideo}
                     >
@@ -91,7 +91,7 @@ const App = () => {
                     </Link>
 
                     <Link
-                        to={api.FILTER_LINKS.POPULAR_LAST_YEAR}
+                        to={api.FILTER_LINKS.POPULAR_LAST_YEAR.value}
                         className="introPageBtn introQuickNavigationBtn"
                         onClick={changeBgVideo}
                     >
@@ -100,7 +100,7 @@ const App = () => {
                     </Link>
 
                     <Link
-                        to={api.FILTER_LINKS.BEST_OF_THIS_YEAR}
+                        to={api.FILTER_LINKS.BEST_OF_THIS_YEAR.value}
                         className="introPageBtn introQuickNavigationBtn"
                         onClick={changeBgVideo}
                     >
@@ -109,7 +109,7 @@ const App = () => {
                     </Link>
 
                     <Link
-                        to={api.FILTER_LINKS.ALL_TIME_TOP}
+                        to={api.FILTER_LINKS.ALL_TIME_TOP.value}
                         className="introPageBtn introQuickNavigationBtn"
                         onClick={changeBgVideo}
                     >

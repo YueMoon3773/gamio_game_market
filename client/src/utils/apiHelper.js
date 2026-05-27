@@ -11,6 +11,7 @@ const apiHelper = () => {
         steam: 'https://store.steampowered.com',
         'playstation-store': 'https://store.playstation.com',
         'xbox-store': 'https://www.xbox.com',
+        xbox360: 'https://www.xbox.com',
         nintendo: 'https://www.nintendo.com',
         'epic-games': 'https://www.epicgames.com',
         gog: 'https://www.gog.com',
@@ -19,26 +20,29 @@ const apiHelper = () => {
     };
 
     const FILTER_LINKS = {
-        LAST_30_DAYS: '/games/last-30-days',
-        THIS_WEEK: '/games/this-week',
-        NEXT_WEEK: '/games/next-week',
-        BEST_OF_THIS_YEAR: '/games/best-of-year',
-        POPULAR_LAST_YEAR: '/games/popular-last-year',
-        ALL_TIME_TOP: '/games/all-time-top',
-        PC_PLATFORM: '/games/pc-platform',
-        PLAYSTATION_PLATFORM: '/games/playstation-platform',
-        XBOX_PLATFORM: '/games/xbox-platform',
-        ANDROID_PLATFORM: '/games/android-platform',
-        IOS_PLATFORM: '/games/ios-platform',
-        NINTENDO_PLATFORM: '/games/nintendo-platform',
-        ACTION_GENRE: '/games/action-genre',
-        STRATEGY_GENRE: '/games/strategy-genre',
-        RPG_GENRE: '/games/rpg-genre',
-        SHOOTER_GENRE: '/games/shooter-genre',
-        ADVENTURE_GENRE: '/games/adventure-genre',
-        PUZZLE_GENRE: '/games/puzzle-genre',
-        RACING_GENRE: '/games/racing-genre',
-        SPORT_GENRE: '/games/sports-genre',
+        LAST_30_DAYS: { displayName: 'Last 30 days', value: '/games/last-30-days' },
+        THIS_WEEK: { displayName: 'This week', value: '/games/this-week' },
+        NEXT_WEEK: { displayName: 'Next week', value: '/games/next-week' },
+        BEST_OF_THIS_YEAR: { displayName: 'Best of this year', value: '/games/best-of-year' },
+        POPULAR_LAST_YEAR: {
+            displayName: `Popular in ${helper.getThisYearAndLastYear().lastYear}`,
+            value: '/games/popular-last-year',
+        },
+        ALL_TIME_TOP: { displayName: 'All time top', value: '/games/all-time-top' },
+        PC_PLATFORM: { displayName: 'PC', value: '/games/pc-platform' },
+        PLAYSTATION_PLATFORM: { displayName: 'PlayStation', value: '/games/playstation-platform' },
+        XBOX_PLATFORM: { displayName: 'Xbox', value: '/games/xbox-platform' },
+        ANDROID_PLATFORM: { displayName: 'Android', value: '/games/android-platform' },
+        IOS_PLATFORM: { displayName: 'iOS', value: '/games/ios-platform' },
+        NINTENDO_PLATFORM: { displayName: 'Nintendo', value: '/games/nintendo-platform' },
+        ACTION_GENRE: { displayName: 'Action', value: '/games/action-genre' },
+        STRATEGY_GENRE: { displayName: 'Strategy', value: '/games/strategy-genre' },
+        RPG_GENRE: { displayName: 'RPG', value: '/games/rpg-genre' },
+        SHOOTER_GENRE: { displayName: 'Shooter', value: '/games/shooter-genre' },
+        ADVENTURE_GENRE: { displayName: 'Adventure', value: '/games/adventure-genre' },
+        PUZZLE_GENRE: { displayName: 'Puzzle', value: '/games/puzzle-genre' },
+        RACING_GENRE: { displayName: 'Racing', value: '/games/racing-genre' },
+        SPORT_GENRE: { displayName: 'Sports', value: '/games/sports-genre' },
     };
 
     const createGenreLinkBasedOnGenreType = (genreType) => {
@@ -64,6 +68,10 @@ const apiHelper = () => {
                 return 'released';
             case 'newToOld':
                 return '-released';
+            case 'nameIncrease':
+                return 'name';
+            case 'nameDecrease':
+                return '-name';
             default:
                 return '';
         }
@@ -105,14 +113,14 @@ const apiHelper = () => {
             });
         } else {
             switch (pageTargetUrl) {
-                case FILTER_LINKS.LAST_30_DAYS:
+                case FILTER_LINKS.LAST_30_DAYS.value:
                     calculatedApi = getGameListUrl({
                         dates: helper.getLast30Days().getLast30Days + ',' + helper.getLast30Days().currentDate,
                         page_size: resultsPerPage,
                         ordering,
                     });
                     break;
-                case FILTER_LINKS.THIS_WEEK:
+                case FILTER_LINKS.THIS_WEEK.value:
                     calculatedApi = getGameListUrl({
                         dates:
                             helper.getThisWeekDates().startDateOfThisWeek +
@@ -122,7 +130,7 @@ const apiHelper = () => {
                         ordering,
                     });
                     break;
-                case FILTER_LINKS.NEXT_WEEK:
+                case FILTER_LINKS.NEXT_WEEK.value:
                     ordering = 'released';
                     calculatedApi = getGameListUrl({
                         dates:
@@ -133,7 +141,7 @@ const apiHelper = () => {
                         ordering,
                     });
                     break;
-                case FILTER_LINKS.BEST_OF_THIS_YEAR:
+                case FILTER_LINKS.BEST_OF_THIS_YEAR.value:
                     ordering = '-rating';
                     calculatedApi = getGameListUrl({
                         dates:
@@ -144,7 +152,7 @@ const apiHelper = () => {
                         ordering,
                     });
                     break;
-                case FILTER_LINKS.POPULAR_LAST_YEAR:
+                case FILTER_LINKS.POPULAR_LAST_YEAR.value:
                     ordering = '-added';
                     calculatedApi = getGameListUrl({
                         dates:
@@ -155,10 +163,10 @@ const apiHelper = () => {
                         ordering,
                     });
                     break;
-                case FILTER_LINKS.ALL_TIME_TOP:
+                case FILTER_LINKS.ALL_TIME_TOP.value:
                     ordering = '-added';
                     calculatedApi = getGameListUrl({
-                        page_size: 30,
+                        page_size: 60,
                         ordering,
                     });
                     break;
@@ -178,6 +186,11 @@ const apiHelper = () => {
         return `${baseGameApiUrl}/games/${gameId}/screenshots?key=${gameApiUrlKey}`;
     };
 
+    const searchApiBasedOnGameName = (gameName) => {
+        const gameNameEncoded = encodeURIComponent(gameName);
+        return `${baseGameApiUrl}/games?search=${gameNameEncoded}&key=${gameApiUrlKey}`;
+    };
+
     return {
         STORE_DOMAINS,
         FILTER_LINKS,
@@ -191,6 +204,7 @@ const apiHelper = () => {
         getParentPlatformApi,
         getGameDetailsUrl,
         getGameMediaListUrl,
+        searchApiBasedOnGameName,
     };
 };
 

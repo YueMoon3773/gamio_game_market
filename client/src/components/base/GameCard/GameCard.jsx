@@ -95,7 +95,7 @@ const GameCard = ({
     const [imgHoverIndex, setImgHoverIndex] = useState(0);
     const [isGameFav, setIsGameFav] = useState(false);
 
-    const platformIcons = !gameCardPlatforms ? null : helper.svgPlatformsSelection(gameCardPlatforms);
+    const platformIcons = !gameCardPlatforms ? null : helper.platformListBasedOnDevices(gameCardPlatforms);
     const releaseDate = !gameCardReleaseDate ? null : format(gameCardReleaseDate, 'MMM d, yyyy');
     // const gameCurrentPrice = `$${helper.calculateGamePrice(gameCardReleaseDate)}`;
     const gameOldPrice = !gameCardReleaseDate ? null : 60;
@@ -121,7 +121,7 @@ const GameCard = ({
                 else {
                     gameCardHoverTimer.current = setTimeout(() => {
                         setIsCardHover(true);
-                    }, 360);
+                    }, 560);
                 }
             }}
             onMouseLeave={() => {

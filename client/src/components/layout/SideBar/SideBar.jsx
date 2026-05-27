@@ -47,7 +47,7 @@ const SideBar = () => {
         <aside className="sideBar">
             {/* <section className="sideBarSection">
                 <h1 className="sideBarSectionHeading">Your games</h1>
-                <NavLink to={api.FILTER_LINKS.POPULAR_LAST_YEAR} className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}>
+                <NavLink to={api.FILTER_LINKS.POPULAR_LAST_YEAR.value} className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}>
                     <div className="sideBarIconWrapper">
                         <YourFavGamesIcon iconClassName={'sideBarIcon'}></YourFavGamesIcon>
                     </div>
@@ -61,31 +61,31 @@ const SideBar = () => {
 
                 <div className="sideBarSectionContent">
                     <NavLink
-                        to={api.FILTER_LINKS.LAST_30_DAYS}
+                        to={api.FILTER_LINKS.LAST_30_DAYS.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <Last30DaysIcon iconClassName={'sideBarIcon'}></Last30DaysIcon>
                         </div>
-                        <span>Last 30 days</span>
+                        <span>{api.FILTER_LINKS.LAST_30_DAYS.displayName}</span>
                     </NavLink>
                     <NavLink
-                        to={api.FILTER_LINKS.THIS_WEEK}
+                        to={api.FILTER_LINKS.THIS_WEEK.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <ThisWeekIcon iconClassName={'sideBarIcon'}></ThisWeekIcon>
                         </div>
-                        <span>This week</span>
+                        <span>{api.FILTER_LINKS.THIS_WEEK.displayName}</span>
                     </NavLink>
                     <NavLink
-                        to={api.FILTER_LINKS.NEXT_WEEK}
+                        to={api.FILTER_LINKS.NEXT_WEEK.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <NextWeekIcon iconClassName={'sideBarIcon'}></NextWeekIcon>
                         </div>
-                        <span>Next week</span>
+                        <span>{api.FILTER_LINKS.NEXT_WEEK.displayName}</span>
                     </NavLink>
                 </div>
             </section>
@@ -96,31 +96,31 @@ const SideBar = () => {
 
                 <div className="sideBarSectionContent">
                     <NavLink
-                        to={api.FILTER_LINKS.BEST_OF_THIS_YEAR}
+                        to={api.FILTER_LINKS.BEST_OF_THIS_YEAR.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <BestOfYearIcon iconClassName={'sideBarIcon'}></BestOfYearIcon>
                         </div>
-                        <span>Best of this year</span>
+                        <span>{api.FILTER_LINKS.BEST_OF_THIS_YEAR.displayName}</span>
                     </NavLink>
                     <NavLink
-                        to={api.FILTER_LINKS.POPULAR_LAST_YEAR}
+                        to={api.FILTER_LINKS.POPULAR_LAST_YEAR.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <PopularInYearIcon iconClassName={'sideBarIcon'}></PopularInYearIcon>
                         </div>
-                        <span>{`Popular in ${helper.getThisYearAndLastYear().lastYear}`}</span>
+                        <span>{api.FILTER_LINKS.POPULAR_LAST_YEAR.displayName}</span>
                     </NavLink>
                     <NavLink
-                        to={api.FILTER_LINKS.ALL_TIME_TOP}
+                        to={api.FILTER_LINKS.ALL_TIME_TOP.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <AllTimeTopIcon iconClassName={'sideBarIcon'}></AllTimeTopIcon>
                         </div>
-                        <span>All time top 250</span>
+                        <span>{api.FILTER_LINKS.ALL_TIME_TOP.displayName}</span>
                     </NavLink>
                 </div>
             </section>
@@ -131,61 +131,61 @@ const SideBar = () => {
 
                 <div className="sideBarSectionContent">
                     <NavLink
-                        to={api.FILTER_LINKS.PC_PLATFORM}
+                        to={api.FILTER_LINKS.PC_PLATFORM.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <PcIcon iconClassName={'sideBarIcon'}></PcIcon>
                         </div>
-                        <span>PC</span>
+                        <span>{api.FILTER_LINKS.PC_PLATFORM.displayName}</span>
                     </NavLink>
                     <NavLink
-                        to={api.FILTER_LINKS.PLAYSTATION_PLATFORM}
+                        to={api.FILTER_LINKS.PLAYSTATION_PLATFORM.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <PlayStationIcon iconClassName={'sideBarIcon'}></PlayStationIcon>
                         </div>
-                        <span>PlayStation</span>
+                        <span>{api.FILTER_LINKS.PLAYSTATION_PLATFORM.displayName}</span>
                     </NavLink>
                     <NavLink
-                        to={api.FILTER_LINKS.XBOX_PLATFORM}
+                        to={api.FILTER_LINKS.XBOX_PLATFORM.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <XBoxIcon iconClassName={'sideBarIcon'}></XBoxIcon>
                         </div>
-                        <span>Xbox</span>
+                        <span>{api.FILTER_LINKS.XBOX_PLATFORM.displayName}</span>
                     </NavLink>
 
                     {sideBarPlatformsShowAll && (
                         <>
                             <NavLink
-                                to={api.FILTER_LINKS.ANDROID_PLATFORM}
+                                to={api.FILTER_LINKS.ANDROID_PLATFORM.value}
                                 className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                             >
                                 <div className="sideBarIconWrapper">
                                     <AndroidIcon iconClassName={'sideBarIcon'}></AndroidIcon>
                                 </div>
-                                <span>Android</span>
+                                <span>{api.FILTER_LINKS.ANDROID_PLATFORM.displayName}</span>
                             </NavLink>
                             <NavLink
-                                to={api.FILTER_LINKS.IOS_PLATFORM}
+                                to={api.FILTER_LINKS.IOS_PLATFORM.value}
                                 className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                             >
                                 <div className="sideBarIconWrapper">
                                     <IosIcon iconClassName={'sideBarIcon'}></IosIcon>
                                 </div>
-                                <span>iOS</span>
+                                <span>{api.FILTER_LINKS.IOS_PLATFORM.displayName}</span>
                             </NavLink>
                             <NavLink
-                                to={api.FILTER_LINKS.NINTENDO_PLATFORM}
+                                to={api.FILTER_LINKS.NINTENDO_PLATFORM.value}
                                 className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                             >
                                 <div className="sideBarIconWrapper">
                                     <NintendoIcon iconClassName={'sideBarIcon'}></NintendoIcon>
                                 </div>
-                                <span>Nintendo</span>
+                                <span>{api.FILTER_LINKS.NINTENDO_PLATFORM.displayName}</span>
                             </NavLink>
                         </>
                     )}
@@ -213,80 +213,80 @@ const SideBar = () => {
 
                 <div className="sideBarSectionContent">
                     <NavLink
-                        to={api.FILTER_LINKS.ACTION_GENRE}
+                        to={api.FILTER_LINKS.ACTION_GENRE.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             {/* <ActionIcon iconClassName={'sideBarIcon'}></ActionIcon> */}
                             <ActionIcon iconClassName={'sideBarFilledIcon'}></ActionIcon>
                         </div>
-                        <span>Action</span>
+                        <span>{api.FILTER_LINKS.ACTION_GENRE.displayName}</span>
                     </NavLink>
                     <NavLink
-                        to={api.FILTER_LINKS.STRATEGY_GENRE}
+                        to={api.FILTER_LINKS.STRATEGY_GENRE.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <StrategyIcon iconClassName={'sideBarIcon'}></StrategyIcon>
                         </div>
-                        <span>Strategy</span>
+                        <span>{api.FILTER_LINKS.STRATEGY_GENRE.displayName}</span>
                     </NavLink>
                     <NavLink
-                        to={api.FILTER_LINKS.RPG_GENRE}
+                        to={api.FILTER_LINKS.RPG_GENRE.value}
                         className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                     >
                         <div className="sideBarIconWrapper">
                             <RpgIcon iconClassName={'sideBarIcon'}></RpgIcon>
                         </div>
-                        <span>RPG</span>
+                        <span>{api.FILTER_LINKS.RPG_GENRE.displayName}</span>
                     </NavLink>
 
                     {sideBarGenresShowAll && (
                         <>
                             <NavLink
-                                to={api.FILTER_LINKS.SHOOTER_GENRE}
+                                to={api.FILTER_LINKS.SHOOTER_GENRE.value}
                                 className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                             >
                                 <div className="sideBarIconWrapper">
                                     <ShooterIcon iconClassName={'sideBarIcon'}></ShooterIcon>
                                 </div>
-                                <span>Shooter</span>
+                                <span>{api.FILTER_LINKS.SHOOTER_GENRE.displayName}</span>
                             </NavLink>
                             <NavLink
-                                to={api.FILTER_LINKS.ADVENTURE_GENRE}
+                                to={api.FILTER_LINKS.ADVENTURE_GENRE.value}
                                 className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                             >
                                 <div className="sideBarIconWrapper">
                                     <AdventureIcon iconClassName={'sideBarIcon'}></AdventureIcon>
                                 </div>
-                                <span>Adventure</span>
+                                <span>{api.FILTER_LINKS.ADVENTURE_GENRE.displayName}</span>
                             </NavLink>
                             <NavLink
-                                to={api.FILTER_LINKS.PUZZLE_GENRE}
+                                to={api.FILTER_LINKS.PUZZLE_GENRE.value}
                                 className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                             >
                                 <div className="sideBarIconWrapper">
                                     <PuzzleIcon iconClassName={'sideBarIcon'}></PuzzleIcon>
                                 </div>
-                                <span>Puzzle</span>
+                                <span>{api.FILTER_LINKS.PUZZLE_GENRE.displayName}</span>
                             </NavLink>
                             <NavLink
-                                to={api.FILTER_LINKS.RACING_GENRE}
+                                to={api.FILTER_LINKS.RACING_GENRE.value}
                                 className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                             >
                                 <div className="sideBarIconWrapper">
                                     <RacingIcon iconClassName={'sideBarIcon'}></RacingIcon>
                                 </div>
-                                <span>Racing</span>
+                                <span>{api.FILTER_LINKS.RACING_GENRE.displayName}</span>
                             </NavLink>
                             <NavLink
-                                to={api.FILTER_LINKS.SPORT_GENRE}
+                                to={api.FILTER_LINKS.SPORT_GENRE.value}
                                 className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}
                             >
                                 <div className="sideBarIconWrapper">
                                     <SportIcon iconClassName={'sideBarIcon'}></SportIcon>
                                 </div>
-                                <span>Sports</span>
+                                <span>{api.FILTER_LINKS.SPORT_GENRE.displayName}</span>
                             </NavLink>
                         </>
                     )}

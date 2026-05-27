@@ -1,4 +1,5 @@
 .mainBtn {
     font-size: $fs_normal_md;
     padding: 0.2em 0.6em;
+    @include flexCenter;
 }

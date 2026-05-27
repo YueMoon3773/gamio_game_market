@@ -108,3 +108,18 @@
         transform: scale(1);
     }
 }
+
+@keyframes badgeFallDown {
+    0% {
+        top: -160px;
+    }
+    16% {
+        top: max(3rem, 30px);
+    }
+    86% {
+        top: max(3rem, 30px);
+    }
+    100% {
+        top: -160px;
+    }
+}

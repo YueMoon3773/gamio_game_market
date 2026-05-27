@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation, useNavigate, Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Masonry from 'react-masonry-css';
 
@@ -8,9 +8,15 @@ import { useGameHelper } from '../../../hooks/useGamesHelper';
 import helperFunctions from '../../../utils/helper';
 import apiHelper from '../../../utils/apiHelper';
 
+import { ArrowLeftIcon, ArrowRightIcon } from '../../../assets/svgIcons';
 import PageLayout from '../../layout/PageLayout/PageLayout';
 import SelectionController from '../../base/SelectionController/SelectionController';
 import GameCard from '../../base/GameCard/GameCard';
+import MainBtn from '../../base/MainBtn/MainBtn';
+
+// import gamesData from '../../../../data.json';
+// const gamesLoading = false;
+// const gamesError = null;
 
 import './ViewGames.scss';
 
@@ -24,8 +30,12 @@ const breakpointColumnsObj = {
 };
 
 const ViewGames = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const currentPageUrl = location.pathname;
+    const { viewTypes } = useParams();
+    const [searchParams] = useSearchParams();
+    const gameNameSearchParam = searchParams.get('game-name');
 
     const {
         orderByOptsList,
@@ -42,21 +52,39 @@ const ViewGames = () => {
     // scroll to the top of page after navigation
     useEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    }, []);
+    });
 
+    // set up api url to get games data
     useEffect(() => {
-        const calculatedApi = api.getApiBasedOnPageUrl(currentPageUrl, platformIds, orderByValue, gamesPerPageValue);
+        let calculatedApi;
+        if (viewTypes !== 'search') {
+            calculatedApi = api.getApiBasedOnPageUrl(currentPageUrl, platformIds, orderByValue, gamesPerPageValue);
+        } else {
+            if (gameNameSearchParam !== null) calculatedApi = api.searchApiBasedOnGameName(gameNameSearchParam);
+            else navigate('/error');
+        }
         // console.log({ calculatedApi });
         setApiUrl(calculatedApi);
-    }, [currentPageUrl, platformIds, orderByValue, gamesPerPageValue]);
+    }, [currentPageUrl, platformIds, orderByValue, gamesPerPageValue, gameNameSearchParam]);
 
     const { data: gamesData, error: gamesError, loading: gamesLoading } = useFetchGetData(apiUrl);
 
     // LOGGING
     // console.log({ currentPageUrl });
+    // console.log({ viewTypes });
     // console.log('api: ', apiUrl);
     // console.log({ platformIds });
-    // console.log({ gamesData });
+    // console.log({ gamesData, gamesError, gamesLoading });
+
+    const previousPageBtnHandler = () => {
+        setApiUrl(gamesData.previous);
+        window.scrollTo({ top: 0, left: 0 });
+    };
+
+    const nextPageBtnHandler = () => {
+        setApiUrl(gamesData.next);
+        window.scrollTo({ top: 0, left: 0 });
+    };
 
     if (gamesData === null && gamesError !== null && gamesLoading !== false) {
         return <Navigate to="/error"></Navigate>;
@@ -69,12 +97,12 @@ const ViewGames = () => {
                 transition={{ duration: 0.66, ease: 'easeInOut' }}
             >
                 <PageLayout pageType="viewGamesPage">
-                    {currentPageUrl !== api.FILTER_LINKS.ALL_TIME_TOP && (
+                    {currentPageUrl !== api.FILTER_LINKS.ALL_TIME_TOP.value && (
                         <section className="filterControllerSection">
-                            {currentPageUrl !== api.FILTER_LINKS.NEXT_WEEK &&
-                                currentPageUrl !== api.FILTER_LINKS.BEST_OF_THIS_YEAR &&
-                                currentPageUrl !== api.FILTER_LINKS.POPULAR_LAST_YEAR &&
-                                currentPageUrl !== api.FILTER_LINKS.ALL_TIME_TOP && (
+                            {currentPageUrl !== api.FILTER_LINKS.NEXT_WEEK.value &&
+                                currentPageUrl !== api.FILTER_LINKS.BEST_OF_THIS_YEAR.value &&
+                                currentPageUrl !== api.FILTER_LINKS.POPULAR_LAST_YEAR.value &&
+                                currentPageUrl !== api.FILTER_LINKS.ALL_TIME_TOP.value && (
                                     <SelectionController
                                         labelText="Order by:"
                                         selectId="orderBy"
@@ -136,7 +164,31 @@ const ViewGames = () => {
                             </Masonry>
                         )}
                     </section>
-                    <section className="paginationControllerSection"></section>
+
+                    {currentPageUrl !== api.FILTER_LINKS.ALL_TIME_TOP.value &&
+                        gamesData !== null &&
+                        gamesLoading === false && (
+                            <section className="paginationControllerSection">
+                                {gamesData?.previous !== null && (
+                                    <MainBtn
+                                        btnClassName="paginationBtn prevBtn"
+                                        btnOnClickHandler={previousPageBtnHandler}
+                                    >
+                                        <ArrowLeftIcon></ArrowLeftIcon>
+                                        Previous
+                                    </MainBtn>
+                                )}
+                                {gamesData?.next !== null && (
+                                    <MainBtn
+                                        btnClassName="paginationBtn nextBtn"
+                                        btnOnClickHandler={nextPageBtnHandler}
+                                    >
+                                        Next
+                                        <ArrowRightIcon></ArrowRightIcon>
+                                    </MainBtn>
+                                )}
+                            </section>
+                        )}
                 </PageLayout>
             </motion.div>
         );

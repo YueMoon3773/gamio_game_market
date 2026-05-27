@@ -14,7 +14,9 @@ const searchInpSchema = z
         searchInpPlaceHolder: z.string(),
         searchInpVal: z.string(),
         searchInpOnChangeHandler: z.function(),
-        funcChangeSearchInpVal: z.function(),
+        searchInpOnEnterHandler: z.function(),
+        clearSearchInpBtnOnClick: z.function(),
+        searchBtnOnClick: z.function(),
     })
     .refine(
         (data) => {
@@ -35,7 +37,9 @@ const SearchInp = ({
     searchInpPlaceHolder,
     searchInpVal,
     searchInpOnChangeHandler,
-    funcChangeSearchInpVal,
+    searchInpOnEnterHandler,
+    clearSearchInpBtnOnClick,
+    searchBtnOnClick,
 }) => {
     const [isSearchInpInteracted, setIsSearchInpInteracted] = useState(false);
     const [isDeleteInpValBtnHover, setIsDeleteInpValBtnHover] = useState(false);
@@ -50,6 +54,9 @@ const SearchInp = ({
                 placeholder={searchInpPlaceHolder}
                 value={searchInpVal}
                 onFocus={() => setIsSearchInpInteracted(true)}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter') searchInpOnEnterHandler();
+                }}
                 onChange={(e) => {
                     searchInpOnChangeHandler(e);
                 }}
@@ -61,7 +68,7 @@ const SearchInp = ({
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    funcChangeSearchInpVal('');
+                    clearSearchInpBtnOnClick();
                 }}
             >
                 {isDeleteInpValBtnHover ? <CrossFullIcon></CrossFullIcon> : <CrossEmptyIcon></CrossEmptyIcon>}
@@ -71,6 +78,7 @@ const SearchInp = ({
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
+                    searchBtnOnClick();
                 }}
             >
                 <SearchIcon></SearchIcon>

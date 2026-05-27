@@ -27,6 +27,14 @@ import FavGameBtn from '../../base/FavGameBtn/FavGameBtn';
 import pageBaseStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './GameDetails.scss';
 
+// import gameDetailsData from '../../../../details.json';
+// const gameDetailsError = null;
+// const gameDetailsLoading = false;
+
+// import gameDetailsImgData from '../../../../details_img.json';
+// const gameDetailsImgError = null;
+// const gameDetailsImgLoading = false;
+
 const gameDetailsSchema = z.object({});
 
 const helper = helperFunctions();

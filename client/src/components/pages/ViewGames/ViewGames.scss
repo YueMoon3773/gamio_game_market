@@ -20,3 +20,43 @@
     gap: clamp(20px, 2.4rem, 24px);
     margin-bottom: 3.6rem;
 }
+
+.paginationControllerSection {
+    margin: 60px auto 0;
+    max-width: 30%;
+    @include flexCenter;
+    flex-wrap: wrap;
+    gap: clamp(30px, 3.2rem, 36px);
+
+    & > * {
+        flex: 1;
+    }
+
+    .paginationBtn {
+        max-width: 160px;
+        font-size: $fs_normal_md;
+        padding: 0.6em;
+        color: var(--text_color);
+        background-color: transparent;
+        border: $thin_border_light_gray;
+        border-radius: $distance_ssm;
+        gap: clamp(8px, 0.8rem, 10px);
+        transition: $transition_effect_md;
+
+        svg {
+            height: $fs_normal_lg;
+            transition: $transition_effect_md;
+        }
+
+        &:hover {
+            font-weight: 900;
+            color: $primary_light_color;
+            border-color: $primary_light_color;
+            transform: translateY(-2px) scale(0.96);
+
+            svg {
+                color: $primary_light_color;
+            }
+        }
+    }
+}

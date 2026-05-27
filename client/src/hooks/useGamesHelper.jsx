@@ -11,8 +11,8 @@ export const GameHelperProvider = ({ children }) => {
     const orderByOptsList = [
         { id: 1, content: 'Oldest to Newest', value: 'oldToNew' },
         { id: 2, content: 'Newest to Oldest', value: 'newToOld' },
-        { id: 3, content: 'Most comments', value: 'mostCmt' },
-        { id: 4, content: 'Fewest comments', value: 'leastCmt' },
+        { id: 3, content: 'Name (A-Z)', value: 'nameIncrease' },
+        { id: 4, content: 'Name (Z-A)', value: 'nameDecrease' },
     ];
     const gamesPerPageOptsList = [
         { id: 1, content: 20, value: 20 },
