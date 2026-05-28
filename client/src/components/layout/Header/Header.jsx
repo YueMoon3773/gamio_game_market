@@ -4,7 +4,10 @@ import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
 import { useTheme } from '../../../hooks/useTheme';
+import { useFetchGetData } from '../../../hooks/useFetchData';
 import ValidatedComponent from '../../../utils/validateComponentProps';
+
+import apiHelper from '../../../utils/apiHelper';
 
 import { CartIcon, SunIcon, MoonIcon } from '../../../assets/svgIcons';
 import LogoImg from '../../../assets/img/LogoImg.png';
@@ -13,8 +16,12 @@ import SearchInp from '../../base/SearchInp/SearchInp';
 import basePageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './Header.scss';
 
+// import searchSuggestListData from '../../../../search.json';
+// const searchSuggestionListLoading = false;
+
 const HEADER_SHOW_THRESHOLD = 360;
 const HEADER_HIDE_THRESHOLD = 160;
+const api = apiHelper();
 
 const headerSchema = z.object({
     pageType: z.string(),
@@ -26,8 +33,20 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
     const { theme, toggleTheme, changeToDarkTheme } = useTheme();
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
     const lastScrollY = useRef(0);
+    const searchTimerRef = useRef(null);
 
     const [searchInpVal, setSearchInpVal] = useState('');
+    const [searchSuggestionUrl, setSearchSuggestionUrl] = useState('');
+    const [showSearchSuggestion, setShowSearchSuggestion] = useState(false);
+    const [searchSuggestionList, setSearchSuggestionList] = useState(null);
+
+    const {
+        data: searchSuggestionListData,
+        error: searchSuggestionListError,
+        loading: searchSuggestionListLoading,
+        refetch,
+        newFetchUrl,
+    } = useFetchGetData(searchSuggestionUrl);
 
     // Set up hide/unhide header
     useEffect(() => {
@@ -75,19 +94,45 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
         }
     }, [pageType]);
 
+    // Set up suggestion list after fetch
+    useEffect(() => {
+        // setShowSearchSuggestion(true);
+        if (searchSuggestionListData !== null) {
+            setShowSearchSuggestion(true);
+            setSearchSuggestionList(searchSuggestionListData.results);
+        }
+
+        return () => setShowSearchSuggestion(false);
+    }, [searchSuggestionListData]);
+
     const searchInpOnChangeHandle = (e) => {
-        setSearchInpVal(e.target.value);
+        const inpVal = e.target.value;
+        console.log({ inpVal });
+
+        setSearchInpVal(inpVal);
+        // setShowSearchSuggestion(false);
+        clearTimeout(searchTimerRef.current);
+
+        if (inpVal !== '') {
+            setShowSearchSuggestion(true);
+            searchTimerRef.current = setTimeout(() => {
+                setSearchSuggestionUrl(api.searchSuggestionApiBasedOnGameName(inpVal.trim()));
+            }, 500);
+        } else if (inpVal === '') setShowSearchSuggestion(false);
     };
 
     const clearSearchInpBtnOnClickHandler = () => {
+        setShowSearchSuggestion(false);
         setSearchInpVal('');
     };
 
     const searchBtnOnClickHandler = () => {
+        setShowSearchSuggestion(false);
         navigate(`/games/search?game-name=${searchInpVal}`);
     };
 
     const searchInpOnEnterHandler = () => {
+        setShowSearchSuggestion(false);
         navigate(`/games/search?game-name=${searchInpVal}`);
     };
 
@@ -112,6 +157,9 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
                 searchInpOnEnterHandler={searchInpOnEnterHandler}
                 clearSearchInpBtnOnClick={clearSearchInpBtnOnClickHandler}
                 searchBtnOnClick={searchBtnOnClickHandler}
+                showSearchSuggestion={showSearchSuggestion}
+                searchSuggestionList={searchSuggestionList}
+                searchSuggestionLoading={searchSuggestionListLoading}
             ></SearchInp>
 
             <div className="headerControllerWrapper">

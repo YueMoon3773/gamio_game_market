@@ -1,11 +1,98 @@
 $searchInpWidthToWrapper: 82%;
 $searchClearInpValWidthToWrapper: 6%;
+$searchInpBorderRadius: 12px;
+
+// SEARCH INP HEADER IN DARK BG VARIABLES
+$headerSearchInpBgColorInactiveInDarkBg: rgba(
+    $color: $light_gray_color,
+    $alpha: 0.16,
+);
+$headerSearchInpBorderColorInactiveInDarkBg: rgba(
+    $color: $snow_white_color,
+    $alpha: 0.56,
+);
+$headerSearchInpBgColorActiveInDarkBg: rgba(
+    $color: $light_gray_color,
+    $alpha: 0.36,
+);
+$headerSearchInpBorderColorActiveInDarkBg: rgba(
+    $color: $snow_white_color,
+    $alpha: 0.96,
+);
+$searchInpPlaceholderColorInDarkBg: rgba(
+    $color: $gray_color,
+    $alpha: 0.96,
+);
+$searchBtnSvgIconColorInDarkBg: rgba(
+    $color: $snow_white_color,
+    $alpha: 0.66,
+);
+$searchBtnDividerLineColorInDarkBg: rgba(
+    $color: $snow_white_color,
+    $alpha: 0.76,
+);
+$searchBtnBgColorHoverInDarkBg: rgba(
+    $color: $snow_white_color,
+    $alpha: 0.6,
+);
+
+// SEARCH INP HEADER IN BRIGHT BG VARIABLES
+$headerSearchInpBgColorInactiveInBrightBg: rgba(
+    $color: $gray_color,
+    $alpha: 0.26,
+);
+$headerSearchInpBorderColorInactiveInBrightBg: rgba(
+    $color: $dark_gray_color,
+    $alpha: 0.36,
+);
+$headerSearchInpBgColorActiveInBrightBg: rgba(
+    $color: $gray_color,
+    $alpha: 0.46,
+);
+$headerSearchInpBorderColorActiveInBrightBg: rgba(
+    $color: $dark_gray_color,
+    $alpha: 0.76,
+);
+$searchInpPlaceholderColorInBrightBg: rgba(
+    $color: $dark_gray_color,
+    $alpha: 0.96,
+);
+$searchBtnSvgIconColorInBrightBg: rgba(
+    $color: $black_text,
+    $alpha: 0.56,
+);
+$searchBtnDividerLineColorInBrightBg: rgba(
+    $color: $dark_gray_color,
+    $alpha: 0.36,
+);
+$searchBtnBgColorHoverInBrightBg: rgba(
+    $color: $snow_white_color,
+    $alpha: 0.36,
+);
+
+.searchWrapper {
+    &.headerSearchInp {
+        width: $header_inp_width_normal_laptop;
+        position: relative;
+
+        &.interacted {
+            animation: headerInpShrink 360ms cubic-bezier(0.43, 0.07, 0.35, 1.01);
+        }
+
+        &:has(.searchInp:active),
+        &:has(.searchInp:focus),
+        &:has(.searchInp:not(:placeholder-shown)) {
+            animation: headerInpExpand 360ms cubic-bezier(0.43, 0.07, 0.35, 1.01);
+            width: $header_inp_width_expanded_laptop;
+        }
+    }
+}
 
 .searchInpWrapper {
     @include flexCenter;
     overflow: hidden;
     border: 2px solid var(--out_focus_gray);
-    border-radius: 12px;
+    border-radius: $searchInpBorderRadius;
     transition: $transition_effect_md;
 
     &:has(.searchInp:active),
@@ -14,63 +101,40 @@ $searchClearInpValWidthToWrapper: 6%;
         button.searchBtn::before {
             height: 80%;
         }
-
-        // border-color: var(--in_focus_gray);
     }
 
     &.headerSearchInp {
-        justify-self: center;
-        width: $header_inp_width_normal_laptop;
-        background-color: rgba($color: $light_gray_color, $alpha: 0.16);
-        border-color: rgba($color: $snow_white_color, $alpha: 0.56);
+        width: 100%;
+        background-color: $headerSearchInpBgColorInactiveInDarkBg;
+        border-color: $headerSearchInpBorderColorInactiveInDarkBg;
         backdrop-filter: $intro_element_blur_bg_effect;
-
-        &.interacted {
-            animation: headerInpShrink 360ms cubic-bezier(0.43, 0.07, 0.35, 1.01);
-        }
-
-        // &.searchInpInBrightBg {
-        //     background-color: rgba($color: $dark_gray_color, $alpha: 0.36);
-        //     border-color: rgba($color: $gray_color, $alpha: 0.56);
-        // }
 
         &:has(.searchInp:active),
         &:has(.searchInp:focus),
         &:has(.searchInp:not(:placeholder-shown)) {
-            animation: headerInpExpand 360ms cubic-bezier(0.43, 0.07, 0.35, 1.01);
-            width: $header_inp_width_expanded_laptop;
-            background-color: rgba($color: $light_gray_color, $alpha: 0.36);
-            border-color: rgba($color: $snow_white_color, $alpha: 0.96);
-
-            // &.searchInpInBrightBg {
-            //     background-color: rgba($color: $dark_gray_color, $alpha: 0.66);
-            //     border-color: rgba($color: $gray_color, $alpha: 0.76);
-            // }
+            background-color: $headerSearchInpBgColorActiveInDarkBg;
+            border-color: $headerSearchInpBorderColorActiveInDarkBg;
         }
 
         &:has(.searchInp:active),
         &:has(.searchInp:focus) {
             .searchInp::placeholder {
-                color: rgba($color: $gray_color, $alpha: 0.96);
+                color: $searchInpPlaceholderColorInDarkBg;
             }
-
-            // .searchInp.searchInpInBrightBg::placeholder {
-            //     color: rgba($color: $light_gray_color, $alpha: 0.96) ;
-            // }
         }
 
         button {
             svg {
-                color: rgba($color: $snow_white_color, $alpha: 0.66);
+                color: $searchBtnSvgIconColorInDarkBg;
             }
 
             &.searchBtn {
                 &::before {
-                    border-color: rgba($color: $snow_white_color, $alpha: 0.76);
+                    border-color: $searchBtnDividerLineColorInDarkBg;
                 }
 
                 &:hover {
-                    background-color: rgba($color: $snow_white_color, $alpha: 0.6);
+                    background-color: $searchBtnBgColorHoverInDarkBg;
 
                     svg {
                         color: $black_text;
@@ -85,35 +149,35 @@ $searchClearInpValWidthToWrapper: 6%;
     }
 
     &.searchInpInBrightBg {
-        background-color: rgba($color: $gray_color, $alpha: 0.26);
-        border-color: rgba($color: $dark_gray_color, $alpha: 0.36);
+        background-color: $headerSearchInpBgColorInactiveInBrightBg;
+        border-color: $headerSearchInpBorderColorInactiveInBrightBg;
 
         &:has(.searchInp:active),
         &:has(.searchInp:focus),
         &:has(.searchInp:not(:placeholder-shown)) {
-            background-color: rgba($color: $gray_color, $alpha: 0.46);
-            border-color: rgba($color: $dark_gray_color, $alpha: 0.76);
+            background-color: $headerSearchInpBgColorActiveInBrightBg;
+            border-color: $headerSearchInpBorderColorActiveInBrightBg;
         }
 
         &:has(.searchInp:active),
         &:has(.searchInp:focus) {
             .searchInp::placeholder {
-                color: rgba($color: $dark_gray_color, $alpha: 0.96);
+                color: $searchInpPlaceholderColorInBrightBg;
             }
         }
 
         button {
             svg {
-                color: rgba($color: $black_text, $alpha: 0.56);
+                color: $searchBtnSvgIconColorInBrightBg;
             }
 
             &.searchBtn {
                 &::before {
-                    border-color: rgba($color: $dark_gray_color, $alpha: 0.36);
+                    border-color: $searchBtnDividerLineColorInBrightBg;
                 }
 
                 &:hover {
-                    background-color: rgba($color: $snow_white_color, $alpha: 0.6);
+                    background-color: $searchBtnBgColorHoverInBrightBg;
                 }
             }
 
@@ -224,5 +288,85 @@ $searchClearInpValWidthToWrapper: 6%;
         height: $fs_normal_sm;
         fill: currentColor;
         color: var(--text_color);
+    }
+}
+
+.searchSuggestionWrapper {
+    position: absolute;
+    top: 124%;
+    width: 100%;
+
+    background-color: var(--bg_color);
+    border: $thick_border_light_gray;
+    border-radius: $searchInpBorderRadius;
+    transition: $transition_effect_md;
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--out_focus_gray) 60%, transparent 100%);
+    overflow: hidden;
+
+    &.expand {
+        max-height: 500px;
+        opacity: 1;
+    }
+
+    &.hidden {
+        max-height: 0;
+        opacity: 0;
+    }
+}
+
+.searchSuggestionLoadingImgWrapper {
+    @include flexCenter;
+    padding: 1.6em 0;
+
+    .searchSuggestionLoadingImg {
+        max-height: 100px;
+    }
+}
+
+.suggestionItemsWrapper {
+}
+
+.suggestionItem {
+    width: 100%;
+    @include flexCenter;
+    justify-content: stretch;
+    gap: clamp(20px, 2.4rem, 26px);
+    padding: 2em 2.4em;
+    transition: $transition_effect_md;
+
+    .suggestionItemImg {
+        width: 26%;
+        aspect-ratio: 3 / 2;
+        border-radius: $distance_sm;
+        border: 2px solid color-mix(in srgb, var(--out_focus_gray) 60%, transparent 100%);
+        object-fit: cover;
+        object-position: center;
+        transition: inherit;
+    }
+
+    .suggestionItemLink {
+        flex: 1;
+        display: block;
+        height: 100%;
+        font-size: $fs_normal_md;
+        color: var(--text_color);
+        transition: inherit;
+    }
+
+    &:hover {
+        transform: scale(1.003);
+        background-color: color-mix(in srgb, var(--out_focus_gray) 60%, transparent 100%);
+
+        .suggestionItemImg {
+            border-color: $primary_color;
+        }
+
+        .suggestionItemLink {
+            font-weight: 600;
+            color: $primary_color;
+            text-decoration: underline;
+            text-underline-offset: 0.3em;
+            text-wrap: pretty;
+        }
     }
 }

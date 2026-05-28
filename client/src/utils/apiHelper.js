@@ -191,6 +191,11 @@ const apiHelper = () => {
         return `${baseGameApiUrl}/games?search=${gameNameEncoded}&key=${gameApiUrlKey}`;
     };
 
+    const searchSuggestionApiBasedOnGameName = (gameName) => {
+        const gameNameEncoded = encodeURIComponent(gameName);
+        return `${baseGameApiUrl}/games?search=${gameNameEncoded}&page_size=3&key=${gameApiUrlKey}`;
+    };
+
     return {
         STORE_DOMAINS,
         FILTER_LINKS,
@@ -205,6 +210,7 @@ const apiHelper = () => {
         getGameDetailsUrl,
         getGameMediaListUrl,
         searchApiBasedOnGameName,
+        searchSuggestionApiBasedOnGameName,
     };
 };
 
