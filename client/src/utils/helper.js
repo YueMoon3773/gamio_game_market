@@ -154,7 +154,6 @@ const helperFunctions = () => {
         // console.log({ currentDate, getLast30Days });
 
         return { currentDate, getLast30Days };
-        // return getLast30Days + ',' + currentDate;
     };
 
     const getThisWeekDates = () => {

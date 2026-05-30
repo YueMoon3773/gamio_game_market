@@ -7,10 +7,12 @@ import './MainBtn.scss';
 const mainBtnSchema = z.object({
     btnClassName: z.string().optional(),
     btnOnClickHandler: z.function(),
+    btnOnMouseEnterHandler: z.function().optional(),
+    btnOnMouseLeaveHandler: z.function().optional(),
     children: z.unknown().optional(),
 });
 
-const MainBtn = ({ btnClassName, btnOnClickHandler, children }) => {
+const MainBtn = ({ btnClassName, btnOnClickHandler, btnOnMouseEnterHandler, btnOnMouseLeaveHandler, children }) => {
     return (
         <button
             className={`mainBtn ${btnClassName}`}
@@ -19,6 +21,8 @@ const MainBtn = ({ btnClassName, btnOnClickHandler, children }) => {
                 e.stopPropagation();
                 btnOnClickHandler();
             }}
+            onMouseEnter={btnOnMouseEnterHandler}
+            onMouseLeave={btnOnMouseLeaveHandler}
         >
             {children}
         </button>

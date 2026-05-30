@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { z } from 'zod';
 
 import ValidatedComponent from '../../../utils/validateComponentProps';
@@ -12,6 +12,7 @@ import './SearchInp.scss';
 
 const searchInpSchema = z
     .object({
+        searchInpRef: z.unknown().optional(),
         isHeaderSearchInp: z.boolean().optional(),
         isSearchInpInBrightBg: z.boolean().optional(),
         searchInpPlaceHolder: z.string(),
@@ -38,6 +39,7 @@ const searchInpSchema = z
     );
 
 const SearchInp = ({
+    searchInpRef,
     isHeaderSearchInp,
     isSearchInpInBrightBg,
     searchInpPlaceHolder,
@@ -50,12 +52,16 @@ const SearchInp = ({
     searchSuggestionList,
     searchSuggestionLoading,
 }) => {
+    const location = useLocation();
+    const currentPageUrl = location.pathname;
+
     const [isSearchInpInteracted, setIsSearchInpInteracted] = useState(false);
     const [isDeleteInpValBtnHover, setIsDeleteInpValBtnHover] = useState(false);
 
     return (
         <div
             className={`searchWrapper ${isHeaderSearchInp ? 'headerSearchInp' : ''} ${isSearchInpInteracted ? 'interacted' : ''}`}
+            ref={searchInpRef}
         >
             <div
                 className={`searchInpWrapper ${isHeaderSearchInp ? 'headerSearchInp' : ''} ${isSearchInpInBrightBg ? 'searchInpInBrightBg' : ''}`}
@@ -122,7 +128,10 @@ const SearchInp = ({
                                             }}
                                             className="suggestionItemImg"
                                         />
-                                        <Link to={`/game-detail/${item.id}`} className="suggestionItemLink">
+                                        <Link
+                                            to={`/game-detail/${item.id}`}
+                                            className="suggestionItemLink"
+                                        >
                                             {item.name}
                                         </Link>
                                     </li>

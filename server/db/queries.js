@@ -11,7 +11,30 @@ const getDataByCondition = async (condition) => {
     return rows;
 };
 
-module.exports = {
-    getAllData,
-    getDataByCondition,
+const checkHealth = async () => {
+    await pool.query('SELECT 1;');
 };
+
+const getUserByUserName = async (userName) => {
+    const { rows } = await pool.query(
+        `
+        SELECT * FROM users WHERE user_name = $1;
+    `,
+        [userName],
+    );
+
+    return rows[0];
+};
+
+const getUserById = async (userId) => {
+    const { rows } = await pool.query(
+        `
+        SELECT * FROM users WHERE id = $1;
+    `,
+        [userId],
+    );
+
+    return rows[0];
+};
+
+module.exports = { checkHealth, getAllData, getDataByCondition, getUserByUserName, getUserById };

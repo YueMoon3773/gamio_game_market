@@ -14,9 +14,9 @@ import SelectionController from '../../base/SelectionController/SelectionControl
 import GameCard from '../../base/GameCard/GameCard';
 import MainBtn from '../../base/MainBtn/MainBtn';
 
-// import gamesData from '../../../../data.json';
-// const gamesLoading = false;
-// const gamesError = null;
+import gamesData from '../../../../data.json';
+const gamesLoading = false;
+const gamesError = null;
 
 import './ViewGames.scss';
 
@@ -67,7 +67,7 @@ const ViewGames = () => {
         setApiUrl(calculatedApi);
     }, [currentPageUrl, platformIds, orderByValue, gamesPerPageValue, gameNameSearchParam]);
 
-    const { data: gamesData, error: gamesError, loading: gamesLoading } = useFetchGetData(apiUrl);
+    // const { data: gamesData, error: gamesError, loading: gamesLoading } = useFetchGetData(apiUrl);
 
     // LOGGING
     // console.log({ currentPageUrl });

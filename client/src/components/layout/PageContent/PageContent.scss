@@ -29,10 +29,106 @@
         }
 
         .contentWrapper {
-            // padding-right: $page_padding_left_right;
-            // padding-right: $page_padding_left_right;
-            // padding-top: $page_content_padding_content_top;
             padding: $page_content_padding_content_top $page_padding_left_right;
+            position: relative;
+
+            .scrollToTopBtnWrapper {
+                @include flexCenter;
+                position: fixed;
+                right: 1.2em;
+                bottom: 1.2em;
+
+                .scrollToTopBtn {
+                    position: relative;
+                    @include flexCenter;
+
+                    background-color: transparent;
+                    border-radius: 9999px;
+                    border: 3px solid var(--text_color);
+                    padding: 1em;
+
+                    svg {
+                        height: $fs_heading_md;
+                        color: var(--text_color);
+                        transition: $transition_effect_md;
+                    }
+
+                    transition: $transition_effect_md;
+                    z-index: 30;
+                    opacity: 0;
+                    visibility: hidden;
+                    pointer-events: none;
+
+                    &.hidden {
+                        animation: vanish 360ms ease-in-out forwards;
+                        pointer-events: none;
+                    }
+
+                    &.show {
+                        animation: appear 660ms ease-in-out both;
+                        visibility: visible;
+                        pointer-events: auto;
+                    }
+
+                    &:hover {
+                        border-color: $primary_lighter_color;
+                        background-color: $snow_white_color;
+
+                        svg {
+                            color: $primary_color;
+                            transform: scale(1.03);
+                        }
+                    }
+                }
+
+                .scrollToTopBtnHelper {
+                    $bottom_arrow_width: $distance_md;
+                    position: absolute;
+                    // top: -90%;
+                    bottom: 130%;
+                    right: 0;
+                    text-wrap: nowrap;
+                    // border: $thin_border_light_gray;
+                    border-radius: 8px;
+                    background-color: $primary_light_color;
+
+                    font-size: $fs_normal_md;
+                    font-weight: 600;
+                    color: var(--text_color);
+                    padding: 0.3em 0.6em;
+
+                    &::after {
+                        position: absolute;
+                        content: '';
+                        display: block;
+                        right: 12%;
+                        bottom: -40%;
+                        height: 0;
+                        width: 0;
+                        border-left: $bottom_arrow_width solid transparent;
+                        border-right: $bottom_arrow_width solid transparent;
+                        border-top: $bottom_arrow_width solid $primary_light_color;
+                        z-index: 1;
+                    }
+
+                    transition: $transition_effect_md;
+                    z-index: 30;
+                    opacity: 0;
+                    visibility: hidden;
+                    pointer-events: none;
+
+                    &.hidden {
+                        animation: vanish 360ms ease-in-out forwards;
+                        pointer-events: none;
+                    }
+
+                    &.show {
+                        animation: appear 660ms ease-in-out both;
+                        visibility: visible;
+                        pointer-events: auto;
+                    }
+                }
+            }
         }
     }
 

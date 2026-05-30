@@ -123,3 +123,30 @@
         top: -160px;
     }
 }
+
+@keyframes vanish {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    30% {
+        opacity: 36%;
+    }
+    50% {
+        opacity: 60%;
+    }
+    90% {
+        opacity: 96%;
+    }
+    100% {
+        opacity: 1;
+    }
+}

@@ -32,8 +32,10 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
     const navigate = useNavigate();
     const { theme, toggleTheme, changeToDarkTheme } = useTheme();
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
+
     const lastScrollY = useRef(0);
     const searchTimerRef = useRef(null);
+    const searchInpRef = useRef(null);
 
     const [searchInpVal, setSearchInpVal] = useState('');
     const [searchSuggestionUrl, setSearchSuggestionUrl] = useState('');
@@ -44,8 +46,6 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
         data: searchSuggestionListData,
         error: searchSuggestionListError,
         loading: searchSuggestionListLoading,
-        refetch,
-        newFetchUrl,
     } = useFetchGetData(searchSuggestionUrl);
 
     // Set up hide/unhide header
@@ -96,7 +96,6 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
 
     // Set up suggestion list after fetch
     useEffect(() => {
-        // setShowSearchSuggestion(true);
         if (searchSuggestionListData !== null) {
             setShowSearchSuggestion(true);
             setSearchSuggestionList(searchSuggestionListData.results);
@@ -105,12 +104,28 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
         return () => setShowSearchSuggestion(false);
     }, [searchSuggestionListData]);
 
+    // Hide search suggestion list when user click outside
+    useEffect(() => {
+        const checkClickOutSideSearchSuggestion = (e) => {
+            if (searchInpRef.current && !searchInpRef.current.contains(e.target)) {
+                setShowSearchSuggestion(false);
+            }
+        };
+
+        document.addEventListener('mousedown', checkClickOutSideSearchSuggestion);
+
+        return () => {
+            document.removeEventListener('mousedown', checkClickOutSideSearchSuggestion);
+        };
+    }, []);
+
+    // LOGGING
+    // console.log({ showSearchSuggestion });
+
     const searchInpOnChangeHandle = (e) => {
         const inpVal = e.target.value;
-        console.log({ inpVal });
 
         setSearchInpVal(inpVal);
-        // setShowSearchSuggestion(false);
         clearTimeout(searchTimerRef.current);
 
         if (inpVal !== '') {
@@ -149,6 +164,7 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
             </Link>
 
             <SearchInp
+                searchInpRef={searchInpRef}
                 isHeaderSearchInp={true}
                 isSearchInpInBrightBg={isPageInBrightBg}
                 searchInpPlaceHolder={'Search game...'}
