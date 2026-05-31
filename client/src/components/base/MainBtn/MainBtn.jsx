@@ -15,7 +15,7 @@ const mainBtnSchema = z.object({
 const MainBtn = ({ btnClassName, btnOnClickHandler, btnOnMouseEnterHandler, btnOnMouseLeaveHandler, children }) => {
     return (
         <button
-            className={`mainBtn ${btnClassName}`}
+            className={`mainBtn ${btnClassName ? btnClassName : ''}`}
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();

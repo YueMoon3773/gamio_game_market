@@ -6,7 +6,7 @@ import App from '../App';
 import ErrorPage from '../components/pages/ErrorPage/ErrorPage';
 import ViewGames from '../components/pages/ViewGames/ViewGames';
 import GameDetails from '../components/pages/GameDetails/GameDetails';
-import UserAuthentication from '../components/pages/UserAuthentication/UserAuthentication';
+import UserAuthenticationPage from '../components/pages/UserAuthenticationPage/UserAuthenticationPage';
 
 const routes = [
     {
@@ -45,7 +45,7 @@ const routes = [
             },
             {
                 path: '/user/auth',
-                element: <UserAuthentication />,
+                element: <UserAuthenticationPage />,
                 errorElement: (
                     <VideoBgChangeProvider>
                         <ErrorPage />

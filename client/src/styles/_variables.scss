@@ -126,6 +126,11 @@ $bottomDetailsBgColorBrightTheme: linear-gradient(90deg, #00000000 0%, #33333317
 $bottomDetailsBgColorDarkTheme: linear-gradient(90deg, #00000000 0%, #bababa17 86%, #bababa21 100%);
 
 /* =============================================== */
+/* AUTHENTICATION FORM PAGE VARIABLES  */
+/* =============================================== */
+$form_gap: clamp(24px, 3rem, 32px);
+
+/* =============================================== */
 /* THEME SET UP  */
 /* =============================================== */
 [data-theme='light'] {
