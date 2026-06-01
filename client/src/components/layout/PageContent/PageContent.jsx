@@ -75,7 +75,10 @@ const PageContent = ({ pageType, children }) => {
                         <div className="scrollToTopBtnWrapper">
                             <MainBtn
                                 btnClassName={`scrollToTopBtn ${showScrollBtn ? 'show' : 'hidden'}`}
-                                btnOnClickHandler={() => window.scrollTo(0, 0)}
+                                btnOnClickHandler={() => {
+                                    window.scrollTo(0, 0);
+                                    setIsScrollBtnHover(false);
+                                }}
                                 btnOnMouseEnterHandler={() => {
                                     if (showScrollBtn) setIsScrollBtnHover(true);
                                 }}
@@ -95,7 +98,7 @@ const PageContent = ({ pageType, children }) => {
                     <InfoBadge badgeType={badgeType} isBadgeShow={isShowBadge} badgeMsg={badgeMsg}></InfoBadge>
                 </>
             )}
-            
+
             {(pageType === 'introPage' || pageType === 'errorPage' || pageType === 'normalPage') && (
                 <>
                     {children}

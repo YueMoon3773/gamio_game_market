@@ -1,0 +1,122 @@
+.mainInpWrapper {
+    $inpFsz: $fs_normal_md;
+    $inpDistanceTopBottom: 0.36em;
+    $inpDistanceLeftRight: 0.6em;
+
+    width: 100%;
+    @include flexColumn;
+    gap: clamp(3px, 0.3rem, 4px);
+    position: relative;
+    font-size: $inpFsz;
+
+    .inpWrapper {
+        width: 100%;
+        position: relative;
+    }
+
+    .mainInpStyle {
+        width: 100%;
+        font-size: $inpFsz;
+        color: $black_text;
+        letter-spacing: 0.06em;
+        padding: $inpDistanceTopBottom $inpDistanceLeftRight;
+        background-color: $white_color;
+
+        border-radius: $distance_sm;
+        border: 2px solid transparent;
+        outline: none;
+        transition: $transition_effect_md;
+
+        @media (max-width: 1024px) {
+            font-size: calc($inpFsz * 0.92);
+        }
+
+        @media (max-width: 768px) {
+            font-size: calc($inpFsz * 0.86);
+        }
+
+        &::placeholder {
+            color: $gray_color;
+        }
+
+        &:focus,
+        &:active {
+            border-color: $dark_gray_color;
+        }
+
+        &[type='password']::-ms-reveal,
+        &[type='password']::-ms-clear {
+            display: none;
+        }
+
+        // &:invalid {
+        //     border-color: $red_color;
+        // }
+    }
+
+    .mainInpLabel {
+        font-size: $inpFsz;
+        padding: 0 $inpDistanceLeftRight;
+        letter-spacing: 0.06em;
+        background-color: transparent;
+
+        cursor: text;
+        transition: $transition_effect_md;
+
+        // @media (max-width: 1024px) {
+        //     font-size: calc($inpFsz * 0.92);
+        // }
+
+        // @media (max-width: 768px) {
+        //     font-size: calc($inpFsz * 0.86);
+        // }
+
+        // @media (max-width: 460px) {
+        //     padding: calc($inpDistanceTopBottom * 1.2) $inpDistanceLeftRight;
+        //     font-size: calc($inpFsz * 0.82);
+        //     white-space: nowrap;
+        // }
+    }
+
+    // &:has(.mainInpStyle:not(:placeholder-shown)),
+    &:has(.mainInpStyle:focus),
+    &:has(.mainInpStyle:active) {
+        .mainInpLabel {
+            color: $primary_color;
+            font-weight: 600;
+        }
+    }
+
+    .showPwdBtn {
+        position: absolute;
+        right: $inpDistanceLeftRight;
+        bottom: 0;
+        padding: $inpDistanceLeftRight;
+
+        @include flexCenter;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+
+        svg {
+            height: $fs_normal_lg;
+            color: $black_text;
+            transition: $transition_effect_md;
+
+            @media (max-width: 1024px) {
+                height: $fs_normal_md;
+            }
+
+            @media (max-width: 768px) {
+                height: calc($fs_normal_md * 0.9);
+            }
+        }
+
+        &.active {
+            svg {
+                color: $primary_light_color;
+            }
+        }
+    }
+}

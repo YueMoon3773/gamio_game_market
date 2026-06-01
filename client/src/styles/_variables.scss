@@ -128,7 +128,9 @@ $bottomDetailsBgColorDarkTheme: linear-gradient(90deg, #00000000 0%, #bababa17 8
 /* =============================================== */
 /* AUTHENTICATION FORM PAGE VARIABLES  */
 /* =============================================== */
-$form_gap: clamp(24px, 3rem, 32px);
+$form_card_padding_top_bttm: clamp(24px, 2.6rem, 30px);
+$form_card_padding_left_right: clamp(38px, 4.2rem, 46px);
+$form_gap: clamp(10px, 1.2rem, 16px);
 
 /* =============================================== */
 /* THEME SET UP  */

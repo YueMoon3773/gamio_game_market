@@ -46,7 +46,7 @@ const App = () => {
                         <h1>Gamio</h1>
                         <p>
                             This is not an actual commercial site. Games are not available for purchase. All prices are
-                            purely for display to simulate a real game store. Enjoy 😉
+                            purely for display and simulation a real game store. Enjoy 😉
                         </p>
                     </div>
 
