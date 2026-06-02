@@ -432,6 +432,25 @@ export const HidePwdIcon = ({ iconClassName = '' }) => {
     );
 };
 
+export const ExpandMenuIcon = ({ iconClassName = '' }) => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={`svgIcon ${iconClassName}`}
+        >
+            <path d="M3 5h18" />
+            <path d="M3 12h18" />
+            <path d="M3 19h18" />
+        </svg>
+    );
+};
+
 /* SIDE BAR ICONS */
 export const YourFavGamesIcon = ({ iconClassName = '' }) => {
     return (

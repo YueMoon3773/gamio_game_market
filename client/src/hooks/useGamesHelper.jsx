@@ -1,8 +1,8 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 
-import apiHelper from '../utils/apiHelper';
+import gameApiHelper from '../utils/gameApiHelper';
 
-const api = apiHelper();
+const api = gameApiHelper();
 const unauthorizedUsrPostPerPage = 10;
 
 const GameHelperContext = createContext(null);

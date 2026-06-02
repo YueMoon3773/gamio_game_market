@@ -5,13 +5,15 @@ import { z } from 'zod';
 
 import { useTheme } from '../../../hooks/useTheme';
 import { useFetchGetData } from '../../../hooks/useFetchData';
+import { useAuthenticate } from '../../../hooks/useAuthenticate';
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
-import apiHelper from '../../../utils/apiHelper';
+import gameApiHelper from '../../../utils/gameApiHelper';
 
 import { CartIcon, SunIcon, MoonIcon } from '../../../assets/svgIcons';
 import LogoImg from '../../../assets/img/LogoImg.png';
 import SearchInp from '../../base/SearchInp/SearchInp';
+import UserControllerDropDown from '../../base/UserControllerDropDown/UserControllerDropDown';
 
 import basePageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './Header.scss';
@@ -21,7 +23,7 @@ import './Header.scss';
 
 const HEADER_SHOW_THRESHOLD = 360;
 const HEADER_HIDE_THRESHOLD = 160;
-const api = apiHelper();
+const api = gameApiHelper();
 
 const headerSchema = z.object({
     pageType: z.string(),
@@ -42,11 +44,16 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
     const [showSearchSuggestion, setShowSearchSuggestion] = useState(false);
     const [searchSuggestionList, setSearchSuggestionList] = useState(null);
 
+    const controllerDropDownRef = useRef(null);
+    const [openUserDropDownController, setOpenUserDropDownController] = useState(false);
+
     const {
         data: searchSuggestionListData,
         error: searchSuggestionListError,
         loading: searchSuggestionListLoading,
     } = useFetchGetData(searchSuggestionUrl);
+
+    const { user: userAuthenData, loading: userAuthenLoading, logIn, logOut, fetchUserInfo } = useAuthenticate();
 
     // Set up hide/unhide header
     useEffect(() => {
@@ -119,8 +126,24 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
         };
     }, []);
 
+    // Hide drop down when click outside header controller
+    useEffect(() => {
+        const checkClickOutsideController = (e) => {
+            if (controllerDropDownRef.current && !controllerDropDownRef.current.contains(e.target)) {
+                setOpenUserDropDownController(false);
+            }
+        };
+
+        document.addEventListener('mousedown', checkClickOutsideController);
+
+        return () => {
+            document.removeEventListener('mousedown', checkClickOutsideController);
+        };
+    }, []);
+
     // LOGGING
     // console.log({ showSearchSuggestion });
+    console.log({ userAuthenData, userAuthenLoading });
 
     const searchInpOnChangeHandle = (e) => {
         const inpVal = e.target.value;
@@ -178,7 +201,7 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
                 searchSuggestionLoading={searchSuggestionListLoading}
             ></SearchInp>
 
-            <div className="headerControllerWrapper">
+            <div className="headerRightControllerWrapper">
                 {pageType !== 'introPage' && pageType !== 'errorPage' && (
                     <button className="themeBtn" onClick={toggleTheme}>
                         {theme === 'light' && <MoonIcon iconClassName="moonHeaderIcon"></MoonIcon>}
@@ -189,6 +212,27 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
                 <button className={`cartBtn ${pageType === 'introPage' ? 'introPage' : ''}`}>
                     <CartIcon></CartIcon>
                 </button>
+
+                {userAuthenData !== null && (
+                    <div ref={controllerDropDownRef} className="headerUserInfoWrapper">
+                        <div className="userController" onClick={() => setOpenUserDropDownController((prev) => !prev)}>
+                            <div className="userAvatarWrapper">
+                                <span className="userAvatar">{userAuthenData.user_name[0]}</span>
+                            </div>
+                            <span className="userInfoText">{userAuthenData.user_name}</span>
+                        </div>
+                        <UserControllerDropDown
+                            isOpen={openUserDropDownController}
+                            logOutOnClickHandler={() => {}}
+                        ></UserControllerDropDown>
+                    </div>
+                )}
+
+                {userAuthenData === null && (
+                    <div className="headerAuthenControllerWrapper">
+                        <Link to="/user/auth">Log in</Link>
+                    </div>
+                )}
             </div>
         </header>
     );

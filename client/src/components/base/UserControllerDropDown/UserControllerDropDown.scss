@@ -1,0 +1,75 @@
+.headerUsrDropDownList {
+    $dropDownItemPaddingTopBottom: 0.66em;
+    font-size: 1rem;
+    width: 100%;
+    background-color: var(--hover_text_color);
+    border: 2px solid var(--out_focus_gray);
+    border-radius: $distance_sm;
+    overflow: hidden;
+    transition: $transition_effect_md;
+
+    transform-origin: top;
+    transform: scaleY(0);
+    opacity: 0;
+    pointer-events: none;
+
+    @media (max-width: 1024px) {
+    }
+
+    @media (max-width: 768px) {
+        width: 80%;
+        right: 0;
+    }
+
+    &.open {
+        animation: dropdownBounce 360ms cubic-bezier(0.36, 1.66, 0.66, 1) forwards;
+        pointer-events: auto;
+    }
+
+    .usrDropDownItem {
+        font-size: 1rem;
+
+        span,
+        a {
+            display: block;
+            font-size: $fs_normal_md;
+            font-weight: 560;
+            color: var(--text_color);
+            padding: 0.46em;
+            padding-left: 2.6em;
+
+            @media (max-width: 1024px) {
+                font-size: $fs_normal_sm;
+            }
+
+            @media (max-width: 768px) {
+                font-size: $fs_normal_ssm;
+            }
+        }
+    }
+
+    & > *:last-child {
+        span,
+        a {
+            padding-top: $dropDownItemPaddingTopBottom;
+            padding-bottom: $dropDownItemPaddingTopBottom;
+
+            @media (max-width: 1024px) {
+                padding-bottom: calc($dropDownItemPaddingTopBottom * 0.9);
+            }
+
+            @media (max-width: 768px) {
+                padding-bottom: calc($dropDownItemPaddingTopBottom * 0.86);
+            }
+        }
+
+        &:hover {
+            background-color: $red_color;
+            span,
+            a {
+                // color: var(--hover_text_color);
+                cursor: pointer;
+            }
+        }
+    }
+}

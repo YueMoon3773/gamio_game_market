@@ -19,7 +19,7 @@ import {
 import ValidatedComponent from '../../../utils/validateComponentProps';
 import NoImgAvailable from '../../../assets/img/prj/no_image_found.png';
 import helperFunctions from '../../../utils/helper';
-import apiHelper from '../../../utils/apiHelper';
+import gameApiHelper from '../../../utils/gameApiHelper';
 
 import PageLayout from '../../layout/PageLayout/PageLayout';
 import FavGameBtn from '../../base/FavGameBtn/FavGameBtn';
@@ -38,7 +38,7 @@ import './GameDetails.scss';
 const gameDetailsSchema = z.object({});
 
 const helper = helperFunctions();
-const api = apiHelper();
+const api = gameApiHelper();
 
 const GameDetails = () => {
     const location = useLocation();

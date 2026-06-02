@@ -44,7 +44,7 @@
     }
 }
 
-.headerControllerWrapper {
+.headerRightControllerWrapper {
     @include flexCenter;
     gap: clamp(10px, 1.2rem, 14px);
 }
@@ -157,6 +157,68 @@
             .starOfMoon {
                 animation: starOfMoonSpinAndPulse 2s linear infinite;
             }
+        }
+    }
+}
+
+.headerUserInfoWrapper {
+    margin-left: 1.6em;
+    position: relative;
+
+    .userController {
+        @include flexCenter;
+        gap: clamp(8px, 1.2rem, 16px);
+        padding: 0.6em 1em;
+        cursor: pointer;
+
+        .userAvatarWrapper {
+            @include flexCenter;
+            background-color: red;
+            border-radius: 999px;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+
+            .userAvatar {
+                font-size: $fs_normal_xl;
+                text-transform: capitalize;
+                font-weight: 600;
+                color: $white_text;
+                padding: 0.46em;
+                user-select: none;
+            }
+        }
+
+        .userInfoText {
+            font-size: $fs_normal_md;
+            color: var(--text_color);
+        }
+
+        &:hover {
+            background-color: color-mix(in srgb, var(--out_focus_gray) 30%, transparent 100%);
+            border-radius: $distance_sm;
+        }
+    }
+
+    ul {
+        position: absolute;
+    }
+}
+
+.headerAuthenControllerWrapper {
+    margin-left: 1.6em;
+    @include flexCenter;
+
+    a {
+        font-size: $fs_normal_md;
+        font-weight: 700;
+        color: var(--text_color);
+        transition: $transition_effect_md;
+
+        &:hover {
+            text-decoration: underline;
+            text-underline-offset: 0.3em;
+            color: $primary_lighter_color;
+            font-weight: 760;
         }
     }
 }

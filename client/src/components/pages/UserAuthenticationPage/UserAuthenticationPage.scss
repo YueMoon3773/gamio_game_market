@@ -69,6 +69,7 @@
 }
 
 .authenFormsWrapper {
+    min-width: 50%;
     @include displayGrid;
 
     .formCard {
@@ -147,7 +148,7 @@
 
                 &.unResolve {
                     color: $light_red_color;
-                    font-weight: 600;
+                    font-weight: 400;
                 }
             }
         }

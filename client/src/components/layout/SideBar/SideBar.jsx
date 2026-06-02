@@ -28,13 +28,13 @@ import {
     SportIcon,
     ShowAllButtonIcon,
 } from '../../../assets/svgIcons';
-import apiHelper from '../../../utils/apiHelper';
+import gameApiHelper from '../../../utils/gameApiHelper';
 import helperFunctions from '../../../utils/helper';
 
 import './SideBar.scss';
 
 const helper = helperFunctions();
-const api = apiHelper();
+const api = gameApiHelper();
 
 const SideBar = () => {
     // const [isPlatformsShowAll, setIsPlatformsShowAll] = useState(false);

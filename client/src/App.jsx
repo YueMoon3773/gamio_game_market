@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import { useVideoBgChange } from './hooks/useVideoBgChange';
 import helperFunctions from './utils/helper';
-import apiHelper from './utils/apiHelper';
+import gameApiHelper from './utils/gameApiHelper';
 
 import { GithubIcon, Last30DaysIcon, PopularInYearIcon, BestOfYearIcon, AllTimeTopIcon } from './assets/svgIcons';
 import RawgImg from './assets/img/prj/RAWG.jpg';
@@ -13,7 +13,7 @@ import PageLayout from './components/layout/PageLayout/PageLayout';
 
 import './App.scss';
 
-const api = apiHelper();
+const api = gameApiHelper();
 const helper = helperFunctions();
 
 const App = () => {

@@ -22,7 +22,7 @@ import {
 import NoImgAvailable from '../../../assets/img/prj/no_image_found.png';
 import helperFunctions from '../../../utils/helper';
 import ValidatedComponent from '../../../utils/validateComponentProps';
-import apiHelper from '../../../utils/apiHelper';
+import gameApiHelper from '../../../utils/gameApiHelper';
 
 import FavGameBtn from '../FavGameBtn/FavGameBtn';
 
@@ -72,7 +72,7 @@ const gameCardSchema = z
     );
 
 const helper = helperFunctions();
-const api = apiHelper();
+const api = gameApiHelper();
 
 const GameCard = ({
     currentUrlLocationOfGameCard,

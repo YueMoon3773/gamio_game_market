@@ -6,7 +6,7 @@ import Masonry from 'react-masonry-css';
 import { useFetchGetData } from '../../../hooks/useFetchData';
 import { useGameHelper } from '../../../hooks/useGamesHelper';
 import helperFunctions from '../../../utils/helper';
-import apiHelper from '../../../utils/apiHelper';
+import gameApiHelper from '../../../utils/gameApiHelper';
 
 import { ArrowLeftIcon, ArrowRightIcon } from '../../../assets/svgIcons';
 import PageLayout from '../../layout/PageLayout/PageLayout';
@@ -21,7 +21,7 @@ const gamesError = null;
 import './ViewGames.scss';
 
 const helpers = helperFunctions();
-const api = apiHelper();
+const api = gameApiHelper();
 
 const breakpointColumnsObj = {
     default: 3,

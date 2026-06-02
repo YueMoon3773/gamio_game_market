@@ -11,11 +11,11 @@ const userAuthenticateActiveSession = async (req, res) => {
         const { password, ...responseToUser } = req.user;
         return res.json({ user: responseToUser });
     } else {
-        // return res.json({
-        //     user: { id: 1, first_name: 'River', last_name: 'Powlowski', user_name: 'kafolan_ruy' },
-        // });
+        return res.json({
+            user: { id: 1, user_name: 'kafolan_ruy' },
+        });
 
-        return res.status(401).json({ user: null });
+        // return res.status(401).json({ user: null });
     }
 };
 

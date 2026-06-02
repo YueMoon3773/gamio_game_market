@@ -1,4 +1,3 @@
-import { z } from 'zod';
 import helperFunctions from './helper';
 
 const baseGameApiUrl = import.meta.env.VITE_API_GAMES_URL;
@@ -6,7 +5,7 @@ const gameApiUrlKey = import.meta.env.VITE_API_GAMES_URL_KEY;
 
 const helper = helperFunctions();
 
-const apiHelper = () => {
+const gameApiHelper = () => {
     const STORE_DOMAINS = {
         steam: 'https://store.steampowered.com',
         'playstation-store': 'https://store.playstation.com',
@@ -89,10 +88,6 @@ const apiHelper = () => {
 
     const getParentPlatformApi = () => {
         return `${baseGameApiUrl}/platforms/lists/parents?key=${gameApiUrlKey}`;
-    };
-
-    const storeByIdUrl = (storeId) => {
-        return `${baseGameApiUrl}/stores/${storeId}?key=${gameApiUrlKey}`;
     };
 
     const getApiBasedOnPageUrl = (pageTargetUrl, platformIds, orderValue, resultsPerPage) => {
@@ -203,7 +198,6 @@ const apiHelper = () => {
         createPlatformLinkBasedOnPlatformType,
         getGenreFromUrl,
         getGameListUrl,
-        storeByIdUrl,
         getApiBasedOnPageUrl,
         getOrder,
         getParentPlatformApi,
@@ -214,4 +208,4 @@ const apiHelper = () => {
     };
 };
 
-export default apiHelper;
+export default gameApiHelper;
