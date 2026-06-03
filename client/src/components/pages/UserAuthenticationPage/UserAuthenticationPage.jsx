@@ -1,18 +1,22 @@
-import { use, useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { motion, animate, AnimatePresence } from 'framer-motion';
 
+import { useAuthenticate } from '../../../hooks/useAuthenticate';
+import { useInfoBadge } from '../../../hooks/useInfoBadge';
+
 import formInpValidator from '../../../utils/formInpsValidator';
+import backEndApiHelper from '../../../utils/backEndApiHelper';
 
 import Bg1 from '../../../assets/img/prj/authenPageBg1.jpg';
 import Bg2 from '../../../assets/img/prj/authenPageBg2.jpg';
 
+import InfoBadge from '../../base/InfoBadge/InfoBadge';
 import MainBtn from '../../base/MainBtn/MainBtn';
 import MainInp from '../../base/MainInp/MainInp';
 
 import './UserAuthenticationPage.scss';
-import { set } from 'zod';
 
-const inpValidator = formInpValidator();
 const FRONT = { x: 0, y: 0, opacity: 1, zIndex: 20 };
 const BACK = { x: 16, y: 14, opacity: 0.36, zIndex: 10 };
 
@@ -20,6 +24,9 @@ const pageTypes = [
     { id: 0, type: 'logIn', label: 'Log In', url: Bg1, formHeading: 'LOG IN TO YOUR ACCOUNT' },
     { id: 1, type: 'signUp', label: 'Sign Up', url: Bg2, formHeading: 'CREATE AN ACCOUNT' },
 ];
+
+const inpValidator = formInpValidator();
+const beApi = backEndApiHelper();
 
 const AuthenForm = ({
     pageTypeId,
@@ -147,6 +154,7 @@ const AuthenForm = ({
 };
 
 const UserAuthenticationPage = () => {
+    const navigate = useNavigate();
     const [pageTypeId, setPageTypeId] = useState(0);
 
     const loginProps = pageTypeId === 0 ? FRONT : BACK;
@@ -157,6 +165,21 @@ const UserAuthenticationPage = () => {
     const [userNameValue, setUserNameValue] = useState('');
     const [pwdValue, setPwdValue] = useState('');
     const [retypePwdValue, setRetypePwdValue] = useState('');
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const { logIn, logOut } = useAuthenticate();
+
+    const {
+        badgeTypeList,
+        isShowBadge,
+        showBadge,
+        badgeType,
+        changeBadgeTypeAndMessageThenShowBadge,
+        badgeMsg,
+        changeBadgeMessage,
+        retrieveBadgeIcon,
+    } = useInfoBadge();
 
     const changeAuthenTypeBtnOnClickHandler = (typeId) => {
         setPageTypeId(typeId);
@@ -175,8 +198,35 @@ const UserAuthenticationPage = () => {
         setRetypePwdValue(e.target.value.trim());
     };
 
-    const logInBtnOnClickHandler = () => {
-        console.log('logInBtn');
+    const logInBtnOnClickHandler = async () => {
+        setIsSubmitting(true);
+
+        try {
+            const userNameErr = inpValidator.userNameValidator.safeParse(userNameValue);
+            const pwdErr = inpValidator.passwordValidator.safeParse(pwdValue);
+            // console.log({ userNameErr });
+            // console.log({ pwdErr });
+
+            if (userNameErr.success === false || pwdErr.success === false)
+                changeBadgeTypeAndMessageThenShowBadge(
+                    badgeTypeList.warning.value,
+                    'User name and password must meet their requirements to proceed.',
+                );
+            else {
+                const data = await logIn(userNameValue, pwdValue);
+
+                // console.log({ data });
+
+                if (data.ok === false) {
+                    changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.error.value, data.msg[0].msg);
+                    throw new Error(data.msg);
+                }
+
+                navigate('/');
+            }
+        } catch (err) {
+            console.log({ err });
+        }
     };
 
     const signUpBtnOnClickHandler = () => {
@@ -185,6 +235,8 @@ const UserAuthenticationPage = () => {
 
     return (
         <div className="authenPageWrapper">
+            <InfoBadge badgeType={badgeType} isBadgeShow={isShowBadge} badgeMsg={badgeMsg}></InfoBadge>
+
             <div className="authenBgImgWrapper">
                 <AnimatePresence>
                     <motion.img

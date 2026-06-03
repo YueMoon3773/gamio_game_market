@@ -20,7 +20,6 @@ const populateDb = require('./db/populateDb');
 /* IMPORT ROUTES */
 /* =================================================================== */
 const helperRouter = require('./routes/helperRouter');
-const mainRouter = require('./routes/mainRouter');
 const userRouter = require('./routes/userRouter');
 
 /* =================================================================== */
@@ -116,7 +115,6 @@ app.use(passport.session());
 /* =================================================================== */
 /* Routes logic handle */
 /* =================================================================== */
-app.use('/', mainRouter);
 app.use('/health', helperRouter);
 app.use('/user', userRouter);
 

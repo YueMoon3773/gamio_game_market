@@ -28,6 +28,7 @@
 
     .usrDropDownItem {
         font-size: 1rem;
+        transition: $transition_effect_md;
 
         span,
         a {
@@ -35,8 +36,8 @@
             font-size: $fs_normal_md;
             font-weight: 560;
             color: var(--text_color);
-            padding: 0.46em;
-            padding-left: 2.6em;
+            padding: 0.6em;
+            text-align: center;
 
             @media (max-width: 1024px) {
                 font-size: $fs_normal_sm;
@@ -46,28 +47,12 @@
                 font-size: $fs_normal_ssm;
             }
         }
-    }
-
-    & > *:last-child {
-        span,
-        a {
-            padding-top: $dropDownItemPaddingTopBottom;
-            padding-bottom: $dropDownItemPaddingTopBottom;
-
-            @media (max-width: 1024px) {
-                padding-bottom: calc($dropDownItemPaddingTopBottom * 0.9);
-            }
-
-            @media (max-width: 768px) {
-                padding-bottom: calc($dropDownItemPaddingTopBottom * 0.86);
-            }
-        }
 
         &:hover {
             background-color: $red_color;
+
             span,
             a {
-                // color: var(--hover_text_color);
                 cursor: pointer;
             }
         }

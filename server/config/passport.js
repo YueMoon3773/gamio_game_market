@@ -11,7 +11,7 @@ passport.use(
             if (!user) return done(null, false, { message: `User "${userName}" doesn't exist.` });
 
             const matchedPwd = await bcrypt.compare(pwd, user.password);
-            if (!matchedPwd) return done(null, false, { message: `Incorrect password for "${userName}".` });
+            if (!matchedPwd) return done(null, false, { message: `Incorrect password for user "${userName}".` });
 
             const { password, ...responseToUser } = user;
             return done(null, responseToUser);

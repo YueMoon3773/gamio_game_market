@@ -25,9 +25,9 @@ export const InfoBadgeProvider = ({ children }) => {
     const [badgeMsg, setBadgeMsg] = useState(null);
 
     // const [isShowBadge, setIsShowBadge] = useState(true);
-    // const [badgeType, setBadgeType] = useState('info');
+    // const [badgeType, setBadgeType] = useState('warning');
     // const [badgeMsg, setBadgeMsg] = useState('null');
-    
+
     const timerRef = useRef(null);
 
     const showBadge = () => {
@@ -44,7 +44,7 @@ export const InfoBadgeProvider = ({ children }) => {
         timerRef.current = setTimeout(() => {
             setIsShowBadge(false);
             timerRef.current = null;
-        }, 3660);
+        }, 6600);
     };
 
     const retrieveBadgeIcon = (badgeType) => {
@@ -53,10 +53,17 @@ export const InfoBadgeProvider = ({ children }) => {
         return ret === undefined ? null : ret.icon;
     };
 
-    const changeBadgeType = (badgeType) => {
+    const changeBadgeTypeAndMessageThenShowBadge = (badgeType, badgeMessage) => {
         const tmp = badgeTypeList[badgeType];
-        if (tmp !== undefined) setBadgeType(tmp.value);
-        else setBadgeType(null);
+
+        if (tmp === undefined) {
+            // setBadgeType(null);
+            throw new Error('badgeType only accept "info", "waring" and "error".');
+        }
+
+        setBadgeType(tmp.value);
+        setBadgeMsg(badgeMessage);
+        showBadge();
     };
 
     const changeBadgeMessage = (badgeMessage) => {
@@ -70,7 +77,7 @@ export const InfoBadgeProvider = ({ children }) => {
                 isShowBadge,
                 showBadge,
                 badgeType,
-                changeBadgeType,
+                changeBadgeTypeAndMessageThenShowBadge,
                 badgeMsg,
                 changeBadgeMessage,
                 retrieveBadgeIcon,

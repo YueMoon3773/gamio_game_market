@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, createContext } from 'react';
 import backEndApiHelper from '../utils/backEndApiHelper';
+import { da } from 'zod/v4/locales';
 
 const AuthenticationContext = createContext(null);
 
@@ -44,11 +45,10 @@ const AuthenticationContextProvider = ({ children }) => {
 
         const data = await res.json();
 
-        if (!data.ok) throw new Error(data.msg);
+        // console.log({ data });
 
-        const tmpUser = data.user;
-        setUser(tmpUser);
-        return tmpUser;
+        setUser(data.user);
+        return data;
     };
 
     const logOut = async () => {

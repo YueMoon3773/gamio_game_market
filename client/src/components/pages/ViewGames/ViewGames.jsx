@@ -5,6 +5,8 @@ import Masonry from 'react-masonry-css';
 
 import { useFetchGetData } from '../../../hooks/useFetchData';
 import { useGameHelper } from '../../../hooks/useGamesHelper';
+import { useInfoBadge } from '../../../hooks/useInfoBadge';
+import { useAuthenticate } from '../../../hooks/useAuthenticate';
 import helperFunctions from '../../../utils/helper';
 import gameApiHelper from '../../../utils/gameApiHelper';
 
@@ -37,6 +39,8 @@ const ViewGames = () => {
     const [searchParams] = useSearchParams();
     const gameNameSearchParam = searchParams.get('game-name');
 
+    const { user: userAuthenData, loading: userAuthenLoading, logIn, logOut, fetchUserInfo } = useAuthenticate();
+
     const {
         orderByOptsList,
         gamesPerPageOptsList,
@@ -47,12 +51,14 @@ const ViewGames = () => {
         gamesPerPageOnChangeHandler,
     } = useGameHelper();
 
+    const { badgeTypeList, changeBadgeTypeAndMessageThenShowBadge } = useInfoBadge();
+
     const [apiUrl, setApiUrl] = useState('');
 
     // scroll to the top of page after navigation
-    useEffect(() => {
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    });
+    // useEffect(() => {
+    //     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    // });
 
     // set up api url to get games data
     useEffect(() => {
@@ -76,14 +82,34 @@ const ViewGames = () => {
     // console.log({ platformIds });
     // console.log({ gamesData, gamesError, gamesLoading });
 
+    const orderBySelectionOnChangeHandler = (e) => {
+        if (userAuthenLoading === false && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.warning.value, 'Log in to proceed this action.');
+        } else orderByOnChangeHandler(e);
+    };
+
+    const gamesPerPageSelectionOnChangeHandler = (e) => {
+        if (userAuthenLoading === false && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.warning.value, 'Log in to see more content.');
+        } else gamesPerPageOnChangeHandler(e);
+    };
+
     const previousPageBtnHandler = () => {
-        setApiUrl(gamesData.previous);
-        window.scrollTo({ top: 0, left: 0 });
+        if (userAuthenLoading === false && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.warning.value, 'Log in to see more content.');
+        } else {
+            setApiUrl(gamesData.previous);
+            window.scrollTo({ top: 0, left: 0 });
+        }
     };
 
     const nextPageBtnHandler = () => {
-        setApiUrl(gamesData.next);
-        window.scrollTo({ top: 0, left: 0 });
+        if (userAuthenLoading === false && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.warning.value, 'Log in to see more content.');
+        } else {
+            setApiUrl(gamesData.next);
+            window.scrollTo({ top: 0, left: 0 });
+        }
     };
 
     if (gamesData === null && gamesError !== null && gamesLoading !== false) {
@@ -108,7 +134,7 @@ const ViewGames = () => {
                                         selectId="orderBy"
                                         selectOptionList={orderByOptsList}
                                         selectValue={orderByValue}
-                                        selectOnChangeHandler={orderByOnChangeHandler}
+                                        selectOnChangeHandler={orderBySelectionOnChangeHandler}
                                     ></SelectionController>
                                 )}
                             <SelectionController
@@ -116,7 +142,7 @@ const ViewGames = () => {
                                 selectId="gamesPerPage"
                                 selectOptionList={gamesPerPageOptsList}
                                 selectValue={gamesPerPageValue}
-                                selectOnChangeHandler={gamesPerPageOnChangeHandler}
+                                selectOnChangeHandler={gamesPerPageSelectionOnChangeHandler}
                             ></SelectionController>
                         </section>
                     )}

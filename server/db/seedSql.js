@@ -11,9 +11,10 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS user_game (
     user_id INTEGER NOT NULL,
     game_id INTEGER NOT NULL,
+    game_price NUMERIC(6, 2) NOT NULL,
 
     CONSTRAINT pk_user_game
-        PRIMARY KEY (user_id, game_id),
+        PRIMARY KEY (user_id, game_id, game_price),
 
     CONSTRAINT fk_user_game_user
         FOREIGN KEY (user_id)

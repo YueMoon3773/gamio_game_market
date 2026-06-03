@@ -15,9 +15,10 @@ export const GameHelperProvider = ({ children }) => {
         { id: 4, content: 'Name (Z-A)', value: 'nameDecrease' },
     ];
     const gamesPerPageOptsList = [
-        { id: 1, content: 20, value: 20 },
-        { id: 2, content: 30, value: 30 },
-        { id: 3, content: 50, value: 50 },
+        { id: 1, content: 10, value: 10 },
+        { id: 2, content: 20, value: 20 },
+        { id: 3, content: 30, value: 30 },
+        { id: 4, content: 50, value: 50 },
     ];
 
     const [orderByValue, setOrderByValue] = useState(orderByOptsList[0].value);

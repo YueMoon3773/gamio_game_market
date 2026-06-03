@@ -37,4 +37,16 @@ const getUserById = async (userId) => {
     return rows[0];
 };
 
-module.exports = { checkHealth, getAllData, getDataByCondition, getUserByUserName, getUserById };
+const insertNewUser = async (userName, pwd) => {
+    await pool.query(
+        `
+        INSERT INTO users (user_name, password) VALUES
+            ($1, $2);
+    `,
+        [userName, pwd],
+    );
+};
+
+// const isert
+
+module.exports = { checkHealth, getAllData, getDataByCondition, getUserByUserName, getUserById, insertNewUser };

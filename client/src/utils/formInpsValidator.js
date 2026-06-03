@@ -115,16 +115,23 @@ const formInpValidator = () => {
     const userNameValidator = z
         .string()
         .trim()
-        .min(3)
-        .max(16)
-        .refine((val) => !bannedNamesRegex.test(val))
-        .regex(/^[a-zA-Z0-9\-_]$/);
+        .min(3, { message: 'User name must be at least 3 characters.' })
+        .max(16, { message: 'User name must be at most 16 characters' })
+        .refine(
+            (val) => {
+                return !bannedNamesRegex.test(val);
+            },
+            { message: 'This user name is banned. Please try another one.' },
+        )
+        .regex(/^[a-zA-Z0-9\-_]+$/, {
+            message: 'User name must only contains letters, numbers, hyphen and underscore.',
+        });
 
     const passwordValidator = z
         .string()
         .trim()
-        .min(8)
-        .max(32)
+        .min(8, { message: 'Password must be at least 8 characters.' })
+        .max(32, { message: 'Password must be at most 32 characters' })
         .regex(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[,.?\/!@#$%^&*\-_=+])[a-zA-Z0-9,.?\/!@#$%^&*\-_=+]+$/);
 
     return {

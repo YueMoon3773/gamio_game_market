@@ -6,9 +6,11 @@ import { z } from 'zod';
 import { useTheme } from '../../../hooks/useTheme';
 import { useFetchGetData } from '../../../hooks/useFetchData';
 import { useAuthenticate } from '../../../hooks/useAuthenticate';
+import { useInfoBadge } from '../../../hooks/useInfoBadge';
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
 import gameApiHelper from '../../../utils/gameApiHelper';
+import helperFunctions from '../../../utils/helper';
 
 import { CartIcon, SunIcon, MoonIcon } from '../../../assets/svgIcons';
 import LogoImg from '../../../assets/img/LogoImg.png';
@@ -24,6 +26,7 @@ import './Header.scss';
 const HEADER_SHOW_THRESHOLD = 360;
 const HEADER_HIDE_THRESHOLD = 160;
 const api = gameApiHelper();
+const helper = helperFunctions();
 
 const headerSchema = z.object({
     pageType: z.string(),
@@ -47,13 +50,15 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
     const controllerDropDownRef = useRef(null);
     const [openUserDropDownController, setOpenUserDropDownController] = useState(false);
 
+    const { badgeTypeList, changeBadgeTypeAndMessageThenShowBadge } = useInfoBadge();
+
     const {
         data: searchSuggestionListData,
         error: searchSuggestionListError,
         loading: searchSuggestionListLoading,
     } = useFetchGetData(searchSuggestionUrl);
 
-    const { user: userAuthenData, loading: userAuthenLoading, logIn, logOut, fetchUserInfo } = useAuthenticate();
+    const { user: userAuthenData, loading: userAuthenLoading, logOut } = useAuthenticate();
 
     // Set up hide/unhide header
     useEffect(() => {
@@ -174,6 +179,12 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
         navigate(`/games/search?game-name=${searchInpVal}`);
     };
 
+    const cartBtnOnClickHandler = () => {
+        if (userAuthenLoading === false && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.warning.value, 'Log in to see this content.');
+        }
+    };
+
     return (
         <header
             className={`${basePageStyles.pageHeader} header ${pageType === 'normalPage' || pageType === 'viewGamesPage' ? 'normalPageHeader' : ''} ${isHeaderHidden ? 'hidden' : ''}`}
@@ -209,21 +220,24 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
                     </button>
                 )}
 
-                <button className={`cartBtn ${pageType === 'introPage' ? 'introPage' : ''}`}>
+                <button
+                    className={`cartBtn ${pageType === 'introPage' ? 'introPage' : ''}`}
+                    onClick={cartBtnOnClickHandler}
+                >
                     <CartIcon></CartIcon>
                 </button>
 
                 {userAuthenData !== null && (
                     <div ref={controllerDropDownRef} className="headerUserInfoWrapper">
                         <div className="userController" onClick={() => setOpenUserDropDownController((prev) => !prev)}>
-                            <div className="userAvatarWrapper">
+                            <div className="userAvatarWrapper" style={{ backgroundColor: `${helper.randomHex()}` }}>
                                 <span className="userAvatar">{userAuthenData.user_name[0]}</span>
                             </div>
                             <span className="userInfoText">{userAuthenData.user_name}</span>
                         </div>
                         <UserControllerDropDown
                             isOpen={openUserDropDownController}
-                            logOutOnClickHandler={() => {}}
+                            logOutOnClickHandler={logOut}
                         ></UserControllerDropDown>
                     </div>
                 )}

@@ -13,10 +13,15 @@ const backEndApiHelper = () => {
         return `${baseBeApiUrl}/user/log-out`;
     };
 
+    const signUpUrl = () => {
+        return `${baseBeApiUrl}/user/sign-up`;
+    };
+
     return {
         userAuthenticationUrl,
         logInUrl,
         logOutUrl,
+        signUpUrl,
     };
 };
 
