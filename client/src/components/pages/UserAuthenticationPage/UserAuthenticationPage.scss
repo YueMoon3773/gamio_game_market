@@ -155,6 +155,7 @@
     }
 
     .authenFormBtn {
+        @include flexCenter;
         font-size: $fs_normal_md;
         font-weight: 600;
         color: $white_text;
@@ -163,6 +164,11 @@
         background-color: $primary_dark_color;
         border-radius: $distance_ssm;
         transition: $transition_effect_md;
+        gap: clamp(10px, 1.2rem, 16px);
+
+        img {
+            max-height: 24px;
+        }
 
         &:hover {
             background-color: $primary_light_color;

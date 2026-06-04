@@ -46,8 +46,8 @@ const AuthenticationContextProvider = ({ children }) => {
         const data = await res.json();
 
         // console.log({ data });
+        if (data.ok === true) setUser(data.user);
 
-        setUser(data.user);
         return data;
     };
 
@@ -60,9 +60,22 @@ const AuthenticationContextProvider = ({ children }) => {
 
         const data = await res.json();
 
-        if (!data.ok) throw new Error(data.msg);
+        if (data.ok === true) setUser(null);
 
-        setUser(null);
+        return data;
+    };
+
+    const signUp = async (userName, avatarColor, pwd) => {
+        const res = await fetch(beApi.signUpUrl(), {
+            mode: 'cors',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ userName, avatarColor, pwd }),
+        });
+
+        const data = await res.json();
+
         return data;
     };
 
@@ -73,6 +86,7 @@ const AuthenticationContextProvider = ({ children }) => {
                 loading,
                 logIn,
                 logOut,
+                signUp,
                 fetchUserInfo,
             }}
         >

@@ -37,13 +37,13 @@ const getUserById = async (userId) => {
     return rows[0];
 };
 
-const insertNewUser = async (userName, pwd) => {
+const insertNewUser = async (userName, avatarColor, pwd) => {
     await pool.query(
         `
-        INSERT INTO users (user_name, password) VALUES
-            ($1, $2);
+        INSERT INTO users (user_name, avatar_color, password) VALUES
+            ($1, $2, $3);
     `,
-        [userName, pwd],
+        [userName, avatarColor, pwd],
     );
 };
 

@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS users, user_game;
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_name TEXT NOT NULL,
+    avatar_color TEXT,
     password TEXT NOT NULL,
     UNIQUE (user_name)
 );
@@ -24,10 +25,10 @@ CREATE TABLE IF NOT EXISTS user_game (
 `;
 
 const insertSQL = `
-INSERT INTO users (user_name, password) VALUES
-    ('mimo-lala', '$2a$10$ByI/lYJgb/FsWX/e2W5Hken2Db60btgxMbOSpYGEwLiY35FSAJGY2'),
-    ('chi-chi_meo_meo', '$2a$10$cDw08Ob4pfTD3B5KLWVeauFnH9fM9ZpwXKzZdfbDGe06SHP5GG5lu'),
-    ('harry_lou', '$2a$10$1jOz0pOV8mFrBg2uOlCC3upXrHtT74YXNFPgvh97iz6Lx03.dz02a');
+INSERT INTO users (user_name, avatar_color, password) VALUES
+    ('mimo-lala', '#e67289', '$2a$10$ByI/lYJgb/FsWX/e2W5Hken2Db60btgxMbOSpYGEwLiY35FSAJGY2'),
+    ('chi-chi_meo_meo', '#88ea6f', '$2a$10$cDw08Ob4pfTD3B5KLWVeauFnH9fM9ZpwXKzZdfbDGe06SHP5GG5lu'),
+    ('harry_lou', '#4c54ec', '$2a$10$1jOz0pOV8mFrBg2uOlCC3upXrHtT74YXNFPgvh97iz6Lx03.dz02a');
 `;
 
 module.exports = {

@@ -6,8 +6,9 @@ import { useAuthenticate } from '../../../hooks/useAuthenticate';
 import { useInfoBadge } from '../../../hooks/useInfoBadge';
 
 import formInpValidator from '../../../utils/formInpsValidator';
-import backEndApiHelper from '../../../utils/backEndApiHelper';
+import helperFunctions from '../../../utils/helper';
 
+import LoadingImg from '../../../assets/img/prj/loading.gif';
 import Bg1 from '../../../assets/img/prj/authenPageBg1.jpg';
 import Bg2 from '../../../assets/img/prj/authenPageBg2.jpg';
 
@@ -20,16 +21,17 @@ import './UserAuthenticationPage.scss';
 const FRONT = { x: 0, y: 0, opacity: 1, zIndex: 20 };
 const BACK = { x: 16, y: 14, opacity: 0.36, zIndex: 10 };
 
-const pageTypes = [
-    { id: 0, type: 'logIn', label: 'Log In', url: Bg1, formHeading: 'LOG IN TO YOUR ACCOUNT' },
-    { id: 1, type: 'signUp', label: 'Sign Up', url: Bg2, formHeading: 'CREATE AN ACCOUNT' },
-];
+const pageTypes = {
+    logIn: { id: 0, type: 'logIn', label: 'Log In', url: Bg1, formHeading: 'LOG IN TO YOUR ACCOUNT' },
+    signUp: { id: 1, type: 'signUp', label: 'Sign Up', url: Bg2, formHeading: 'CREATE AN ACCOUNT' },
+};
 
 const inpValidator = formInpValidator();
-const beApi = backEndApiHelper();
+const helper = helperFunctions();
 
 const AuthenForm = ({
-    pageTypeId,
+    pageType,
+    currentPageTypeId,
     userNameValue,
     userNameOnChangeHandler,
     pwdValue,
@@ -37,81 +39,33 @@ const AuthenForm = ({
     retypePwdValue,
     retypePwdOnChangeHandler,
     formSubmitBtnOnClickHandler,
+    isFormSubmitting,
 }) => {
-    const formType = pageTypes[pageTypeId].type + 'Form';
+    const formType = pageTypes[pageType].type + 'Form';
+    const isFormActive = pageType === currentPageTypeId;
 
     return (
         <>
-            <h1 className="authenFormHeading">{pageTypes[pageTypeId].formHeading}</h1>
-            <form action="" className={`authenForm ${formType}`}>
-                <div className="formInpWrapper">
-                    <MainInp
-                        inpType="text"
-                        inpLabel="User name*"
-                        inpId={`${formType}UserName`}
-                        inpValue={userNameValue}
-                        inPlaceHolder="E.g., mimi67, Jack-Beats_Mera_99"
-                        onChangeHandler={userNameOnChangeHandler}
-                    ></MainInp>
-
-                    <ul className="inpRequirementList">
-                        {inpValidator.userNameRequirements.map((item, index) => {
-                            return (
-                                <li
-                                    key={item.id}
-                                    className={`inpRequirementItem ${inpValidator.userNameRequirements[index].validator.safeParse(userNameValue).success ? 'resolve' : 'unResolve'}`}
-                                >
-                                    {item.displayMessage}
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
-
-                {pageTypes[pageTypeId].type === 'logIn' && (
-                    <div className="formInpWrapper">
-                        <MainInp
-                            inpType="password"
-                            inpLabel="Password*"
-                            inpId={`${formType}Pwd`}
-                            inpValue={pwdValue}
-                            inPlaceHolder="Your password"
-                            onChangeHandler={pwdOnChangeHandler}
-                        ></MainInp>
-
-                        <ul className="inpRequirementList">
-                            {inpValidator.pwdRequirement.map((item, index) => {
-                                return (
-                                    <li
-                                        key={item.id}
-                                        className={`inpRequirementItem ${inpValidator.pwdRequirement[index].validator.safeParse(pwdValue).success ? 'resolve' : 'unResolve'}`}
-                                    >
-                                        {item.displayMessage}
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </div>
-                )}
-
-                {pageTypes[pageTypeId].type === 'signUp' && (
-                    <div className="signUpPwdWrapper">
+            {isFormActive && (
+                <>
+                    <h1 className="authenFormHeading">{pageTypes[pageType].formHeading}</h1>
+                    <form action="" className={`authenForm ${formType}`}>
                         <div className="formInpWrapper">
                             <MainInp
-                                inpType="password"
-                                inpLabel="Password*"
-                                inpId={`${formType}Pwd`}
-                                inpValue={pwdValue}
-                                inPlaceHolder="Your password"
-                                onChangeHandler={pwdOnChangeHandler}
+                                inpType="text"
+                                inpLabel="User name*"
+                                inpId={`${formType}UserName`}
+                                inpValue={userNameValue}
+                                inPlaceHolder="E.g., mimi67, Jack-Beats_Mera_99"
+                                onChangeHandler={userNameOnChangeHandler}
                             ></MainInp>
 
                             <ul className="inpRequirementList">
-                                {inpValidator.pwdRequirement.map((item, index) => {
+                                {inpValidator.userNameRequirements.map((item, index) => {
                                     return (
                                         <li
                                             key={item.id}
-                                            className={`inpRequirementItem ${inpValidator.pwdRequirement[index].validator.safeParse(pwdValue).success ? 'resolve' : 'unResolve'}`}
+                                            className={`inpRequirementItem ${inpValidator.userNameRequirements[index].validator.safeParse(userNameValue).success ? 'resolve' : 'unResolve'}`}
                                         >
                                             {item.displayMessage}
                                         </li>
@@ -119,46 +73,101 @@ const AuthenForm = ({
                                 })}
                             </ul>
                         </div>
-                        <div className="formInpWrapper">
-                            <MainInp
-                                inpType="password"
-                                inpLabel="Retype password*"
-                                inpId={`${formType}RetypePwd`}
-                                inpValue={retypePwdValue}
-                                inPlaceHolder="Retype your password"
-                                onChangeHandler={retypePwdOnChangeHandler}
-                            ></MainInp>
 
-                            <ul className="inpRequirementList">
-                                {inpValidator.retypePwdRequirements.map((item, index) => {
-                                    return (
-                                        <li
-                                            key={item.id}
-                                            className={`inpRequirementItem ${inpValidator.retypePwdRequirements[index].validator(pwdValue, retypePwdValue).success ? 'resolve' : 'unResolve'}`}
-                                        >
-                                            {item.displayMessage}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    </div>
-                )}
+                        {pageTypes[pageType].type === 'logIn' && (
+                            <div className="formInpWrapper">
+                                <MainInp
+                                    inpType="password"
+                                    inpLabel="Password*"
+                                    inpId={`${formType}Pwd`}
+                                    inpValue={pwdValue}
+                                    inPlaceHolder="Your password"
+                                    onChangeHandler={pwdOnChangeHandler}
+                                ></MainInp>
 
-                <MainBtn btnOnClickHandler={formSubmitBtnOnClickHandler} btnClassName="authenFormBtn">
-                    {pageTypes[pageTypeId].label}
-                </MainBtn>
-            </form>
+                                <ul className="inpRequirementList">
+                                    {inpValidator.pwdRequirement.map((item, index) => {
+                                        return (
+                                            <li
+                                                key={item.id}
+                                                className={`inpRequirementItem ${inpValidator.pwdRequirement[index].validator.safeParse(pwdValue).success ? 'resolve' : 'unResolve'}`}
+                                            >
+                                                {item.displayMessage}
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
+                        )}
+
+                        {pageTypes[pageType].type === 'signUp' && (
+                            <div className="signUpPwdWrapper">
+                                <div className="formInpWrapper">
+                                    <MainInp
+                                        inpType="password"
+                                        inpLabel="Password*"
+                                        inpId={`${formType}Pwd`}
+                                        inpValue={pwdValue}
+                                        inPlaceHolder="Your password"
+                                        onChangeHandler={pwdOnChangeHandler}
+                                    ></MainInp>
+
+                                    <ul className="inpRequirementList">
+                                        {inpValidator.pwdRequirement.map((item, index) => {
+                                            return (
+                                                <li
+                                                    key={item.id}
+                                                    className={`inpRequirementItem ${inpValidator.pwdRequirement[index].validator.safeParse(pwdValue).success ? 'resolve' : 'unResolve'}`}
+                                                >
+                                                    {item.displayMessage}
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                                <div className="formInpWrapper">
+                                    <MainInp
+                                        inpType="password"
+                                        inpLabel="Retype password*"
+                                        inpId={`${formType}RetypePwd`}
+                                        inpValue={retypePwdValue}
+                                        inPlaceHolder="Retype your password"
+                                        onChangeHandler={retypePwdOnChangeHandler}
+                                    ></MainInp>
+
+                                    <ul className="inpRequirementList">
+                                        {inpValidator.retypePwdRequirements.map((item, index) => {
+                                            return (
+                                                <li
+                                                    key={item.id}
+                                                    className={`inpRequirementItem ${inpValidator.retypePwdRequirements[index].validator(pwdValue, retypePwdValue).success ? 'resolve' : 'unResolve'}`}
+                                                >
+                                                    {item.displayMessage}
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+
+                        <MainBtn btnOnClickHandler={formSubmitBtnOnClickHandler} btnClassName="authenFormBtn">
+                            {isFormSubmitting && <img src={LoadingImg} alt="" />}
+                            {pageTypes[pageType].label}
+                        </MainBtn>
+                    </form>
+                </>
+            )}
         </>
     );
 };
 
 const UserAuthenticationPage = () => {
     const navigate = useNavigate();
-    const [pageTypeId, setPageTypeId] = useState(0);
+    const [pageType, setPageType] = useState('logIn');
 
-    const loginProps = pageTypeId === 0 ? FRONT : BACK;
-    const signupProps = pageTypeId === 1 ? FRONT : BACK;
+    const loginProps = pageTypes[pageType].type === 'logIn' ? FRONT : BACK;
+    const signupProps = pageTypes[pageType].type === 'signUp' ? FRONT : BACK;
 
     const formTransition = { duration: 0.38, ease: [0.25, 0.1, 0.25, 1] };
 
@@ -168,21 +177,13 @@ const UserAuthenticationPage = () => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const { logIn, logOut } = useAuthenticate();
+    const { logIn, signUp } = useAuthenticate();
 
-    const {
-        badgeTypeList,
-        isShowBadge,
-        showBadge,
-        badgeType,
-        changeBadgeTypeAndMessageThenShowBadge,
-        badgeMsg,
-        changeBadgeMessage,
-        retrieveBadgeIcon,
-    } = useInfoBadge();
+    const { badgeTypeList, isShowBadge, showBadge, badgeType, changeBadgeTypeAndMessageThenShowBadge, badgeMsg } =
+        useInfoBadge();
 
     const changeAuthenTypeBtnOnClickHandler = (typeId) => {
-        setPageTypeId(typeId);
+        setPageType(typeId);
         setUserNameValue('');
         setPwdValue('');
         setRetypePwdValue('');
@@ -216,10 +217,11 @@ const UserAuthenticationPage = () => {
                 const data = await logIn(userNameValue, pwdValue);
 
                 // console.log({ data });
+                setIsSubmitting(false);
 
                 if (data.ok === false) {
                     changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.error.value, data.msg[0].msg);
-                    throw new Error(data.msg);
+                    throw new Error(data.msg[0].msg);
                 }
 
                 navigate('/');
@@ -229,8 +231,42 @@ const UserAuthenticationPage = () => {
         }
     };
 
-    const signUpBtnOnClickHandler = () => {
-        console.log('signUpBtn');
+    const signUpBtnOnClickHandler = async () => {
+        setIsSubmitting(true);
+
+        try {
+            const userNameErr = inpValidator.userNameValidator.safeParse(userNameValue);
+            const pwdErr = inpValidator.passwordValidator.safeParse(pwdValue);
+            const retypePwdErr = inpValidator.retypePwdRequirements[0].validator(pwdValue, retypePwdValue);
+
+            // console.log({ userNameErr, pwdErr, retypePwdErr });
+
+            if (userNameErr.success === false || pwdErr.success === false || retypePwdErr.success === false)
+                changeBadgeTypeAndMessageThenShowBadge(
+                    badgeTypeList.warning.value,
+                    'User name, password and retype password must meet their requirements to proceed.',
+                );
+            else {
+                const data = await signUp(userNameValue, helper.randomHex(), pwdValue);
+
+                console.log({ data });
+
+                setIsSubmitting(false);
+
+                if (data.ok === false) {
+                    changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.error.value, data.msg);
+                    throw new Error(data.msg);
+                }
+
+                setUserNameValue('');
+                setPwdValue('');
+                setRetypePwdValue('');
+                setPageType('logIn');
+                changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.info.value, data.msg);
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -240,8 +276,8 @@ const UserAuthenticationPage = () => {
             <div className="authenBgImgWrapper">
                 <AnimatePresence>
                     <motion.img
-                        key={pageTypes[pageTypeId].url}
-                        src={pageTypes[pageTypeId].url}
+                        key={pageTypes[pageType].url}
+                        src={pageTypes[pageType].url}
                         initial={{ opacity: 0, scale: 0.96 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.96 }}
@@ -253,14 +289,14 @@ const UserAuthenticationPage = () => {
 
             <div className="authenContentWrapper">
                 <div className="authenSwapBtnsWrapper">
-                    {pageTypes.map((type) => {
+                    {Object.values(pageTypes).map((type) => {
                         return (
                             <MainBtn
                                 key={type.id}
                                 btnOnClickHandler={() => {
-                                    changeAuthenTypeBtnOnClickHandler(type.id);
+                                    changeAuthenTypeBtnOnClickHandler(type.type);
                                 }}
-                                btnClassName={`authenSwapBtn ${pageTypeId === type.id ? 'active' : ''}`}
+                                btnClassName={`authenSwapBtn ${pageType === type.type ? 'active' : ''}`}
                             >
                                 {type.label}
                             </MainBtn>
@@ -271,7 +307,8 @@ const UserAuthenticationPage = () => {
                 <div className="authenFormsWrapper">
                     <motion.div animate={loginProps} transition={formTransition} className="formCard logInCard">
                         <AuthenForm
-                            pageTypeId={pageTypes[0].id}
+                            pageType={'logIn'}
+                            currentPageTypeId={pageType}
                             userNameValue={userNameValue}
                             userNameOnChangeHandler={userNameOnChangeHandler}
                             pwdValue={pwdValue}
@@ -279,12 +316,14 @@ const UserAuthenticationPage = () => {
                             retypePwdValue={retypePwdValue}
                             retypePwdOnChangeHandler={retypePwdOnChangeHandler}
                             formSubmitBtnOnClickHandler={logInBtnOnClickHandler}
+                            isFormSubmitting={isSubmitting}
                         ></AuthenForm>
                     </motion.div>
 
                     <motion.div animate={signupProps} transition={formTransition} className="formCard signUpCard">
                         <AuthenForm
-                            pageTypeId={pageTypes[1].id}
+                            pageType={'signUp'}
+                            currentPageTypeId={pageType}
                             userNameValue={userNameValue}
                             userNameOnChangeHandler={userNameOnChangeHandler}
                             pwdValue={pwdValue}
@@ -292,6 +331,7 @@ const UserAuthenticationPage = () => {
                             retypePwdValue={retypePwdValue}
                             retypePwdOnChangeHandler={retypePwdOnChangeHandler}
                             formSubmitBtnOnClickHandler={signUpBtnOnClickHandler}
+                            isFormSubmitting={isSubmitting}
                         ></AuthenForm>
                     </motion.div>
                 </div>

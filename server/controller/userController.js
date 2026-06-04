@@ -78,20 +78,21 @@ const signUpPost = [
         }
 
         const { userName, pwd } = matchedData(req);
+        const avatarColor = req.body.avatarColor ? req.body.avatarColor : '';
 
         const checkIfUsernameAlreadyInDb = await db.getUserByUserName(userName);
 
         if (checkIfUsernameAlreadyInDb)
             return res
                 .status(422)
-                .json({ ok: false, msg: `User name ${userName} was taken, please choose a different one.` });
+                .json({ ok: false, msg: `User name "${userName}" was taken, please choose a different user name.` });
 
         const hashedPwd = await bcrypt.hash(pwd, 16);
 
         try {
-            await db.insertNewUser(userName, hashedPwd);
+            await db.insertNewUser(userName, avatarColor, hashedPwd);
 
-            return res.status(201).json({ ok: true, msg: 'Account create successfully' });
+            return res.status(201).json({ ok: true, msg: 'Account create successfully. Please log in to continue.' });
         } catch (err) {
             res.status(501).json({ ok: false, msg: 'Failed to create account. Please try again at another time.' });
 

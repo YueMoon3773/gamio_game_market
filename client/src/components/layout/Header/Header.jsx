@@ -148,7 +148,7 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
 
     // LOGGING
     // console.log({ showSearchSuggestion });
-    console.log({ userAuthenData, userAuthenLoading });
+    // console.log({ userAuthenData, userAuthenLoading });
 
     const searchInpOnChangeHandle = (e) => {
         const inpVal = e.target.value;
@@ -230,7 +230,12 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
                 {userAuthenData !== null && (
                     <div ref={controllerDropDownRef} className="headerUserInfoWrapper">
                         <div className="userController" onClick={() => setOpenUserDropDownController((prev) => !prev)}>
-                            <div className="userAvatarWrapper" style={{ backgroundColor: `${helper.randomHex()}` }}>
+                            <div
+                                className="userAvatarWrapper"
+                                style={{
+                                    backgroundColor: `${userAuthenData.avatar_color ? userAuthenData.avatar_color : helper.randomHex()}`,
+                                }}
+                            >
                                 <span className="userAvatar">{userAuthenData.user_name[0]}</span>
                             </div>
                             <span className="userInfoText">{userAuthenData.user_name}</span>
