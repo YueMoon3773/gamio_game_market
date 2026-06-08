@@ -33,6 +33,7 @@ const gameCardSchema = z
     .object({
         currentUrlLocationOfGameCard: z.string().optional(),
         isGameCardLoading: z.boolean().optional(),
+        gamesInUserCartList: z.array(z.any()).nullable().optional(),
         gameCardId: z.number().nullable().optional(),
         gameCardSingleMediaDisplay: z.string().nullable().optional(),
         gameCardMediaLibrary: z.array(z.looseObject({})).nullable().optional(),
@@ -44,6 +45,7 @@ const gameCardSchema = z
         gameCardRating: z.number().nullable().optional(),
         gameCardRatingCount: z.number().nullable().optional(),
         gameCardStores: z.array(z.looseObject({})).nullable().optional(),
+        gameCardAddToCartBtn: z.function().optional(),
     })
     .refine(
         (props) => {
@@ -51,6 +53,7 @@ const gameCardSchema = z
                 props.isGameCardLoading === false &&
                 (props.gameCardId === undefined ||
                     props.currentUrlLocationOfGameCard === undefined ||
+                    props.gamesInUserCartList === undefined ||
                     props.gameCardSingleMediaDisplay === undefined ||
                     props.gameCardMediaLibrary === undefined ||
                     props.gameCardPlatforms === undefined ||
@@ -60,14 +63,15 @@ const gameCardSchema = z
                     props.gameCardGenres === undefined ||
                     props.gameCardRating === undefined ||
                     props.gameCardRatingCount === undefined ||
-                    props.gameCardStores === undefined)
+                    props.gameCardStores === undefined ||
+                    props.gameCardAddToCartBtn === undefined)
             ) {
                 return false;
             } else return true;
         },
         {
             message:
-                'currentUrlLocationOfGameCard, gameCardId, gameCardSingleMediaDisplay, gameCardMediaLibrary, gameCardPlatforms, gameCardPlatformsParents, gameCardName, gameCurrentPrice, gameCardReleaseDate, gameCardGenres,gameCardRating, gameCardRatingCount, gameCardStores must be provided in case isGameCardLoading === false',
+                'currentUrlLocationOfGameCard, gamesInUserCartList, gameCardId, gameCardSingleMediaDisplay, gameCardMediaLibrary, gameCardPlatforms, gameCardPlatformsParents, gameCardName, gameCurrentPrice, gameCardReleaseDate, gameCardGenres,gameCardRating, gameCardRatingCount, gameCardStores, gameCardAddToCartBtn must be provided in case isGameCardLoading === false',
         },
     );
 
@@ -77,6 +81,7 @@ const api = gameApiHelper();
 const GameCard = ({
     currentUrlLocationOfGameCard,
     isGameCardLoading,
+    gamesInUserCartList,
     gameCardId,
     gameCardSingleMediaDisplay,
     gameCardMediaLibrary,
@@ -88,6 +93,7 @@ const GameCard = ({
     gameCardRating,
     gameCardRatingCount,
     gameCardStores,
+    gameCardAddToCartBtn,
 }) => {
     // const [isCardHover, setIsCardHover] = useState(true);
     const [isCardHover, setIsCardHover] = useState(false);
@@ -99,6 +105,10 @@ const GameCard = ({
     const releaseDate = !gameCardReleaseDate ? null : format(gameCardReleaseDate, 'MMM d, yyyy');
     // const gameCurrentPrice = `$${helper.calculateGamePrice(gameCardReleaseDate)}`;
     const gameOldPrice = !gameCardReleaseDate ? null : 60;
+
+    let isGameInCart = false;
+    if (gamesInUserCartList !== null && gamesInUserCartList !== undefined)
+        isGameInCart = gamesInUserCartList.includes(gameCardId);
 
     // LOGGING
     // console.log({ gameCardName });
@@ -335,8 +345,15 @@ const GameCard = ({
                             </li>
                         </ul>
 
-                        <button className="addToCartBtn">
-                            <span>Add to cart</span>
+                        <button
+                            className="addToCartBtn"
+                            onClick={() => {
+                                const gameName = gameCardName ?? '';
+                                const gameImg = gameCardSingleMediaDisplay ?? '';
+                                gameCardAddToCartBtn(isGameInCart, gameCardId, gameName, gameImg, gameCurrentPrice);
+                            }}
+                        >
+                            <span>{isGameInCart ? 'Remove game from cart' : 'Add to cart'}</span>
                         </button>
                     </div>
                 )}

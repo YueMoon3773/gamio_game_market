@@ -1,5 +1,5 @@
 .infoBadge {
-    position: absolute;
+    position: fixed;
     @include flexCenter;
     gap: clamp(6px, 0.8rem, 10px);
     padding: 0.8em 1.6em;
@@ -11,10 +11,10 @@
     transform: translateX(-50%);
     transition: $transition_effect_md;
     cursor: default;
-    z-index: 120;
+    z-index: 220;
 
     &.show {
-        animation: badgeFallDown 3660ms ease-in-out forwards;
+        animation: badgeFallDown 4600ms ease-in-out forwards;
     }
 
     &.info {

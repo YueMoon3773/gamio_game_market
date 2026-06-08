@@ -3,10 +3,12 @@ import { motion } from 'framer-motion';
 import { z } from 'zod';
 
 import { useTheme } from '../../../hooks/useTheme';
+import { useInfoBadge } from '../../../hooks/useInfoBadge';
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
 import Header from '../Header/Header';
 import PageContent from '../PageContent/PageContent';
+import InfoBadge from '../../base/InfoBadge/InfoBadge';
 
 import basePageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './PageLayout.scss';
@@ -37,6 +39,7 @@ const pageLayoutSchema = z
 const PageLayout = ({ pageType, bgVideo, bgPosterImg, isBgVideoBright, children }) => {
     const { theme } = useTheme();
     const [isBgVideoReady, setIsBgVideoReady] = useState(false);
+    const { isShowBadge, badgeType, badgeMsg } = useInfoBadge();
 
     let isPageInBrightBg = false;
     if (isBgVideoBright !== undefined) {
@@ -58,6 +61,8 @@ const PageLayout = ({ pageType, bgVideo, bgPosterImg, isBgVideoBright, children 
 
     return (
         <div className={pageClassName} data-theme={theme}>
+            <InfoBadge badgeType={badgeType} isBadgeShow={isShowBadge} badgeMsg={badgeMsg}></InfoBadge>
+            
             {(pageType === 'introPage' || pageType === 'errorPage') && (
                 <div className="introBgVideoWrapper">
                     <video

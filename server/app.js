@@ -21,6 +21,7 @@ const populateDb = require('./db/populateDb');
 /* =================================================================== */
 const helperRouter = require('./routes/helperRouter');
 const userRouter = require('./routes/userRouter');
+const gameRouter = require('./routes/gameRouter');
 
 /* =================================================================== */
 /* App setup */
@@ -117,6 +118,7 @@ app.use(passport.session());
 /* =================================================================== */
 app.use('/health', helperRouter);
 app.use('/user', userRouter);
+app.use('/game', gameRouter);
 
 /* =================================================================== */
 /* Handle Errors */

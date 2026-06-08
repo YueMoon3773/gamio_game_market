@@ -195,7 +195,7 @@ const helperFunctions = () => {
         return { startDateOfLastYear, lastDateOfLastYear };
     };
 
-    const calculateGamePrice = (releaseDate) => {
+    const calculateGamePrice = (releaseDate, gameId) => {
         const basePrice = 60;
         if (!releaseDate) return Number(basePrice.toFixed(2));
 
@@ -203,18 +203,20 @@ const helperFunctions = () => {
         const daysInYear = 365;
         const currentDate = new Date();
 
+        // set "random number" based on game id
+        const seedRandomNumber = (max) => gameId % max;
+
         const releaseYear = getYear(releaseDate);
         const currentYear = getYear(currentDate);
         const yearDifferences = currentYear - releaseYear;
         const daysFromReleaseToNow = differenceInDays(currentDate, releaseDate);
 
         const discountPerYear = 0.26;
-        let randomNumber = Math.floor(Math.random() * 6);
+        let randomNumber = 0;
         let discount = 0;
 
-        let newPrice = 60;
-
         if (0 === yearDifferences) {
+            randomNumber = seedRandomNumber(6);
             if (0 < daysFromReleaseToNow) {
                 discount =
                     discountPerYear * randomNumber > 0.9
@@ -222,23 +224,22 @@ const helperFunctions = () => {
                         : discountPerYear * randomNumber + 0.36 * randomNumber;
             }
         } else if (1 <= yearDifferences && 2 >= yearDifferences) {
-            if (daysFromReleaseToNow / daysInYear <= 1.5) randomNumber = Math.floor(Math.random() * 8);
-            else randomNumber = Math.floor(Math.random() * 10);
+            if (daysFromReleaseToNow / daysInYear <= 1.5) randomNumber = seedRandomNumber(8);
+            else randomNumber = seedRandomNumber(10);
             discount = discountPerYear * randomNumber * 0.3 + randomNumber;
         } else if (2 < yearDifferences && 4 >= yearDifferences) {
-            randomNumber = Math.floor(Math.random() * 20);
+            randomNumber = seedRandomNumber(20);
             discount = discountPerYear * randomNumber * 0.6 + randomNumber;
         } else if (4 < yearDifferences && 8 >= yearDifferences) {
-            randomNumber = Math.floor(Math.random() * 35);
+            randomNumber = seedRandomNumber(36);
             discount = discountPerYear * randomNumber * 0.8 + randomNumber;
         } else {
-            randomNumber = Math.floor(Math.random() * 60);
+            randomNumber = seedRandomNumber(60);
             discount = discountPerYear * randomNumber * 0.96 + randomNumber;
         }
 
-        newPrice = basePrice * ((100 - discount) / 100);
-
-        return newPrice < minPrice ? minPrice : Number(newPrice.toFixed(2));
+        const newPrice = basePrice * ((100 - discount) / 100);
+        return newPrice < minPrice ? Number(minPrice.toFixed(2)) : Number(newPrice.toFixed(2));
     };
 
     function randomHex() {

@@ -17,11 +17,31 @@ const backEndApiHelper = () => {
         return `${baseBeApiUrl}/user/sign-up`;
     };
 
+    const addGameToUserCartUrl = () => {
+        return `${baseBeApiUrl}/game/add-game`;
+    };
+
+    const removeGameFromUserCartUrl = () => {
+        return `${baseBeApiUrl}/game/remove-game`;
+    };
+
+    const checkIfGameIsInUserCartUrl = () => {
+        return `${baseBeApiUrl}/game/check-if-game-in-cart`;
+    };
+
+    const getAllGamesInUserCartUrl = (userId) => {
+        return `${baseBeApiUrl}/game/get-games-in-cart?userId=${userId}`;
+    };
+
     return {
         userAuthenticationUrl,
         logInUrl,
         logOutUrl,
         signUpUrl,
+        addGameToUserCartUrl,
+        removeGameFromUserCartUrl,
+        checkIfGameIsInUserCartUrl,
+        getAllGamesInUserCartUrl,
     };
 };
 

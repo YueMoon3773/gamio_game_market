@@ -1,16 +1,6 @@
 const pool = require('./pool');
 require('dotenv').config();
 
-const getAllData = async () => {
-    const { rows } = await pool.query(`SELECT * FROM ${process.env.DB_TABLE_NAME}`);
-    return rows;
-};
-
-const getDataByCondition = async (condition) => {
-    const { rows } = await pool.query(`SELECT * FROM ${process.env.DB_TABLE_NAME} WHERE id = $1`, [condition]);
-    return rows;
-};
-
 const checkHealth = async () => {
     await pool.query('SELECT 1;');
 };
@@ -47,6 +37,60 @@ const insertNewUser = async (userName, avatarColor, pwd) => {
     );
 };
 
-// const isert
+const checkIsGameInUserCart = async (userId, gameId) => {
+    const { rows } = await pool.query(
+        `
+        SELECT * FROM user_game_cart WHERE
+            user_id = $1 AND
+            game_id = $2;
+    `,
+        [userId, gameId],
+    );
 
-module.exports = { checkHealth, getAllData, getDataByCondition, getUserByUserName, getUserById, insertNewUser };
+    return rows[0];
+};
+
+const insertGameIntoUserCart = async (userId, gameId, gameName, gameImg, gamePrice) => {
+    await pool.query(
+        `
+        INSERT INTO user_game_cart (user_id, game_id, game_name, game_img, game_price) VALUES
+            ($1, $2, $3, $4, $5);
+    `,
+        [userId, gameId, gameName, gameImg, gamePrice],
+    );
+};
+
+const removeGameFromUserCartByGameId = async (userId, gameId) => {
+    await pool.query(
+        `
+        DELETE FROM user_game_cart
+            WHERE user_id = $1 AND
+                game_id = $2;
+    `,
+        [userId, gameId],
+    );
+};
+
+const getAllGamesInUserCartByUserId = async (userId) => {
+    const { rows } = await pool.query(
+        `
+        SELECT ARRAY_AGG(game_id ORDER BY game_id) AS game_list 
+        FROM user_game_cart
+            WHERE user_id = $1;
+    `,
+        [userId],
+    );
+
+    return rows[0];
+};
+
+module.exports = {
+    checkHealth,
+    getUserByUserName,
+    getUserById,
+    insertNewUser,
+    checkIsGameInUserCart,
+    insertGameIntoUserCart,
+    removeGameFromUserCartByGameId,
+    getAllGamesInUserCartByUserId,
+};

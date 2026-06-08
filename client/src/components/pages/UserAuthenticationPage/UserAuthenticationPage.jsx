@@ -208,12 +208,13 @@ const UserAuthenticationPage = () => {
             // console.log({ userNameErr });
             // console.log({ pwdErr });
 
-            if (userNameErr.success === false || pwdErr.success === false)
+            if (userNameErr.success === false || pwdErr.success === false) {
                 changeBadgeTypeAndMessageThenShowBadge(
                     badgeTypeList.warning.value,
                     'User name and password must meet their requirements to proceed.',
                 );
-            else {
+                setIsSubmitting(false);
+            } else {
                 const data = await logIn(userNameValue, pwdValue);
 
                 // console.log({ data });
@@ -241,12 +242,13 @@ const UserAuthenticationPage = () => {
 
             // console.log({ userNameErr, pwdErr, retypePwdErr });
 
-            if (userNameErr.success === false || pwdErr.success === false || retypePwdErr.success === false)
+            if (userNameErr.success === false || pwdErr.success === false || retypePwdErr.success === false) {
                 changeBadgeTypeAndMessageThenShowBadge(
                     badgeTypeList.warning.value,
                     'User name, password and retype password must meet their requirements to proceed.',
                 );
-            else {
+                setIsSubmitting(false);
+            } else {
                 const data = await signUp(userNameValue, helper.randomHex(), pwdValue);
 
                 console.log({ data });

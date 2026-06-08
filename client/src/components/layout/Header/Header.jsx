@@ -7,6 +7,7 @@ import { useTheme } from '../../../hooks/useTheme';
 import { useFetchGetData } from '../../../hooks/useFetchData';
 import { useAuthenticate } from '../../../hooks/useAuthenticate';
 import { useInfoBadge } from '../../../hooks/useInfoBadge';
+import { useGameHelper } from '../../../hooks/useGamesHelper';
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
 import gameApiHelper from '../../../utils/gameApiHelper';
@@ -51,6 +52,8 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
     const [openUserDropDownController, setOpenUserDropDownController] = useState(false);
 
     const { badgeTypeList, changeBadgeTypeAndMessageThenShowBadge } = useInfoBadge();
+
+    const { resetGamesInCart } = useGameHelper();
 
     const {
         data: searchSuggestionListData,
@@ -242,7 +245,10 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
                         </div>
                         <UserControllerDropDown
                             isOpen={openUserDropDownController}
-                            logOutOnClickHandler={logOut}
+                            logOutOnClickHandler={() => {
+                                resetGamesInCart();
+                                logOut();
+                            }}
                         ></UserControllerDropDown>
                     </div>
                 )}

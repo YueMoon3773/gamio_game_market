@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useLocation, useNavigate, Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Masonry from 'react-masonry-css';
@@ -39,8 +39,6 @@ const ViewGames = () => {
     const [searchParams] = useSearchParams();
     const gameNameSearchParam = searchParams.get('game-name');
 
-    const { user: userAuthenData, loading: userAuthenLoading, logIn, logOut, fetchUserInfo } = useAuthenticate();
-
     const {
         orderByOptsList,
         gamesPerPageOptsList,
@@ -49,7 +47,18 @@ const ViewGames = () => {
         orderByOnChangeHandler,
         gamesPerPageValue,
         gamesPerPageOnChangeHandler,
+        gamesInCart,
+        addGameToUserCart,
+        removeGameFromUserCart,
+        getAllGamesInUserCart,
     } = useGameHelper();
+
+    const { user: userAuthenData, loading: userAuthenLoading } = useAuthenticate();
+
+    // get all games in user cart
+    useEffect(() => {
+        if (userAuthenData !== null) getAllGamesInUserCart(userAuthenData.id);
+    }, [userAuthenData]);
 
     const { badgeTypeList, changeBadgeTypeAndMessageThenShowBadge } = useInfoBadge();
 
@@ -80,7 +89,9 @@ const ViewGames = () => {
     // console.log({ viewTypes });
     // console.log('api: ', apiUrl);
     // console.log({ platformIds });
+    // console.log({ userAuthenLoading, userAuthenData });
     // console.log({ gamesData, gamesError, gamesLoading });
+    // console.log(gamesInCart);
 
     const orderBySelectionOnChangeHandler = (e) => {
         if (userAuthenLoading === false && userAuthenData === null) {
@@ -109,6 +120,32 @@ const ViewGames = () => {
         } else {
             setApiUrl(gamesData.next);
             window.scrollTo({ top: 0, left: 0 });
+        }
+    };
+
+    const addGameToUserCartBtnHandler = async (isGameInCart, gameId, gameName, gameImg, gamePrice) => {
+        if (userAuthenLoading === false && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.warning.value, 'Log in to proceed this action.');
+        } else if (userAuthenLoading === true && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(
+                badgeTypeList.warning.value,
+                'Checking your credential. Please try again later.',
+            );
+        } else if (userAuthenData !== null) {
+            // console.log({ gameId, gameName, gameImg, gamePrice });
+            let res;
+            if (!isGameInCart) {
+                res = await addGameToUserCart(userAuthenData.id, gameId, gameName, gameImg, gamePrice);
+            } else {
+                res = await removeGameFromUserCart(userAuthenData.id, gameId);
+            }
+
+            // console.log(res);
+
+            if (res.ok === true) {
+                getAllGamesInUserCart(userAuthenData.id);
+                changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.info.value, res.msg);
+            }
         }
     };
 
@@ -167,12 +204,14 @@ const ViewGames = () => {
                                 columnClassName="masonryGridColumn"
                             >
                                 {gamesData.results.map((item, index) => {
-                                    const gamePrice = helpers.calculateGamePrice(item.released);
+                                    const gamePrice = helpers.calculateGamePrice(item.released, item.id);
+
                                     return (
                                         <GameCard
                                             key={item.id + index}
                                             currentUrlLocationOfGameCard={location.pathname}
                                             isGameCardLoading={false}
+                                            gamesInUserCartList={gamesInCart}
                                             gameCardId={item.id}
                                             gameCardSingleMediaDisplay={item.background_image}
                                             gameCardMediaLibrary={item.short_screenshots}
@@ -184,6 +223,7 @@ const ViewGames = () => {
                                             gameCardRating={item.rating}
                                             gameCardRatingCount={item.ratings_count}
                                             gameCardStores={item.stores}
+                                            gameCardAddToCartBtn={addGameToUserCartBtnHandler}
                                         ></GameCard>
                                     );
                                 })}

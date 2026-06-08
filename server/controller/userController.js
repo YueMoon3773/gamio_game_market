@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 
 const db = require('../db/queries');
 
-const validator = require('../utils/validatorSchema');
+const validatorSchema = require('../utils/validatorSchema');
 
 const userAuthenticateActiveSession = async (req, res) => {
     // console.log(req.user);
@@ -13,6 +13,8 @@ const userAuthenticateActiveSession = async (req, res) => {
         const { password, ...responseToUser } = req.user;
         return res.json({ user: responseToUser });
     } else {
+        // console.log('this');
+
         // return res.json({
         //     user: { id: 1, user_name: 'kafolan_ruy' },
         // });
@@ -22,8 +24,8 @@ const userAuthenticateActiveSession = async (req, res) => {
 };
 
 const logInPost = [
-    validator.userNameValidatorSchema,
-    validator.passwordValidatorSchema,
+    validatorSchema.userNameValidatorSchema,
+    validatorSchema.passwordValidatorSchema,
     async (req, res, next) => {
         console.log('===USER LOG IN===');
 
@@ -64,8 +66,8 @@ const logOutPost = async (req, res, next) => {
 };
 
 const signUpPost = [
-    validator.userNameValidatorSchema,
-    validator.passwordValidatorSchema,
+    validatorSchema.userNameValidatorSchema,
+    validatorSchema.passwordValidatorSchema,
     async (req, res, next) => {
         console.log('===USER SIGN UP===');
 

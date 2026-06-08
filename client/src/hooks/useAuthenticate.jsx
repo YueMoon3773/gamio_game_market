@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext, createContext } from 'react';
 import backEndApiHelper from '../utils/backEndApiHelper';
-import { da } from 'zod/v4/locales';
 
 const AuthenticationContext = createContext(null);
 
@@ -12,10 +11,14 @@ const AuthenticationContextProvider = ({ children }) => {
 
     const fetchUserInfo = async () => {
         // console.log(beApi.userAuthenticationUrl());
+        
         // fetch(beApi.userAuthenticationUrl(), { credentials: 'include' })
         //     .then((res) => res.json())
         //     .then((data) => {
         //         setUser(data.user || null);
+        //         // setLoading(false);
+        //     })
+        //     .finally(() => {
         //         setLoading(false);
         //     });
 
@@ -24,6 +27,9 @@ const AuthenticationContextProvider = ({ children }) => {
                 .then((res) => res.json())
                 .then((data) => {
                     setUser(data.user || null);
+                    setLoading(false);
+                })
+                .finally(() => {
                     setLoading(false);
                 });
         }, 1600);

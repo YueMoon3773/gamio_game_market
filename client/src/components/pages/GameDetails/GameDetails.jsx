@@ -5,6 +5,10 @@ import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 
 import { useFetchGetData } from '../../../hooks/useFetchData';
+import { useGameHelper } from '../../../hooks/useGamesHelper';
+import { useAuthenticate } from '../../../hooks/useAuthenticate';
+import { useInfoBadge } from '../../../hooks/useInfoBadge';
+import ValidatedComponent from '../../../utils/validateComponentProps';
 
 import {
     BackBtnIcon,
@@ -16,7 +20,6 @@ import {
     StarIcon,
     ExpandInfoBtnIcon,
 } from '../../../assets/svgIcons';
-import ValidatedComponent from '../../../utils/validateComponentProps';
 import NoImgAvailable from '../../../assets/img/prj/no_image_found.png';
 import helperFunctions from '../../../utils/helper';
 import gameApiHelper from '../../../utils/gameApiHelper';
@@ -27,13 +30,13 @@ import FavGameBtn from '../../base/FavGameBtn/FavGameBtn';
 import pageBaseStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './GameDetails.scss';
 
-// import gameDetailsData from '../../../../details.json';
-// const gameDetailsError = null;
-// const gameDetailsLoading = false;
+import gameDetailsData from '../../../../details.json';
+const gameDetailsError = null;
+const gameDetailsLoading = false;
 
-// import gameDetailsImgData from '../../../../details_img.json';
-// const gameDetailsImgError = null;
-// const gameDetailsImgLoading = false;
+import gameDetailsImgData from '../../../../details_img.json';
+const gameDetailsImgError = null;
+const gameDetailsImgLoading = false;
 
 const gameDetailsSchema = z.object({});
 
@@ -59,17 +62,23 @@ const GameDetails = () => {
 
     const [isInCart, setIsInCart] = useState(false);
 
-    const {
-        data: gameDetailsData,
-        error: gameDetailsError,
-        loading: gameDetailsLoading,
-    } = useFetchGetData(api.getGameDetailsUrl(gameId));
+    const { badgeTypeList, changeBadgeTypeAndMessageThenShowBadge } = useInfoBadge();
 
-    const {
-        data: gameDetailsImgData,
-        error: gameDetailsImgError,
-        loading: gameDetailsImgLoading,
-    } = useFetchGetData(api.getGameMediaListUrl(gameId));
+    const { user: userAuthenData, loading: userAuthenLoading } = useAuthenticate();
+
+    // const {
+    //     data: gameDetailsData,
+    //     error: gameDetailsError,
+    //     loading: gameDetailsLoading,
+    // } = useFetchGetData(api.getGameDetailsUrl(gameId));
+
+    // const {
+    //     data: gameDetailsImgData,
+    //     error: gameDetailsImgError,
+    //     loading: gameDetailsImgLoading,
+    // } = useFetchGetData(api.getGameMediaListUrl(gameId));
+
+    const { gamesInCart, addGameToUserCart, removeGameFromUserCart, getAllGamesInUserCart } = useGameHelper();
 
     const releaseDate = !gameDetailsData ? null : format(gameDetailsData.released, 'MMM d, yyyy');
 
@@ -93,6 +102,18 @@ const GameDetails = () => {
         }
     }, [gameDetailsData, gameDetailsImgData]);
 
+    // get all games in user cart
+    useEffect(() => {
+        if (userAuthenData !== null) getAllGamesInUserCart(userAuthenData.id);
+    }, [userAuthenData]);
+
+    // set up is in cart
+    useEffect(() => {
+        if (gamesInCart && gamesInCart.includes(gameDetailsData.id)) {
+            setIsInCart(true);
+        } else setIsInCart(false);
+    }, [gameDetailsData, gamesInCart]);
+
     const previousCarouselImgClickHandle = () => {
         if (!imgList) return;
         else setCurrentImgIndex(currentImgIndex === 0 ? imgList.length - 1 : currentImgIndex - 1);
@@ -103,9 +124,9 @@ const GameDetails = () => {
         else setCurrentImgIndex((currentImgIndex + 1) % imgList.length);
     };
 
-    const addToCardBtnHandler = () => {
-        setIsInCart((prev) => !prev);
-    };
+    // const addToCardBtnHandler = () => {
+    //     setIsInCart((prev) => !prev);
+    // };
 
     // auto switch game image in the media list
     useEffect(() => {
@@ -119,6 +140,32 @@ const GameDetails = () => {
 
     const favGameBtnOnClickHandle = () => {
         setIsGameFav((prev) => !prev);
+    };
+
+    const addGameToUserCartBtnHandler = async (isGameInCart, gameId, gameName, gameImg, gamePrice) => {
+        if (userAuthenLoading === false && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.warning.value, 'Log in to proceed this action.');
+        } else if (userAuthenLoading === true && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(
+                badgeTypeList.warning.value,
+                'Checking your credential. Please try again later.',
+            );
+        } else if (userAuthenData !== null) {
+            // console.log({ gameId, gameName, gameImg, gamePrice });
+            let res;
+            if (!isGameInCart) {
+                res = await addGameToUserCart(userAuthenData.id, gameId, gameName, gameImg, gamePrice);
+            } else {
+                res = await removeGameFromUserCart(userAuthenData.id, gameId);
+            }
+
+            // console.log(res);
+
+            if (res.ok === true) {
+                getAllGamesInUserCart(userAuthenData.id);
+                changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.info.value, res.msg);
+            }
+        }
     };
 
     if (gameDetailsError !== null) {
@@ -469,9 +516,23 @@ const GameDetails = () => {
 
                                         <button
                                             className={`addToCartBtnDetailsInfo ${isInCart ? 'active' : ''}`}
-                                            onClick={addToCardBtnHandler}
+                                            onClick={() => {
+                                                const gameName = gameDetailsData.name ?? '';
+                                                const gameImg = gameDetailsData.background_image ?? '';
+                                                const gamePrice =
+                                                    locationStates?.gameCurrentPrice.toFixed(2) ??
+                                                    Number(60).toFixed(2);
+
+                                                addGameToUserCartBtnHandler(
+                                                    isInCart,
+                                                    gameId,
+                                                    gameName,
+                                                    gameImg,
+                                                    gamePrice,
+                                                );
+                                            }}
                                         >
-                                            <span>{isInCart ? 'Added' : 'Add to cart'}</span>
+                                            <span>{isInCart ? 'Remove game from cart' : 'Add to cart'}</span>
                                         </button>
                                     </div>
                                 )}

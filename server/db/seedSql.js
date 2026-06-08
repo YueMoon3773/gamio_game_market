@@ -1,23 +1,38 @@
 const createSQL = `
-DROP TABLE IF EXISTS users, user_game;
+DROP TABLE IF EXISTS users, user_game_cart, user_game_fav;
 
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_name TEXT NOT NULL,
-    avatar_color TEXT,
+    avatar_color TEXT DEFAULT '#6cd5a2',
     password TEXT NOT NULL,
     UNIQUE (user_name)
 );
 
-CREATE TABLE IF NOT EXISTS user_game (
+CREATE TABLE IF NOT EXISTS user_game_cart (
     user_id INTEGER NOT NULL,
     game_id INTEGER NOT NULL,
+    game_name TEXT NOT NULL,
+    game_img TEXT NOT NULL,
     game_price NUMERIC(6, 2) NOT NULL,
 
-    CONSTRAINT pk_user_game
+    CONSTRAINT pk_user_game_cart
         PRIMARY KEY (user_id, game_id, game_price),
 
-    CONSTRAINT fk_user_game_user
+    CONSTRAINT fk_user_game_cart_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS user_game_fav (
+    user_id INTEGER NOT NULL,
+    game_id INTEGER NOT NULL,
+
+    CONSTRAINT pk_user_game_fav
+        PRIMARY KEY (user_id, game_id),
+
+    CONSTRAINT fk_user_game_fav_user
         FOREIGN KEY (user_id)
         REFERENCES users(id)
         ON DELETE CASCADE

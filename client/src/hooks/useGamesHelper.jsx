@@ -1,8 +1,10 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 
 import gameApiHelper from '../utils/gameApiHelper';
+import backEndApiHelper from '../utils/backEndApiHelper';
 
-const api = gameApiHelper();
+const gameApi = gameApiHelper();
+const beApi = backEndApiHelper();
 const unauthorizedUsrPostPerPage = 10;
 
 const GameHelperContext = createContext(null);
@@ -28,6 +30,7 @@ export const GameHelperProvider = ({ children }) => {
     const [sideBarGenresShowAll, setSideBarGenresShowAll] = useState(false);
 
     const [platformIds, setPlatformIds] = useState(null);
+    const [gamesInCart, setGamesInCart] = useState(null);
 
     const toggleSideBarPlatformShowAll = () => {
         setSideBarPlatformsShowAll((prev) => !prev);
@@ -38,36 +41,63 @@ export const GameHelperProvider = ({ children }) => {
     };
 
     const orderByOnChangeHandler = (e) => {
-        // if (userAuthen === null) {
-        //     e.preventDefault();
-        //     showBadge();
-        //     return;
-        // } else {
-        //     setCurrentPaginationNumber(1);
-        //     const newSortByVal = e.target.value;
-        //     setSortByValue(newSortByVal);
-
-        //     setPostApiUrl(`${baseBeURL}/post/get-posts?sortBy=${newSortByVal}&postPerPage=${postsPerPageValue}`);
-        // }
         e.preventDefault();
         const newSortByVal = e.target.value;
         setOrderByValue(newSortByVal);
     };
 
     const gamesPerPageOnChangeHandler = (e) => {
-        // if (userAuthen === null) {
-        //     e.preventDefault();
-        //     // showBadge();
-        //     return;
-        // } else {
-        //     setCurrentPaginationNumber(1);
-        //     const newPostsPerPageVal = e.target.value;
-        //     setPostsPerPageValue(newPostsPerPageVal);
-        //     setPostApiUrl(`${baseBeURL}/post/get-posts?sortBy=${sortByValue}&postPerPage=${newPostsPerPageVal}`);
-        // }
         e.preventDefault();
         const newPostsPerPageVal = e.target.value;
         setGamesPerPageValue(newPostsPerPageVal);
+    };
+
+    const getAllGamesInUserCart = async (userId) => {
+        const res = await fetch(beApi.getAllGamesInUserCartUrl(userId), { mode: 'cors', method: 'GET' });
+
+        const data = await res.json();
+
+        if (data.ok === false) throw new Error(data.msg);
+
+        setGamesInCart(data.gameList);
+    };
+
+    const resetGamesInCart = () => setGamesInCart(null);
+
+    const addGameToUserCart = async (userId, gameId, gameName, gameImg, gamePrice) => {
+        const res = await fetch(beApi.addGameToUserCartUrl(), {
+            mode: 'cors',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, gameId, gameName, gameImg, gamePrice }),
+        });
+
+        const data = await res.json();
+
+        if (data.ok === false) {
+            if (data.err) throw new Error(data.err);
+            else throw new Error(data.msg);
+        }
+
+        return data;
+    };
+
+    const removeGameFromUserCart = async (userId, gameId) => {
+        const res = await fetch(beApi.removeGameFromUserCartUrl(), {
+            mode: 'cors',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, gameId }),
+        });
+
+        const data = await res.json();
+
+        if (data.ok === false) {
+            if (data.err) throw new Error(data.err);
+            else throw new Error(data.msg);
+        }
+
+        return data;
     };
 
     // get platform ids
@@ -75,7 +105,7 @@ export const GameHelperProvider = ({ children }) => {
         let isActive = true;
         const getPlatformIds = async () => {
             try {
-                const res = await fetch(api.getParentPlatformApi());
+                const res = await fetch(gameApi.getParentPlatformApi());
 
                 if (!res.ok) throw new Error(res.statusText);
 
@@ -112,6 +142,11 @@ export const GameHelperProvider = ({ children }) => {
                 orderByOnChangeHandler,
                 gamesPerPageValue,
                 gamesPerPageOnChangeHandler,
+                gamesInCart,
+                addGameToUserCart,
+                removeGameFromUserCart,
+                getAllGamesInUserCart,
+                resetGamesInCart,
             }}
         >
             {children}

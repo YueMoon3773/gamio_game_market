@@ -44,7 +44,7 @@ export const InfoBadgeProvider = ({ children }) => {
         timerRef.current = setTimeout(() => {
             setIsShowBadge(false);
             timerRef.current = null;
-        }, 6600);
+        }, 4600);
     };
 
     const retrieveBadgeIcon = (badgeType) => {

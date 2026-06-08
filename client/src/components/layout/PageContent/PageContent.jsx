@@ -1,13 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { z } from 'zod';
 
-import { useInfoBadge } from '../../../hooks/useInfoBadge';
-
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
 import { ScrollToTopBtnIcon } from '../../../assets/svgIcons';
 import SideBar from '../SideBar/SideBar';
-import InfoBadge from '../../base/InfoBadge/InfoBadge';
 
 import basePageStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './PageContent.scss';
@@ -39,7 +36,6 @@ const PageContent = ({ pageType, children }) => {
             pageContentClassName = `${basePageStyles.pageContent} pageContentWrapper`;
     }
 
-    const { isShowBadge, badgeType, badgeMsg } = useInfoBadge();
     const [showScrollBtn, setShowScrollBtn] = useState(false);
     const [isScrollBtnHover, setIsScrollBtnHover] = useState(false);
 
@@ -95,16 +91,10 @@ const PageContent = ({ pageType, children }) => {
                             </span>
                         </div>
                     </div>
-                    <InfoBadge badgeType={badgeType} isBadgeShow={isShowBadge} badgeMsg={badgeMsg}></InfoBadge>
                 </>
             )}
 
-            {(pageType === 'introPage' || pageType === 'errorPage' || pageType === 'normalPage') && (
-                <>
-                    {children}
-                    <InfoBadge badgeType={badgeType} isBadgeShow={isShowBadge} badgeMsg={badgeMsg}></InfoBadge>
-                </>
-            )}
+            {(pageType === 'introPage' || pageType === 'errorPage' || pageType === 'normalPage') && <>{children}</>}
         </div>
     );
 };

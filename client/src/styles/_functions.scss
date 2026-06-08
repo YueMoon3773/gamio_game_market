@@ -111,16 +111,16 @@
 
 @keyframes badgeFallDown {
     0% {
-        top: -160px;
+        top: -60px;
     }
-    16% {
-        top: max(3rem, 30px);
+    10% {
+        top: max(9.6rem, 96px);
     }
     86% {
-        top: max(3rem, 30px);
+        top: max(9.6rem, 96px);
     }
     100% {
-        top: -160px;
+        top: -60px;
     }
 }
 
