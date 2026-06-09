@@ -52,7 +52,6 @@ const GameDetails = () => {
     const locationStates = location.state;
 
     const [navigatePrevPageBtnHover, setNavigatePrevPageBtnHover] = useState(false);
-    const [isGameFav, setIsGameFav] = useState(false);
 
     const [carouselBtnLeftBtnHover, setCarouselBtnLeftBtnHover] = useState(false);
     const [carouselBtnRightBtnHover, setCarouselBtnRightBtnHover] = useState(false);
@@ -61,6 +60,7 @@ const GameDetails = () => {
     const [isShowMoreInfoExpanded, setIsShowMoreInfoExpanded] = useState(false);
 
     const [isInCart, setIsInCart] = useState(false);
+    const [isGameFav, setIsGameFav] = useState(false);
 
     const { badgeTypeList, changeBadgeTypeAndMessageThenShowBadge } = useInfoBadge();
 
@@ -78,7 +78,16 @@ const GameDetails = () => {
     //     loading: gameDetailsImgLoading,
     // } = useFetchGetData(api.getGameMediaListUrl(gameId));
 
-    const { gamesInCart, addGameToUserCart, removeGameFromUserCart, getAllGamesInUserCart } = useGameHelper();
+    const {
+        gameIdInCartList,
+        addGameToUserCart,
+        removeGameFromUserCart,
+        getAllGameIdsInUserCart,
+        userFavGameIdList,
+        getAllUserFavGameIds,
+        addUserFavGame,
+        removeUserFavGame,
+    } = useGameHelper();
 
     const releaseDate = !gameDetailsData ? null : format(gameDetailsData.released, 'MMM d, yyyy');
 
@@ -87,9 +96,11 @@ const GameDetails = () => {
     // console.log({ gameDetailsImgData, gameDetailsImgError, gameDetailsImgLoading });
 
     // console.log({ locationStates });
+    // console.log({ gameId });
     // console.log({ imgList });
     // console.log({ currentImgIndex });
     // console.log({ isGameFav });
+    // console.log({ userFavGameIdList });
 
     // set-up game media list
     useEffect(() => {
@@ -100,19 +111,39 @@ const GameDetails = () => {
                 setImgList(locationStates.gameMediaLibrary);
             }
         }
-    }, [gameDetailsData, gameDetailsImgData]);
+    }, [gameDetailsData, gameDetailsImgData, locationStates]);
 
-    // get all games in user cart
+    // get all games in user cart and their fav games after render + when user info change
     useEffect(() => {
-        if (userAuthenData !== null) getAllGamesInUserCart(userAuthenData.id);
+        if (userAuthenData !== null) {
+            getAllGameIdsInUserCart(userAuthenData.id);
+            getAllUserFavGameIds(userAuthenData.id);
+        }
+    }, []);
+    useEffect(() => {
+        if (userAuthenData !== null) {
+            getAllGameIdsInUserCart(userAuthenData.id);
+            getAllUserFavGameIds(userAuthenData.id);
+        }
     }, [userAuthenData]);
 
-    // set up is in cart
+    // get is in cart
     useEffect(() => {
-        if (gamesInCart && gamesInCart.includes(gameDetailsData.id)) {
-            setIsInCart(true);
-        } else setIsInCart(false);
-    }, [gameDetailsData, gamesInCart]);
+        if (gameDetailsData !== null) {
+            if (gameIdInCartList && gameIdInCartList.includes(Number(gameId))) {
+                setIsInCart(true);
+            } else setIsInCart(false);
+        }
+    }, [gameDetailsData, gameIdInCartList, gameId]);
+
+    // get is user's fav game
+    useEffect(() => {
+        if (gameDetailsData !== null) {
+            if (userFavGameIdList && userFavGameIdList.includes(Number(gameId))) {
+                setIsGameFav(true);
+            } else setIsGameFav(false);
+        }
+    }, [gameDetailsData, userFavGameIdList, gameId]);
 
     const previousCarouselImgClickHandle = () => {
         if (!imgList) return;
@@ -124,10 +155,6 @@ const GameDetails = () => {
         else setCurrentImgIndex((currentImgIndex + 1) % imgList.length);
     };
 
-    // const addToCardBtnHandler = () => {
-    //     setIsInCart((prev) => !prev);
-    // };
-
     // auto switch game image in the media list
     useEffect(() => {
         const changeImgTimer = setTimeout(() => {
@@ -138,8 +165,29 @@ const GameDetails = () => {
         return () => clearTimeout(changeImgTimer);
     }, [currentImgIndex, imgList]);
 
-    const favGameBtnOnClickHandle = () => {
+    const favGameBtnOnClickHandle = async () => {
         setIsGameFav((prev) => !prev);
+
+        if (userAuthenLoading === false && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.warning.value, 'Log in to proceed this action.');
+        } else if (userAuthenLoading === true && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(
+                badgeTypeList.warning.value,
+                'Checking your credential. Please try again later.',
+            );
+        } else if (userAuthenData !== null) {
+            let res;
+
+            if (!isGameFav) res = await addUserFavGame(userAuthenData.id, Number(gameId));
+            else res = await removeUserFavGame(userAuthenData.id, Number(gameId));
+
+            // console.log({ res });
+
+            if (res.ok === true) {
+                getAllUserFavGameIds(userAuthenData.id);
+                changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.info.value, res.msg);
+            }
+        }
     };
 
     const addGameToUserCartBtnHandler = async (isGameInCart, gameId, gameName, gameImg, gamePrice) => {
@@ -162,7 +210,7 @@ const GameDetails = () => {
             // console.log(res);
 
             if (res.ok === true) {
-                getAllGamesInUserCart(userAuthenData.id);
+                getAllGameIdsInUserCart(userAuthenData.id);
                 changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.info.value, res.msg);
             }
         }

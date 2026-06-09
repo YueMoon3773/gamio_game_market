@@ -53,7 +53,7 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
 
     const { badgeTypeList, changeBadgeTypeAndMessageThenShowBadge } = useInfoBadge();
 
-    const { resetGamesInCart } = useGameHelper();
+    const { resetGameIdInCartList, resetUserFavGameIdList } = useGameHelper();
 
     const {
         data: searchSuggestionListData,
@@ -246,7 +246,8 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
                         <UserControllerDropDown
                             isOpen={openUserDropDownController}
                             logOutOnClickHandler={() => {
-                                resetGamesInCart();
+                                resetGameIdInCartList();
+                                resetUserFavGameIdList();
                                 logOut();
                             }}
                         ></UserControllerDropDown>

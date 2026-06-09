@@ -18,19 +18,31 @@ const backEndApiHelper = () => {
     };
 
     const addGameToUserCartUrl = () => {
-        return `${baseBeApiUrl}/game/add-game`;
+        return `${baseBeApiUrl}/game/add-game-cart`;
     };
 
     const removeGameFromUserCartUrl = () => {
-        return `${baseBeApiUrl}/game/remove-game`;
+        return `${baseBeApiUrl}/game/remove-game-cart`;
     };
 
     const checkIfGameIsInUserCartUrl = () => {
         return `${baseBeApiUrl}/game/check-if-game-in-cart`;
     };
 
-    const getAllGamesInUserCartUrl = (userId) => {
-        return `${baseBeApiUrl}/game/get-games-in-cart?userId=${userId}`;
+    const getAllGameIdsInUserCartUrl = (userId) => {
+        return `${baseBeApiUrl}/game/get-game-ids-in-cart?userId=${userId}`;
+    };
+
+    const addUserFavGameUrl = () => {
+        return `${baseBeApiUrl}/game/add-game-fav`;
+    };
+
+    const removeUserFavGameUrl = () => {
+        return `${baseBeApiUrl}/game/remove-game-fav`;
+    };
+
+    const getAllUserFavGameIdsUrl = (userId) => {
+        return `${baseBeApiUrl}/game/get-fav-game-ids?userId=${userId}`;
     };
 
     return {
@@ -41,7 +53,10 @@ const backEndApiHelper = () => {
         addGameToUserCartUrl,
         removeGameFromUserCartUrl,
         checkIfGameIsInUserCartUrl,
-        getAllGamesInUserCartUrl,
+        getAllGameIdsInUserCartUrl,
+        addUserFavGameUrl,
+        removeUserFavGameUrl,
+        getAllUserFavGameIdsUrl,
     };
 };
 

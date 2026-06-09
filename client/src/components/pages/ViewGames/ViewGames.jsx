@@ -47,17 +47,30 @@ const ViewGames = () => {
         orderByOnChangeHandler,
         gamesPerPageValue,
         gamesPerPageOnChangeHandler,
-        gamesInCart,
+        gameIdInCartList,
         addGameToUserCart,
         removeGameFromUserCart,
-        getAllGamesInUserCart,
+        getAllGameIdsInUserCart,
+        userFavGameIdList,
+        getAllUserFavGameIds,
+        addUserFavGame,
+        removeUserFavGame,
     } = useGameHelper();
 
     const { user: userAuthenData, loading: userAuthenLoading } = useAuthenticate();
 
-    // get all games in user cart
+    // get all games in user cart and their favorite games after render + when user info change
     useEffect(() => {
-        if (userAuthenData !== null) getAllGamesInUserCart(userAuthenData.id);
+        if (userAuthenData !== null) {
+            getAllGameIdsInUserCart(userAuthenData.id);
+            getAllUserFavGameIds(userAuthenData.id);
+        }
+    }, []);
+    useEffect(() => {
+        if (userAuthenData !== null) {
+            getAllGameIdsInUserCart(userAuthenData.id);
+            getAllUserFavGameIds(userAuthenData.id);
+        }
     }, [userAuthenData]);
 
     const { badgeTypeList, changeBadgeTypeAndMessageThenShowBadge } = useInfoBadge();
@@ -91,7 +104,7 @@ const ViewGames = () => {
     // console.log({ platformIds });
     // console.log({ userAuthenLoading, userAuthenData });
     // console.log({ gamesData, gamesError, gamesLoading });
-    // console.log(gamesInCart);
+    // console.log(gameIdInCartList);
 
     const orderBySelectionOnChangeHandler = (e) => {
         if (userAuthenLoading === false && userAuthenData === null) {
@@ -134,16 +147,37 @@ const ViewGames = () => {
         } else if (userAuthenData !== null) {
             // console.log({ gameId, gameName, gameImg, gamePrice });
             let res;
-            if (!isGameInCart) {
-                res = await addGameToUserCart(userAuthenData.id, gameId, gameName, gameImg, gamePrice);
-            } else {
-                res = await removeGameFromUserCart(userAuthenData.id, gameId);
-            }
+            if (!isGameInCart) res = await addGameToUserCart(userAuthenData.id, gameId, gameName, gameImg, gamePrice);
+            else res = await removeGameFromUserCart(userAuthenData.id, gameId);
 
             // console.log(res);
 
             if (res.ok === true) {
-                getAllGamesInUserCart(userAuthenData.id);
+                getAllGameIdsInUserCart(userAuthenData.id);
+                changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.info.value, res.msg);
+            }
+        }
+    };
+
+    const favGameBtnHandler = async (isFavGame, gameId) => {
+        if (userAuthenLoading === false && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.warning.value, 'Log in to proceed this action.');
+        } else if (userAuthenLoading === true && userAuthenData === null) {
+            changeBadgeTypeAndMessageThenShowBadge(
+                badgeTypeList.warning.value,
+                'Checking your credential. Please try again later.',
+            );
+        } else if (userAuthenData !== null) {
+            // console.log({ gameId });
+            let res;
+
+            if (!isFavGame) res = await addUserFavGame(userAuthenData.id, gameId);
+            else res = await removeUserFavGame(userAuthenData.id, gameId);
+
+            // console.log({ res });
+
+            if (res.ok === true) {
+                getAllUserFavGameIds(userAuthenData.id);
                 changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.info.value, res.msg);
             }
         }
@@ -211,7 +245,8 @@ const ViewGames = () => {
                                             key={item.id + index}
                                             currentUrlLocationOfGameCard={location.pathname}
                                             isGameCardLoading={false}
-                                            gamesInUserCartList={gamesInCart}
+                                            gamesInUserCartList={gameIdInCartList}
+                                            userFavGameList={userFavGameIdList}
                                             gameCardId={item.id}
                                             gameCardSingleMediaDisplay={item.background_image}
                                             gameCardMediaLibrary={item.short_screenshots}
@@ -223,7 +258,8 @@ const ViewGames = () => {
                                             gameCardRating={item.rating}
                                             gameCardRatingCount={item.ratings_count}
                                             gameCardStores={item.stores}
-                                            gameCardAddToCartBtn={addGameToUserCartBtnHandler}
+                                            gameCardAddToCartBtnOnClickHandler={addGameToUserCartBtnHandler}
+                                            gameCardFavBtnOnClickHandler={favGameBtnHandler}
                                         ></GameCard>
                                     );
                                 })}

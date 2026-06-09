@@ -34,6 +34,7 @@ const gameCardSchema = z
         currentUrlLocationOfGameCard: z.string().optional(),
         isGameCardLoading: z.boolean().optional(),
         gamesInUserCartList: z.array(z.any()).nullable().optional(),
+        userFavGameList: z.array(z.any()).nullable().optional(),
         gameCardId: z.number().nullable().optional(),
         gameCardSingleMediaDisplay: z.string().nullable().optional(),
         gameCardMediaLibrary: z.array(z.looseObject({})).nullable().optional(),
@@ -45,7 +46,8 @@ const gameCardSchema = z
         gameCardRating: z.number().nullable().optional(),
         gameCardRatingCount: z.number().nullable().optional(),
         gameCardStores: z.array(z.looseObject({})).nullable().optional(),
-        gameCardAddToCartBtn: z.function().optional(),
+        gameCardAddToCartBtnOnClickHandler: z.function().optional(),
+        gameCardFavBtnOnClickHandler: z.function().optional(),
     })
     .refine(
         (props) => {
@@ -54,6 +56,7 @@ const gameCardSchema = z
                 (props.gameCardId === undefined ||
                     props.currentUrlLocationOfGameCard === undefined ||
                     props.gamesInUserCartList === undefined ||
+                    props.userFavGameList === undefined ||
                     props.gameCardSingleMediaDisplay === undefined ||
                     props.gameCardMediaLibrary === undefined ||
                     props.gameCardPlatforms === undefined ||
@@ -64,14 +67,15 @@ const gameCardSchema = z
                     props.gameCardRating === undefined ||
                     props.gameCardRatingCount === undefined ||
                     props.gameCardStores === undefined ||
-                    props.gameCardAddToCartBtn === undefined)
+                    props.gameCardAddToCartBtnOnClickHandler === undefined ||
+                    props.gameCardFavBtnOnClickHandler === undefined)
             ) {
                 return false;
             } else return true;
         },
         {
             message:
-                'currentUrlLocationOfGameCard, gamesInUserCartList, gameCardId, gameCardSingleMediaDisplay, gameCardMediaLibrary, gameCardPlatforms, gameCardPlatformsParents, gameCardName, gameCurrentPrice, gameCardReleaseDate, gameCardGenres,gameCardRating, gameCardRatingCount, gameCardStores, gameCardAddToCartBtn must be provided in case isGameCardLoading === false',
+                'currentUrlLocationOfGameCard, gamesInUserCartList, userFavGameList, gameCardId, gameCardSingleMediaDisplay, gameCardMediaLibrary, gameCardPlatforms, gameCardPlatformsParents, gameCardName, gameCurrentPrice, gameCardReleaseDate, gameCardGenres,gameCardRating, gameCardRatingCount, gameCardStores, gameCardAddToCartBtnOnClickHandler, gameCardFavBtnOnClickHandler must be provided in case isGameCardLoading === false',
         },
     );
 
@@ -82,6 +86,7 @@ const GameCard = ({
     currentUrlLocationOfGameCard,
     isGameCardLoading,
     gamesInUserCartList,
+    userFavGameList,
     gameCardId,
     gameCardSingleMediaDisplay,
     gameCardMediaLibrary,
@@ -93,35 +98,47 @@ const GameCard = ({
     gameCardRating,
     gameCardRatingCount,
     gameCardStores,
-    gameCardAddToCartBtn,
+    gameCardAddToCartBtnOnClickHandler,
+    gameCardFavBtnOnClickHandler,
 }) => {
     // const [isCardHover, setIsCardHover] = useState(true);
     const [isCardHover, setIsCardHover] = useState(false);
     const gameCardHoverTimer = useRef(null);
     const [imgHoverIndex, setImgHoverIndex] = useState(0);
-    const [isGameFav, setIsGameFav] = useState(false);
 
     const platformIcons = !gameCardPlatforms ? null : helper.platformListBasedOnDevices(gameCardPlatforms);
     const releaseDate = !gameCardReleaseDate ? null : format(gameCardReleaseDate, 'MMM d, yyyy');
     // const gameCurrentPrice = `$${helper.calculateGamePrice(gameCardReleaseDate)}`;
     const gameOldPrice = !gameCardReleaseDate ? null : 60;
 
+    const [isGameFav, setIsGameFav] = useState(false);
     let isGameInCart = false;
     if (gamesInUserCartList !== null && gamesInUserCartList !== undefined)
         isGameInCart = gamesInUserCartList.includes(gameCardId);
 
     // LOGGING
     // console.log({ gameCardName });
+    // console.log({ gameCardId });
     // console.log({ platformIcons });
     // console.log({ gameCardPlatforms });
     // console.log({ releaseDate });
     // console.log({ gameCardMediaLibrary });
     // console.log({ gameCardSingleMediaDisplay });
     // console.log({ gameCardGenres });
+    // console.log({ userFavGameList });
+    // console.log({ isGameFav });
 
     const favGameBtnOnClickHandle = () => {
         setIsGameFav((prev) => !prev);
+
+        gameCardFavBtnOnClickHandler(isGameFav, gameCardId);
     };
+
+    //set up if game is fav
+    useEffect(() => {
+        if (userFavGameList !== null && userFavGameList !== undefined)
+            setIsGameFav(userFavGameList.includes(gameCardId));
+    }, [userFavGameList]);
 
     return (
         <div
@@ -350,7 +367,13 @@ const GameCard = ({
                             onClick={() => {
                                 const gameName = gameCardName ?? '';
                                 const gameImg = gameCardSingleMediaDisplay ?? '';
-                                gameCardAddToCartBtn(isGameInCart, gameCardId, gameName, gameImg, gameCurrentPrice);
+                                gameCardAddToCartBtnOnClickHandler(
+                                    isGameInCart,
+                                    gameCardId,
+                                    gameName,
+                                    gameImg,
+                                    gameCurrentPrice,
+                                );
                             }}
                         >
                             <span>{isGameInCart ? 'Remove game from cart' : 'Add to cart'}</span>

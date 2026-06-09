@@ -5,7 +5,6 @@ import backEndApiHelper from '../utils/backEndApiHelper';
 
 const gameApi = gameApiHelper();
 const beApi = backEndApiHelper();
-const unauthorizedUsrPostPerPage = 10;
 
 const GameHelperContext = createContext(null);
 
@@ -24,13 +23,14 @@ export const GameHelperProvider = ({ children }) => {
     ];
 
     const [orderByValue, setOrderByValue] = useState(orderByOptsList[0].value);
-    const [gamesPerPageValue, setGamesPerPageValue] = useState(unauthorizedUsrPostPerPage);
+    const [gamesPerPageValue, setGamesPerPageValue] = useState(gamesPerPageOptsList[0].value);
 
     const [sideBarPlatformsShowAll, setSideBarPlatformsShowAll] = useState(false);
     const [sideBarGenresShowAll, setSideBarGenresShowAll] = useState(false);
 
     const [platformIds, setPlatformIds] = useState(null);
-    const [gamesInCart, setGamesInCart] = useState(null);
+    const [gameIdInCartList, setGameIdInCartList] = useState(null);
+    const [userFavGameIdList, setUserFavGames] = useState(null);
 
     const toggleSideBarPlatformShowAll = () => {
         setSideBarPlatformsShowAll((prev) => !prev);
@@ -52,17 +52,19 @@ export const GameHelperProvider = ({ children }) => {
         setGamesPerPageValue(newPostsPerPageVal);
     };
 
-    const getAllGamesInUserCart = async (userId) => {
-        const res = await fetch(beApi.getAllGamesInUserCartUrl(userId), { mode: 'cors', method: 'GET' });
+    const getAllGameIdsInUserCart = async (userId) => {
+        const res = await fetch(beApi.getAllGameIdsInUserCartUrl(userId), { mode: 'cors', method: 'GET' });
 
         const data = await res.json();
 
         if (data.ok === false) throw new Error(data.msg);
 
-        setGamesInCart(data.gameList);
+        // console.log('User games in cart: ', data);
+
+        setGameIdInCartList(data.gameList);
     };
 
-    const resetGamesInCart = () => setGamesInCart(null);
+    const resetGameIdInCartList = () => setGameIdInCartList(null);
 
     const addGameToUserCart = async (userId, gameId, gameName, gameImg, gamePrice) => {
         const res = await fetch(beApi.addGameToUserCartUrl(), {
@@ -84,6 +86,58 @@ export const GameHelperProvider = ({ children }) => {
 
     const removeGameFromUserCart = async (userId, gameId) => {
         const res = await fetch(beApi.removeGameFromUserCartUrl(), {
+            mode: 'cors',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, gameId }),
+        });
+
+        const data = await res.json();
+
+        if (data.ok === false) {
+            if (data.err) throw new Error(data.err);
+            else throw new Error(data.msg);
+        }
+
+        return data;
+    };
+
+    const getAllUserFavGameIds = async (userId) => {
+        const res = await fetch(beApi.getAllUserFavGameIdsUrl(userId), { mode: 'cors', method: 'GET' });
+
+        const data = await res.json();
+
+        if (data.ok === false) throw new Error(data.msg);
+
+        // console.log('User fav games: ', data);
+
+        setUserFavGames(data.gameList);
+    };
+
+    const resetUserFavGameIdList = () => setUserFavGames(null);
+
+    const addUserFavGame = async (userId, gameId) => {
+        const res = await fetch(beApi.addUserFavGameUrl(), {
+            mode: 'cors',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, gameId }),
+        });
+
+        const data = await res.json();
+
+        if (data.ok === false) {
+            if (data.err) throw new Error(data.err);
+            else throw new Error(data.msg);
+        }
+
+        // console.log({ data });
+
+        return data;
+    };
+
+    const removeUserFavGame = async (userId, gameId) => {
+        const res = await fetch(beApi.removeUserFavGameUrl(), {
             mode: 'cors',
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -142,11 +196,16 @@ export const GameHelperProvider = ({ children }) => {
                 orderByOnChangeHandler,
                 gamesPerPageValue,
                 gamesPerPageOnChangeHandler,
-                gamesInCart,
+                gameIdInCartList,
                 addGameToUserCart,
                 removeGameFromUserCart,
-                getAllGamesInUserCart,
-                resetGamesInCart,
+                getAllGameIdsInUserCart,
+                resetGameIdInCartList,
+                userFavGameIdList,
+                getAllUserFavGameIds,
+                resetUserFavGameIdList,
+                addUserFavGame,
+                removeUserFavGame,
             }}
         >
             {children}

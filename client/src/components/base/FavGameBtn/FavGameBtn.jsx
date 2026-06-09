@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { z } from 'zod';
 
 import { YourFavGamesIcon } from '../../../assets/svgIcons';
@@ -13,35 +13,39 @@ const favGameBtnSchema = z.object({
 });
 
 const FavGameBtn = ({ gameBtnStyleClassName = '', isFavBtnActive = false, onClickHandler }) => {
-    const GAME_FAV_BTN_DEFAULT_CLASS_NAME = `gameFavBtn ${gameBtnStyleClassName} ${isFavBtnActive ? 'active' : ''}`;
-    const [favBtnClassName, setFavBtnClassName] = useState(GAME_FAV_BTN_DEFAULT_CLASS_NAME);
-    const [isFavBtnClicked, setIsFavBtnClicked] = useState(false);
+    const [isClickAnimation, setIsClickAnimation] = useState(false);
+
+    const timerBtnRef = useRef(null);
+
+    const btnClickAnimationHandler = () => {
+        if (!isFavBtnActive) {
+            setIsClickAnimation(true);
+
+            clearTimeout(timerBtnRef.current);
+
+            timerBtnRef.current = setTimeout(() => {
+                setIsClickAnimation(false);
+            }, 360);
+        }
+    };
 
     useEffect(() => {
-        let effect = null;
-
-        if (isFavBtnClicked) {
-            setFavBtnClassName(`${GAME_FAV_BTN_DEFAULT_CLASS_NAME} ${isFavBtnActive ? 'active' : ''} clickedAnimation`);
-            effect = setTimeout(() => {
-                setFavBtnClassName(`${GAME_FAV_BTN_DEFAULT_CLASS_NAME} ${isFavBtnActive ? 'active' : ''}`);
-            }, 460);
-        }
-        if (!isFavBtnClicked) {
-            setFavBtnClassName(`${GAME_FAV_BTN_DEFAULT_CLASS_NAME} ${isFavBtnActive ? 'active' : ''}`);
-        }
-
         return () => {
-            if (effect !== null) {
-                clearTimeout(effect);
-            }
+            clearTimeout(timerBtnRef.current);
         };
-    }, [isFavBtnClicked]);
+    }, []);
+
+    // console.log({ isFavBtnActive });
+    // console.log({ isFavBtnClicked });
+    // console.log({ favBtnClassName });
+    // console.log({ isClickAnimation });
 
     return (
         <button
-            className={favBtnClassName}
+            className={`gameFavBtn ${gameBtnStyleClassName} ${isFavBtnActive ? 'active' : ''} ${isClickAnimation ? 'clickedAnimation' : ''}`}
             onClick={() => {
-                setIsFavBtnClicked((prev) => !prev);
+                btnClickAnimationHandler();
+
                 onClickHandler();
             }}
         >
