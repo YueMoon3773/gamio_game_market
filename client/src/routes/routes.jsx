@@ -7,6 +7,7 @@ import ErrorPage from '../components/pages/ErrorPage/ErrorPage';
 import ViewGames from '../components/pages/ViewGames/ViewGames';
 import GameDetails from '../components/pages/GameDetails/GameDetails';
 import UserAuthenticationPage from '../components/pages/UserAuthenticationPage/UserAuthenticationPage';
+import ViewCart from '../components/pages/ViewCart/ViewCart';
 
 const routes = [
     {
@@ -37,6 +38,15 @@ const routes = [
             {
                 path: '/game-detail/:gameId',
                 element: <GameDetails />,
+                errorElement: (
+                    <VideoBgChangeProvider>
+                        <ErrorPage />
+                    </VideoBgChangeProvider>
+                ),
+            },
+            {
+                path: '/cart',
+                element: <ViewCart />,
                 errorElement: (
                     <VideoBgChangeProvider>
                         <ErrorPage />

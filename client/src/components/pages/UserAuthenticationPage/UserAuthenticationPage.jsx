@@ -251,7 +251,7 @@ const UserAuthenticationPage = () => {
             } else {
                 const data = await signUp(userNameValue, helper.randomHex(), pwdValue);
 
-                console.log({ data });
+                // console.log({ data });
 
                 setIsSubmitting(false);
 

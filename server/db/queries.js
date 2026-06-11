@@ -84,6 +84,29 @@ const getAllGameIdsInUserCartByUserId = async (userId) => {
     return rows[0];
 };
 
+const getAllGamesInUserCartByUserId = async (userId) => {
+    const { rows } = await pool.query(
+        `
+        SELECT game_id, game_name, game_img, game_price
+        FROM user_game_cart
+            WHERE user_id = $1;
+    `,
+        [userId],
+    );
+
+    return rows;
+};
+
+const deleteAllGamesInUserCartByUserId = async (userId) => {
+    await pool.query(
+        `
+        DELETE FROM user_game_cart
+            WHERE user_id = $1;
+    `,
+        [userId],
+    );
+};
+
 const checkIsUserFavGame = async (userId, gameId) => {
     const { rows } = await pool.query(
         `
@@ -140,6 +163,8 @@ module.exports = {
     insertGameIntoUserCart,
     removeGameFromUserCartByGameId,
     getAllGameIdsInUserCartByUserId,
+    getAllGamesInUserCartByUserId,
+    deleteAllGamesInUserCartByUserId,
     checkIsUserFavGame,
     getAllUserFavGameIdsByUserId,
     insertUserFavGame,

@@ -242,7 +242,7 @@ const helperFunctions = () => {
         return newPrice < minPrice ? Number(minPrice.toFixed(2)) : Number(newPrice.toFixed(2));
     };
 
-    function randomHex() {
+    const randomHex = () => {
         const h = Math.floor(Math.random() * 360);
         const s = Math.floor(Math.random() * 40) + 60; // 60–90%
         const l = Math.floor(Math.random() * 40) + 30; // 30–70%
@@ -262,7 +262,16 @@ const helperFunctions = () => {
         };
 
         return hslToHex(h, s, l);
-    }
+    };
+
+    const calculateTotalGamePriceInCart = (gameList) => {
+        if (gameList.length === 0 || !('game_price' in gameList[0])) return null;
+        const ret = gameList.reduce((sum, item, index) => {
+            return sum + Number(item.game_price);
+        }, 0);
+
+        return ret.toFixed(2);
+    };
 
     return {
         platformListBasedOnDevices,
@@ -275,6 +284,7 @@ const helperFunctions = () => {
         getLastYearStartAndLastDates,
         calculateGamePrice,
         randomHex,
+        calculateTotalGamePriceInCart,
     };
 };
 

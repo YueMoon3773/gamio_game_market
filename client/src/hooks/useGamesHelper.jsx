@@ -66,6 +66,16 @@ export const GameHelperProvider = ({ children }) => {
 
     const resetGameIdInCartList = () => setGameIdInCartList(null);
 
+    const getAllGamesInfoInUserCart = async (userId) => {
+        const res = await fetch(beApi.getAllGamesInfoInUserCartUrl(userId), { mode: 'cors', method: 'GET' });
+
+        const data = await res.json();
+
+        if (data.ok === false) throw new Error(data.msg);
+
+        return data;
+    };
+
     const addGameToUserCart = async (userId, gameId, gameName, gameImg, gamePrice) => {
         const res = await fetch(beApi.addGameToUserCartUrl(), {
             mode: 'cors',
@@ -90,6 +100,24 @@ export const GameHelperProvider = ({ children }) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, gameId }),
+        });
+
+        const data = await res.json();
+
+        if (data.ok === false) {
+            if (data.err) throw new Error(data.err);
+            else throw new Error(data.msg);
+        }
+
+        return data;
+    };
+
+    const removeAllGamesFromUserCart = async (userId) => {
+        const res = await fetch(beApi.removeAllGamesInUserCartUrl(), {
+            mode: 'cors',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId }),
         });
 
         const data = await res.json();
@@ -197,6 +225,8 @@ export const GameHelperProvider = ({ children }) => {
                 gamesPerPageValue,
                 gamesPerPageOnChangeHandler,
                 gameIdInCartList,
+                getAllGamesInfoInUserCart,
+                removeAllGamesFromUserCart,
                 addGameToUserCart,
                 removeGameFromUserCart,
                 getAllGameIdsInUserCart,

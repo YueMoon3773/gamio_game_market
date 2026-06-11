@@ -49,32 +49,46 @@
     gap: clamp(10px, 1.2rem, 14px);
 }
 
-.cartBtn {
-    background-color: transparent;
-    transition: $transition_effect_md;
-
-    svg {
-        color: var(--text_color);
-        height: $fs_heading_3sm;
+.headerCartBtnWrapper {
+    position: relative;
+    .cartBtn {
+        background-color: transparent;
         transition: $transition_effect_md;
-    }
 
-    &:hover {
         svg {
-            transform: scale(1.16);
-        }
-    }
-
-    &.introPage {
-        svg {
-            color: $white_text;
+            color: var(--text_color);
+            height: $fs_heading_3sm;
+            transition: $transition_effect_md;
         }
 
         &:hover {
             svg {
-                color: $white_color;
+                transform: scale(1.16);
             }
         }
+
+        &.introPage {
+            svg {
+                color: $white_text;
+            }
+
+            &:hover {
+                svg {
+                    color: $white_color;
+                }
+            }
+        }
+    }
+
+    .cartBtnNoti {
+        position: absolute;
+        height: 6px;
+        width: 6px;
+        background-color: $primary_color;
+        top: -14%;
+        right: -10%;
+        border-radius: 999px;
+        transition: $transition_effect_md;
     }
 }
 

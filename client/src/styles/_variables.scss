@@ -133,6 +133,12 @@ $form_card_padding_left_right: clamp(38px, 4.2rem, 46px);
 $form_gap: clamp(10px, 1.2rem, 16px);
 
 /* =============================================== */
+/* CART PAGE DETAILS VARIABLES  */
+/* =============================================== */
+$cartCardPaddingTopBtm: clamp(16px, 2rem, 24px);
+$cartCardPaddingLeftRight: clamp(10px, 1.6rem, 18px);
+
+/* =============================================== */
 /* THEME SET UP  */
 /* =============================================== */
 [data-theme='light'] {

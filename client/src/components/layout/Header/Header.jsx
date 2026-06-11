@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
@@ -36,6 +36,7 @@ const headerSchema = z.object({
 
 const Header = ({ pageType, isPageInBrightBg = false }) => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { theme, toggleTheme, changeToDarkTheme } = useTheme();
     const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
@@ -53,7 +54,8 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
 
     const { badgeTypeList, changeBadgeTypeAndMessageThenShowBadge } = useInfoBadge();
 
-    const { resetGameIdInCartList, resetUserFavGameIdList } = useGameHelper();
+    const { gameIdInCartList, getAllGameIdsInUserCart, resetGameIdInCartList, resetUserFavGameIdList } =
+        useGameHelper();
 
     const {
         data: searchSuggestionListData,
@@ -149,9 +151,20 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
         };
     }, []);
 
+    // Check if user have games in cart
+    useEffect(() => {
+        if (userAuthenData !== null) getAllGameIdsInUserCart(userAuthenData.id);
+        // else resetGameIdInCartList();
+    }, [userAuthenData]);
+    useEffect(() => {
+        if (userAuthenData === null) resetGameIdInCartList();
+    });
+
     // LOGGING
+    // console.log('current url: ', location.pathname);
     // console.log({ showSearchSuggestion });
     // console.log({ userAuthenData, userAuthenLoading });
+    // console.log({ gameIdInCartList });
 
     const searchInpOnChangeHandle = (e) => {
         const inpVal = e.target.value;
@@ -185,7 +198,7 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
     const cartBtnOnClickHandler = () => {
         if (userAuthenLoading === false && userAuthenData === null) {
             changeBadgeTypeAndMessageThenShowBadge(badgeTypeList.warning.value, 'Log in to see this content.');
-        }
+        } else navigate('/cart');
     };
 
     return (
@@ -223,12 +236,16 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
                     </button>
                 )}
 
-                <button
-                    className={`cartBtn ${pageType === 'introPage' ? 'introPage' : ''}`}
-                    onClick={cartBtnOnClickHandler}
-                >
-                    <CartIcon></CartIcon>
-                </button>
+                <div className="headerCartBtnWrapper">
+                    <button
+                        className={`cartBtn ${pageType === 'introPage' ? 'introPage' : ''}`}
+                        onClick={cartBtnOnClickHandler}
+                    >
+                        <CartIcon></CartIcon>
+                    </button>
+
+                    {gameIdInCartList !== null && gameIdInCartList.length > 0 && <div className="cartBtnNoti"></div>}
+                </div>
 
                 {userAuthenData !== null && (
                     <div ref={controllerDropDownRef} className="headerUserInfoWrapper">
@@ -249,6 +266,8 @@ const Header = ({ pageType, isPageInBrightBg = false }) => {
                                 resetGameIdInCartList();
                                 resetUserFavGameIdList();
                                 logOut();
+
+                                if (location.pathname === '/cart') navigate('/');
                             }}
                         ></UserControllerDropDown>
                     </div>

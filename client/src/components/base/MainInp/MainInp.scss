@@ -82,7 +82,7 @@
     &:has(.mainInpStyle:focus),
     &:has(.mainInpStyle:active) {
         .mainInpLabel {
-            color: $primary_color;
+            color: $primary_lighter_color;
             font-weight: 600;
         }
     }

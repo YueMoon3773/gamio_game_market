@@ -1,0 +1,89 @@
+.cartGameCard {
+    @include flexCenter;
+    justify-content: space-between;
+    padding: $cartCardPaddingTopBtm $cartCardPaddingLeftRight;
+    gap: clamp(20px, 2.2rem, 26px);
+    flex-wrap: wrap;
+}
+
+.cartCardLeft {
+    @include flexCenter;
+    justify-content: flex-start;
+    flex: 1;
+    gap: clamp(20px, 2.2rem, 26px);
+    flex-wrap: wrap;
+}
+
+.cartCardImgWrapper {
+    width: 14%;
+
+    .cartCardImg {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 3.5 / 2;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .cartCardSkeletonImg {
+        width: 100%;
+        min-height: 100px;
+    }
+}
+
+.cartCardSkeletonName {
+    font-size: $fs_normal_lg;
+    color: transparent;
+}
+
+.cartCardName {
+    font-size: $fs_normal_lg;
+    color: var(--text_color);
+    transition: $transition_effect_md;
+
+    &:hover {
+        color: $primary_color;
+        text-decoration: underline;
+        text-underline-offset: 0.3em;
+    }
+}
+
+.cartCardRight {
+    @include flexCenter;
+    gap: clamp(16px, 1.6rem, 24px);
+    flex-wrap: wrap;
+}
+
+.cartCardSkeletonPrice {
+    font-size: $fs_normal_md;
+    color: transparent;
+}
+
+.cartCardPrice {
+    font-size: $fs_normal_xl;
+    font-weight: 700;
+    color: $primary_lighter_color;
+}
+
+.cartCardDeleteBtn {
+    @include flexCenter;
+    padding: 1.2em;
+    border-radius: $distance_sm;
+    background-color: $dark_red_color;
+    transition: $transition_effect_md;
+
+    svg {
+        color: $snow_white_color;
+        transition: $transition_effect_md;
+    }
+
+    &:hover {
+        transform: scale(1.06);
+        background-color: $light_red_color;
+        filter: brightness(1.16);
+
+        svg {
+            color: $white_color;
+        }
+    }
+}

@@ -33,6 +33,14 @@ const backEndApiHelper = () => {
         return `${baseBeApiUrl}/game/get-game-ids-in-cart?userId=${userId}`;
     };
 
+    const getAllGamesInfoInUserCartUrl = (userId) => {
+        return `${baseBeApiUrl}/game/get-games-info-in-cart?userId=${userId}`;
+    };
+
+    const removeAllGamesInUserCartUrl = () => {
+        return `${baseBeApiUrl}/game/remove-all-games-in-cart`;
+    };
+
     const addUserFavGameUrl = () => {
         return `${baseBeApiUrl}/game/add-game-fav`;
     };
@@ -54,6 +62,8 @@ const backEndApiHelper = () => {
         removeGameFromUserCartUrl,
         checkIfGameIsInUserCartUrl,
         getAllGameIdsInUserCartUrl,
+        getAllGamesInfoInUserCartUrl,
+        removeAllGamesInUserCartUrl,
         addUserFavGameUrl,
         removeUserFavGameUrl,
         getAllUserFavGameIdsUrl,

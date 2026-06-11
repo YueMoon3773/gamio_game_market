@@ -61,7 +61,7 @@ const checkIfGameInUserCart = [
 ];
 
 const getAllGameIdsInUserCart = async (req, res, next) => {
-    console.log('===GET GAMES IN USER CART===');
+    console.log('===GET GAME IDS IN USER CART===');
 
     const { userId } = req.query;
     // console.log({ userId });
@@ -73,7 +73,7 @@ const getAllGameIdsInUserCart = async (req, res, next) => {
 
         return res.status(200).json({
             ok: true,
-            msg: 'Games in cart list retrieved.',
+            msg: 'Game ids in cart list retrieved.',
             gameList: gameList.game_list ? gameList.game_list : [],
         });
     } catch (err) {
@@ -84,6 +84,62 @@ const getAllGameIdsInUserCart = async (req, res, next) => {
         return next(err);
     }
 };
+
+const getAllGamesInfoInUserCart = async (req, res, next) => {
+    console.log('===GET GAMES INFO IN USER CART===');
+
+    const { userId } = req.query;
+    // console.log({ userId });
+
+    try {
+        const gameList = await db.getAllGamesInUserCartByUserId(userId);
+        // console.log({ gameList });
+        // console.log(gameList);
+
+        return res.status(200).json({
+            ok: true,
+            msg: 'Games info in cart list retrieved.',
+            gameList: gameList ? gameList : [],
+        });
+    } catch (err) {
+        console.log(err);
+
+        res.status(501).json({ ok: false, msg: 'Failed to retrieve game in cart list.', err });
+
+        return next(err);
+    }
+};
+
+const removeAllGamesFromUserCart = [
+    validatorSchema.userIdValidatorSchema,
+    async (req, res, next) => {
+        console.log('===DELETE USER CART===');
+
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            const msg = errors.array().map((err) => err.msg);
+
+            return res.status(401).json({ ok: false, msg });
+        }
+
+        const { userId } = matchedData(req);
+
+        const userIdToDb = Number(userId);
+
+        try {
+            await db.deleteAllGamesInUserCartByUserId(userIdToDb);
+
+            return res.status(200).json({ ok: true, msg: 'Thanks for your order. Hope to see you again.' });
+        } catch (err) {
+            console.log(err);
+
+            res.status(501).json({ ok: false, msg: 'Failed to complete your order. Please try again later.' });
+
+            return next(err);
+        }
+    },
+];
 
 const addGameToUserCartPost = [
     validatorSchema.userIdValidatorSchema,
@@ -287,6 +343,8 @@ module.exports = {
     removeGameFromUserCartPost,
     checkIfGameInUserCart,
     getAllGameIdsInUserCart,
+    getAllGamesInfoInUserCart,
+    removeAllGamesFromUserCart,
     getAllUserFavGameIds,
     addUserFavGamePost,
     removeUserFavGamePost,
