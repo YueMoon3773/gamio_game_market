@@ -13,11 +13,7 @@
     opacity: 0;
     pointer-events: none;
 
-    @media (max-width: 1024px) {
-    }
-
     @media (max-width: 768px) {
-        width: 80%;
         right: 0;
     }
 
@@ -44,7 +40,8 @@
             }
 
             @media (max-width: 768px) {
-                font-size: $fs_normal_ssm;
+                font-size: $fs_normal_3sm;
+                display: block;
             }
         }
 

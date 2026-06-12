@@ -2,6 +2,7 @@
 import { NavLink } from 'react-router-dom';
 import { z } from 'zod';
 
+import ValidatedComponent from '../../../utils/validateComponentProps';
 import { useGameHelper } from '../../../hooks/useGamesHelper';
 
 import {
@@ -29,14 +30,18 @@ import {
     ShowAllButtonIcon,
 } from '../../../assets/svgIcons';
 import gameApiHelper from '../../../utils/gameApiHelper';
-import helperFunctions from '../../../utils/helper';
+// import helperFunctions from '../../../utils/helper';
 
 import './SideBar.scss';
 
-const helper = helperFunctions();
+// const helper = helperFunctions();
 const api = gameApiHelper();
 
-const SideBar = () => {
+const sideBarSchema = z.object({
+    sideBarClassName: z.string().optional().default('desktopSidebar'),
+});
+
+const SideBar = ({ sideBarClassName = 'desktopSidebar' }) => {
     // const [isPlatformsShowAll, setIsPlatformsShowAll] = useState(false);
     // const [isGenresShowAll, setIsGenresShowAll] = useState(false);
 
@@ -44,7 +49,7 @@ const SideBar = () => {
         useGameHelper();
 
     return (
-        <aside className="sideBar">
+        <aside className={`sideBar ${sideBarClassName}`}>
             {/* <section className="sideBarSection">
                 <h1 className="sideBarSectionHeading">Your games</h1>
                 <NavLink to={api.FILTER_LINKS.POPULAR_LAST_YEAR.value} className={({ isActive }) => `sideBarLink ${isActive ? 'active' : ''}`}>
@@ -310,4 +315,4 @@ const SideBar = () => {
     );
 };
 
-export default SideBar;
+export default ValidatedComponent(SideBar, sideBarSchema);

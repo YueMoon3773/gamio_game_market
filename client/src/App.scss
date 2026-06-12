@@ -9,11 +9,34 @@
 
     &.errorPage {
         h1 {
-            font-size: $fs_heading_sm;
+            font-size: $fs_heading_lg;
             color: $white_text;
             text-shadow: 0 0 3px $black_text;
             cursor: default;
+            text-wrap: pretty;
+
+            @media (max-width: 1024px) {
+                font-size: $fs_heading_sm;
+            }
+
+            @media (max-width: 768px) {
+                font-size: $fs_heading_ssm;
+            }
+
+            @media (max-width: 460px) {
+                font-size: $fs_normal_xl;
+            }
         }
+    }
+
+    @media (max-width: 768px) {
+        max-width: none;
+        width: 76%;
+    }
+
+    @media (max-width: 460px) {
+        max-width: none;
+        width: 96%;
     }
 }
 
@@ -35,6 +58,18 @@
             font-size: $fs_heading_xl;
             font-weight: 300;
             margin: 0;
+
+            @media (max-width: 1024px) {
+                font-size: $fs_heading_lg;
+            }
+
+            @media (max-width: 768px) {
+                font-size: $fs_heading_md;
+            }
+
+            @media (max-width: 460px) {
+                font-size: $fs_heading_sm;
+            }
         }
 
         p {
@@ -43,6 +78,20 @@
             max-width: 75ch;
             text-align: justify;
             line-height: 1.6;
+
+            @media (max-width: 1024px) {
+                font-size: $fs_normal_sm;
+            }
+
+            @media (max-width: 768px) {
+                font-size: $fs_normal_ssm;
+                text-shadow: 0 0 4px $black_text;
+            }
+
+            @media (max-width: 460px) {
+                font-size: $fs_normal_3sm;
+                text-shadow: 0 0 6px $black_text;
+            }
         }
     }
 
@@ -51,6 +100,11 @@
         justify-content: space-around;
         flex-wrap: wrap;
         margin-top: clamp(20px, 2.4rem, $distance_lg);
+        gap: clamp(10px, 1.4rem, 16px);
+
+        @media (max-width: 768px) {
+            margin-top: clamp($distance_md, 2rem, 20px);
+        }
     }
 }
 
@@ -62,6 +116,18 @@
         font-size: $fs_normal_xl;
         color: $white_text;
         cursor: default;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_lg * 0.9);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_lg;
+        }
+
+        @media (max-width: 460px) {
+            font-size: calc($fs_normal_lg * 0.82);
+        }
     }
 }
 
@@ -90,6 +156,18 @@
         fill: none;
         height: $fs_normal_xl;
         color: $black_text;
+
+        @media (max-width: 1024px) {
+            height: $fs_normal_lg;
+        }
+
+        @media (max-width: 768px) {
+            height: $fs_normal_md;
+        }
+
+        @media (max-width: 460px) {
+            height: $fs_normal_sm;
+        }
     }
 
     svg path,
@@ -101,12 +179,36 @@
     img {
         height: $fs_normal_md;
         border-radius: 5px;
+
+        @media (max-width: 1024px) {
+            height: calc($fs_normal_md * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            height: calc($fs_normal_md * 0.9);
+        }
+
+        @media (max-width: 460px) {
+            height: calc($fs_normal_md * 0.86);
+        }
     }
 
     span {
         font-size: $fs_normal_sm;
         font-weight: 700;
         color: $black_text;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_sm * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_ssm;
+        }
+
+        @media (max-width: 460px) {
+            font-size: $fs_normal_4sm;
+        }
     }
 
     &.introQuickNavigationBtn {

@@ -72,18 +72,57 @@ $searchBtnBgColorHoverInBrightBg: rgba(
 
 .searchWrapper {
     &.headerSearchInp {
-        width: $header_inp_width_normal_laptop;
+        width: $header_inp_width_normal_desktop;
         position: relative;
 
         &.interacted {
-            animation: headerInpShrink 360ms cubic-bezier(0.43, 0.07, 0.35, 1.01);
+            animation: headerInpShrinkDesktop 360ms cubic-bezier(0.43, 0.07, 0.35, 1.01);
+
+            @media (max-width: 1024px) {
+                animation-name: headerInpShrinkLaptop;
+            }
+
+            @media (max-width: 768px) {
+                animation-name: headerInpShrinkTablet;
+            }
+
+            @media (max-width: 460px) {
+                animation-name: headerInpShrinkMobile;
+            }
         }
 
         &:has(.searchInp:active),
         &:has(.searchInp:focus),
         &:has(.searchInp:not(:placeholder-shown)) {
-            animation: headerInpExpand 360ms cubic-bezier(0.43, 0.07, 0.35, 1.01);
+            animation: headerInpExpandDesktop 360ms cubic-bezier(0.43, 0.07, 0.35, 1.01);
             width: $header_inp_width_expanded_laptop;
+
+            @media (max-width: 1024px) {
+                animation-name: headerInpExpandLaptop;
+                width: $header_inp_width_expanded_laptop;
+            }
+
+            @media (max-width: 768px) {
+                animation-name: headerInpExpandTablet;
+                width: $header_inp_width_expanded_tablet;
+            }
+
+            @media (max-width: 460px) {
+                animation-name: headerInpExpandMobile;
+                width: $header_inp_width_expanded_mobile;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            width: $header_inp_width_normal_laptop;
+        }
+
+        @media (max-width: 768px) {
+            width: $header_inp_width_normal_tablet;
+        }
+
+        @media (max-width: 500px) {
+            width: $header_inp_width_normal_mobile;
         }
     }
 }
@@ -200,9 +239,33 @@ $searchBtnBgColorHoverInBrightBg: rgba(
     outline: none;
     border: none;
 
+    @media (max-width: 1024px) {
+        font-size: calc($fs_normal_md * 0.96);
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_normal_sm;
+    }
+
+    @media (max-width: 460px) {
+        font-size: $fs_normal_ssm;
+    }
+
     &::placeholder {
         font-size: $fs_normal_md;
         transition: $transition_effect_md;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_md * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_sm;
+        }
+
+        @media (max-width: 460px) {
+            font-size: $fs_normal_ssm;
+        }
     }
 
     &.headerSearchInp {
@@ -257,6 +320,18 @@ $searchBtnBgColorHoverInBrightBg: rgba(
     svg {
         height: $fs_normal_lg;
         color: var(--text_color);
+
+        @media (max-width: 1024px) {
+            height: $fs_normal_md;
+        }
+
+        @media (max-width: 768px) {
+            height: $fs_normal_sm;
+        }
+
+        @media (max-width: 460px) {
+            height: $fs_normal_ssm;
+        }
     }
 
     &::before {
@@ -288,6 +363,18 @@ $searchBtnBgColorHoverInBrightBg: rgba(
         height: $fs_normal_sm;
         fill: currentColor;
         color: var(--text_color);
+
+        @media (max-width: 1024px) {
+            height: calc($fs_normal_sm * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            height: $fs_normal_ssm;
+        }
+
+        @media (max-width: 460px) {
+            height: $fs_normal_md;
+        }
     }
 }
 
@@ -304,7 +391,7 @@ $searchBtnBgColorHoverInBrightBg: rgba(
     overflow: hidden;
 
     &.expand {
-        max-height: 500px;
+        max-height: 900px;
         opacity: 1;
     }
 
@@ -330,9 +417,14 @@ $searchBtnBgColorHoverInBrightBg: rgba(
     width: 100%;
     @include flexCenter;
     justify-content: stretch;
+    flex-wrap: wrap;
     gap: clamp(20px, 2.4rem, 26px);
     padding: 2em 2.4em;
     transition: $transition_effect_md;
+
+    @media (max-width: 460px) {
+        flex-direction: column;
+    }
 
     .suggestionItemImg {
         width: 26%;
@@ -342,6 +434,14 @@ $searchBtnBgColorHoverInBrightBg: rgba(
         object-fit: cover;
         object-position: center;
         transition: inherit;
+
+        @media (max-width: 768px) {
+            width: 30%;
+        }
+
+        @media (max-width: 460px) {
+            width: 90%;
+        }
     }
 
     .suggestionItemLink {

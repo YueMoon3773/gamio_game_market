@@ -32,3 +32,5 @@ details.json
 details_img.json
 test.json
 search.json
+/src/components/pages/Test/Test.jsx
+/src/components/pages/Test/Test.scss

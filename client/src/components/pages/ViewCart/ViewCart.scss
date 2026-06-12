@@ -1,27 +1,45 @@
 .viewCartWrapper {
     flex: 1;
     height: 100%;
-    // @include displayGrid;
-    // grid-template-columns: 8fr 4fr;
     @include flexColumn;
     align-items: stretch;
 }
-// .viewCartProductsWrapper {
-//     height: 100%;
-//     @include flexColumn;
-//     align-items: stretch;
-// }
 
 .viewCartHeading {
     font-size: $fs_heading_md;
     color: $primary_light_color;
     margin: 0 auto;
+
+    @media (max-width: 1024px) {
+        font-size: calc($fs_heading_md * 0.96);
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_heading_sm;
+    }
+
+    @media (max-width: 460px) {
+        font-size: $fs_heading_ssm;
+    }
 }
 
 .productOverview {
     margin: 0 auto;
     font-size: $fs_normal_md;
     color: var(--text_color);
+
+    @media (max-width: 1024px) {
+        font-size: calc($fs_normal_md * 0.96);
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_normal_sm;
+    }
+
+    @media (max-width: 460px) {
+        font-size: $fs_normal_ssm;
+    }
+
     span {
         font-size: inherit;
         font-weight: 800;
@@ -55,6 +73,10 @@
     margin-top: 1.6rem;
     @include flexColumn;
     align-items: stretch;
+
+    @media (max-width: 460px) {
+        gap: (10px, 1.6rem, 16px);
+    }
 }
 
 .cartPriceWrapper {
@@ -65,6 +87,18 @@
 .cartPriceLeft {
     font-size: $fs_heading_md;
     color: $primary_light_color;
+
+    @media (max-width: 1024px) {
+        font-size: calc($fs_heading_md * 0.96);
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_heading_sm;
+    }
+
+    @media (max-width: 460px) {
+        font-size: $fs_heading_ssm;
+    }
 }
 
 .cartPriceRight {
@@ -74,6 +108,18 @@
         font-size: $fs_heading_lg;
         font-weight: 900;
         color: $primary_color;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_heading_lg * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_heading_md;
+        }
+
+        @media (max-width: 460px) {
+            font-size: $fs_heading_sm;
+        }
     }
 }
 
@@ -88,6 +134,14 @@
         border: 3px solid var(--in_focus_gray);
         border-radius: $distance_sm;
         transition: $transition_effect_md;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_lg * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_md;
+        }
 
         &:hover {
             border-color: $primary_color;

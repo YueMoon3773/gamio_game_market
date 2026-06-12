@@ -32,7 +32,15 @@
         }
 
         @media (max-width: 768px) {
-            font-size: calc($inpFsz * 0.86);
+            font-size: calc($inpFsz * 0.82);
+        }
+
+        @media (max-width: 460px) {
+            font-size: calc($inpFsz * 0.76);
+        }
+
+        @media (max-width: 360px) {
+            font-size: calc($inpFsz * 0.6);
         }
 
         &::placeholder {
@@ -63,19 +71,22 @@
         cursor: text;
         transition: $transition_effect_md;
 
-        // @media (max-width: 1024px) {
-        //     font-size: calc($inpFsz * 0.92);
-        // }
+        @media (max-width: 1024px) {
+            font-size: calc($inpFsz * 0.92);
+        }
 
-        // @media (max-width: 768px) {
-        //     font-size: calc($inpFsz * 0.86);
-        // }
+        @media (max-width: 768px) {
+            font-size: calc($inpFsz * 0.86);
+        }
 
-        // @media (max-width: 460px) {
-        //     padding: calc($inpDistanceTopBottom * 1.2) $inpDistanceLeftRight;
-        //     font-size: calc($inpFsz * 0.82);
-        //     white-space: nowrap;
-        // }
+        @media (max-width: 460px) {
+            font-size: calc($inpFsz * 0.8);
+            white-space: nowrap;
+        }
+
+        @media (max-width: 460px) {
+            font-size: calc($inpFsz * 0.66);
+        }
     }
 
     // &:has(.mainInpStyle:not(:placeholder-shown)),

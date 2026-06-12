@@ -73,8 +73,17 @@ $header_padding_top_bottom: clamp(10px, 1.2rem, 16px);
 $page_padding_left_right: clamp(30px, 3.6rem, 42px);
 $page_content_padding_content_top: clamp(28px, 3rem, 36px);
 
-$header_inp_width_normal_laptop: 22%;
+$header_inp_width_normal_desktop: 22%;
 $header_inp_width_expanded_laptop: 36%;
+
+$header_inp_width_normal_laptop: 38%;
+$header_inp_width_expanded_laptop: 40%;
+
+$header_inp_width_normal_tablet: 40%;
+$header_inp_width_expanded_tablet: 42%;
+
+$header_inp_width_normal_mobile: 48%;
+$header_inp_width_expanded_mobile: 52%;
 
 $intro_element_blur_bg_effect: blur(6px);
 

@@ -11,9 +11,37 @@
         @include flexCenter;
         justify-content: space-between;
         gap: 40px;
+    }
 
+    &.introPage {
+        @media (max-width: 768px) {
+            @include flexColumn;
+            justify-content: space-evenly;
+            gap: clamp(20px, 2.4rem, 26px);
+        }
+
+        @media (max-width: 460px) {
+            gap: clamp(16px, 2rem, 24px);
+        }
+    }
+
+    &.errorPage {
         &:has(.errorPage) {
             justify-content: center;
+
+            & > * {
+                @media (max-width: 1024px) {
+                    min-width: 66%;
+                }
+
+                @media (max-width: 768px) {
+                    min-width: 86%;
+                }
+
+                @media (max-width: 460px) {
+                    min-width: 96%;
+                }
+            }
         }
     }
 
@@ -32,11 +60,33 @@
             padding: $page_content_padding_content_top $page_padding_left_right;
             position: relative;
 
+            @media (max-width: 1024px) {
+                padding: $page_content_padding_content_top calc($page_padding_left_right * 0.86);
+            }
+
+            @media (max-width: 768px) {
+                padding: $page_content_padding_content_top calc($page_padding_left_right * 0.66);
+            }
+
+            @media (max-width: 460px) {
+                padding: $page_content_padding_content_top calc($page_padding_left_right * 0.36);
+            }
+
             .scrollToTopBtnWrapper {
                 @include flexCenter;
                 position: fixed;
                 right: 1.2em;
                 bottom: 1.2em;
+
+                @media (max-width: 768px) {
+                    right: 1em;
+                    bottom: 1em;
+                }
+
+                @media (max-width: 460px) {
+                    right: 0.8em;
+                    bottom: 0.8em;
+                }
 
                 .scrollToTopBtn {
                     position: relative;
@@ -51,6 +101,18 @@
                         height: $fs_heading_md;
                         color: var(--text_color);
                         transition: $transition_effect_md;
+
+                        @media (max-width: 1024px) {
+                            height: $fs_heading_sm;
+                        }
+
+                        @media (max-width: 768px) {
+                            height: $fs_heading_ssm;
+                        }
+
+                        @media (max-width: 460px) {
+                            height: $fs_heading_3sm;
+                        }
                     }
 
                     transition: $transition_effect_md;
@@ -133,10 +195,22 @@
     }
 
     &.normalPage {
-        // padding: $page_content_padding_content_top $page_padding_left_right;
-        // padding: calc($page_content_padding_content_top * 0.3) $page_padding_left_right
-        //     $page_content_padding_content_top;
         padding: calc($page_content_padding_content_top * 0.26) $page_padding_left_right
             calc($page_content_padding_content_top * 0.5);
+
+        @media (max-width: 1024px) {
+            padding-left: calc($page_padding_left_right * 0.86);
+            padding-right: calc($page_padding_left_right * 0.86);
+        }
+
+        @media (max-width: 768px) {
+            padding-left: calc($page_padding_left_right * 0.66);
+            padding-right: calc($page_padding_left_right * 0.66);
+        }
+
+        @media (max-width: 460px) {
+            padding-left: calc($page_padding_left_right * 0.36);
+            padding-right: calc($page_padding_left_right * 0.36);
+        }
     }
 }

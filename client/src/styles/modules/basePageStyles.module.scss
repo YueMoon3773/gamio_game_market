@@ -27,6 +27,21 @@
     padding: $header_padding_top_bottom $page_padding_left_right;
 
     transition: $transition_effect_md;
+
+    @media (max-width: 1024px) {
+        gap: clamp(20px, 3.6em, 42px);
+        padding: $header_padding_top_bottom calc($page_padding_left_right * 0.86);
+    }
+
+    @media (max-width: 768px) {
+        gap: clamp(14px, 2.2em, 28px);
+        padding: $header_padding_top_bottom calc($page_padding_left_right * 0.66);
+    }
+
+    @media (max-width: 600px) {
+        gap: clamp(16px, 2em, 26px);
+        padding: $header_padding_top_bottom calc($page_padding_left_right * 0.36);
+    }
 }
 
 .pageContent {

@@ -12,10 +12,33 @@
     flex: 1;
     gap: clamp(20px, 2.2rem, 26px);
     flex-wrap: wrap;
+
+    @media (max-width: 1024px) {
+        gap: clamp(14px, 1.6rem, 20px);
+    }
+
+    @media (max-width: 768px) {
+        gap: clamp(10px, 1.2rem, 16px);
+    }
+
+    @media (max-width: 460px) {
+        gap: clamp(4px, 0.6rem, 10px);
+    }
 }
 
 .cartCardImgWrapper {
     width: 14%;
+
+    @media (max-width: 1024px) {
+    }
+
+    @media (max-width: 768px) {
+        width: 30%;
+    }
+
+    @media (max-width: 460px) {
+        width: 26%;
+    }
 
     .cartCardImg {
         width: 100%;
@@ -41,6 +64,21 @@
     color: var(--text_color);
     transition: $transition_effect_md;
 
+    @media (max-width: 1024px) {
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_normal_md;
+    }
+
+    @media (max-width: 460px) {
+        font-size: $fs_normal_ssm;
+    }
+
+    @media (max-width: 360px) {
+        font-size: $fs_normal_3sm;
+    }
+
     &:hover {
         color: $primary_color;
         text-decoration: underline;
@@ -63,6 +101,22 @@
     font-size: $fs_normal_xl;
     font-weight: 700;
     color: $primary_lighter_color;
+
+    @media (max-width: 1024px) {
+        font-size: $fs_normal_lg;
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_normal_md;
+    }
+
+    @media (max-width: 460px) {
+        font-size: $fs_normal_sm;
+    }
+
+    @media (max-width: 360px) {
+        font-size: $fs_normal_3sm;
+    }
 }
 
 .cartCardDeleteBtn {
@@ -72,9 +126,33 @@
     background-color: $dark_red_color;
     transition: $transition_effect_md;
 
+    @media (max-width: 1024px) {
+        padding: 1em;
+    }
+
+    @media (max-width: 768px) {
+        padding: 0.8em;
+    }
+
+    @media (max-width: 460px) {
+        padding: 0.6em;
+    }
+
     svg {
         color: $snow_white_color;
         transition: $transition_effect_md;
+
+        @media (max-width: 1024px) {
+            height: $fs_normal_xl;
+        }
+
+        @media (max-width: 768px) {
+            height: $fs_normal_lg;
+        }
+
+        @media (max-width: 460px) {
+            height: $fs_normal_sm;
+        }
     }
 
     &:hover {

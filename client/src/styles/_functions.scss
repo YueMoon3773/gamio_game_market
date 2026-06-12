@@ -14,7 +14,31 @@
     }
 }
 
-@keyframes headerInpExpand {
+@keyframes headerInpExpandDesktop {
+    0% {
+        width: $header_inp_width_normal_desktop;
+    }
+    70% {
+        width: $header_inp_width_expanded_laptop * 1.06;
+    }
+    100% {
+        width: $header_inp_width_expanded_laptop;
+    }
+}
+
+@keyframes headerInpShrinkDesktop {
+    0% {
+        width: $header_inp_width_expanded_laptop;
+    }
+    70% {
+        width: $header_inp_width_normal_desktop * 0.86;
+    }
+    100% {
+        width: $header_inp_width_normal_desktop;
+    }
+}
+
+@keyframes headerInpExpandLaptop {
     0% {
         width: $header_inp_width_normal_laptop;
     }
@@ -26,15 +50,63 @@
     }
 }
 
-@keyframes headerInpShrink {
+@keyframes headerInpShrinkLaptop {
     0% {
         width: $header_inp_width_expanded_laptop;
     }
     70% {
-        width: $header_inp_width_normal_laptop * 0.86;
+        width: $header_inp_width_normal_laptop * 0.9;
     }
     100% {
         width: $header_inp_width_normal_laptop;
+    }
+}
+
+@keyframes headerInpExpandTablet {
+    0% {
+        width: $header_inp_width_normal_tablet;
+    }
+    70% {
+        width: $header_inp_width_expanded_tablet * 1.06;
+    }
+    100% {
+        width: $header_inp_width_expanded_tablet;
+    }
+}
+
+@keyframes headerInpShrinkTablet {
+    0% {
+        width: $header_inp_width_expanded_tablet;
+    }
+    70% {
+        width: $header_inp_width_normal_tablet * 0.92;
+    }
+    100% {
+        width: $header_inp_width_normal_tablet;
+    }
+}
+
+@keyframes headerInpExpandMobile {
+    0% {
+        width: $header_inp_width_normal_mobile;
+    }
+    70% {
+        width: $header_inp_width_expanded_mobile * 1.06;
+    }
+    100% {
+        width: $header_inp_width_expanded_mobile;
+    }
+}
+
+@keyframes headerInpShrinkMobile {
+    0% {
+        width: $header_inp_width_expanded_mobile;
+    }
+    70% {
+        width: $header_inp_width_normal_mobile * 0.92;
+    }
+    100% {
+        width: $header_inp_width_normal_mobile;
     }
 }
 

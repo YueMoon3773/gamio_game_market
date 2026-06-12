@@ -9,10 +9,21 @@ import GameDetails from '../components/pages/GameDetails/GameDetails';
 import UserAuthenticationPage from '../components/pages/UserAuthenticationPage/UserAuthenticationPage';
 import ViewCart from '../components/pages/ViewCart/ViewCart';
 
+import Test from '../components/pages/Test/Test';
+
 const routes = [
     {
         element: <AnimatedLayout />,
         children: [
+            {
+                path: '/test',
+                element: <Test />,
+                errorElement: (
+                    <VideoBgChangeProvider>
+                        <ErrorPage />
+                    </VideoBgChangeProvider>
+                ),
+            },
             {
                 path: '/',
                 element: (
