@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import ValidatedComponent from '../../../utils/validateComponentProps';
 
-import { ScrollToTopBtnIcon } from '../../../assets/svgIcons';
+import { ScrollToTopBtnIcon, ExpandMenuIcon, CloseMenuIcon } from '../../../assets/svgIcons';
 import SideBar from '../SideBar/SideBar';
 
 import basePageStyles from '../../../styles/modules/basePageStyles.module.scss';
@@ -39,6 +39,10 @@ const PageContent = ({ pageType, children }) => {
     const [showScrollBtn, setShowScrollBtn] = useState(false);
     const [isScrollBtnHover, setIsScrollBtnHover] = useState(false);
 
+    const [isShowMenu, setIsShowMenu] = useState(false);
+    const [isChangeSideBar, setIsChangeSideBar] = useState(false);
+    const isChangeSideBarRef = useRef(false);
+
     // check user current scroll to show scroll to top btn
     useEffect(() => {
         const checkUserScroll = () => {
@@ -58,13 +62,47 @@ const PageContent = ({ pageType, children }) => {
         };
     }, []);
 
+    const monitorSideBar = () => {
+        const { innerWidth } = window;
+
+        // console.log({ innerWidth });
+
+        if (innerWidth < 960) {
+            //check to prevent hiding side bar when it's open and user resize screen
+            if (isChangeSideBarRef.current === true) return;
+
+            isChangeSideBarRef.current = true;
+            setIsChangeSideBar(true);
+        } else {
+            isChangeSideBarRef.current = false;
+            setIsChangeSideBar(false);
+        }
+    };
+
+    // change side bar's style based on screen size
+    useEffect(() => {
+        window.addEventListener('resize', monitorSideBar);
+
+        return () => window.removeEventListener('resize', monitorSideBar);
+    }, [isChangeSideBar]);
+    useEffect(() => {
+        monitorSideBar();
+    }, []);
+
+    const openMenuBtnOnClickHandler = () => {
+        setIsShowMenu(true);
+    };
+
+    // LOGGING
     // console.log({ showScrollBtn });
+    // console.log({ isChangeSideBar });
 
     return (
         <div className={pageContentClassName}>
             {pageType === 'viewGamesPage' && (
                 <>
-                    <SideBar></SideBar>
+                    {!isChangeSideBar && <SideBar sideBarClassName="desktopSidebar"></SideBar>}
+
                     <div className="contentWrapper">
                         {children}
 
@@ -90,7 +128,34 @@ const PageContent = ({ pageType, children }) => {
                                 Scroll to top
                             </span>
                         </div>
+
+                        {isChangeSideBar && (
+                            <div className="menuBtnWrapper">
+                                <MainBtn
+                                    btnClassName={`menuBtn ${isShowMenu ? 'hidden' : 'show'}`}
+                                    btnOnClickHandler={openMenuBtnOnClickHandler}
+                                >
+                                    <ExpandMenuIcon></ExpandMenuIcon>
+                                </MainBtn>
+                            </div>
+                        )}
                     </div>
+
+                    {isChangeSideBar && (
+                        <div className={`menuOverlayWrapper ${isShowMenu ? 'show' : 'hidden'}`}>
+                            <div className={`overlayBg ${isShowMenu ? 'show' : 'hidden'}`}></div>
+                            <div className={`menuSideBarWrapper ${isShowMenu ? 'show' : 'hidden'}`}>
+                                {isShowMenu && (
+                                    <>
+                                        <button className="closeSideBarMenu" onClick={() => setIsShowMenu(false)}>
+                                            <CloseMenuIcon></CloseMenuIcon>
+                                        </button>
+                                        <SideBar sideBarClassName={`menuSideBar`}></SideBar>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </>
             )}
 

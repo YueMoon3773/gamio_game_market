@@ -16,6 +16,7 @@
 
 .filterControllerSection {
     @include flexCenter;
+    flex-wrap: wrap;
     justify-content: flex-start;
     gap: clamp(20px, 2.4rem, 24px);
     margin-bottom: 3.6rem;
@@ -27,6 +28,18 @@
     @include flexCenter;
     flex-wrap: wrap;
     gap: clamp(30px, 3.2rem, 36px);
+
+    @media (max-width: 1024px) {
+        max-width: 60%;
+    }
+
+    @media (max-width: 768px) {
+        max-width: 80%;
+    }
+
+    @media (max-width: 460px) {
+        max-width: 90%;
+    }
 
     & > * {
         flex: 1;
@@ -43,9 +56,33 @@
         gap: clamp(8px, 0.8rem, 10px);
         transition: $transition_effect_md;
 
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_md * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_sm;
+        }
+
+        @media (max-width: 460px) {
+            font-size: calc($fs_normal_sm * 0.96);
+        }
+
         svg {
             height: $fs_normal_lg;
             transition: $transition_effect_md;
+
+            @media (max-width: 1024px) {
+                height: calc($fs_normal_lg * 0.96);
+            }
+
+            @media (max-width: 768px) {
+                height: $fs_normal_md;
+            }
+
+            @media (max-width: 460px) {
+                height: calc($fs_normal_md * 0.96);
+            }
         }
 
         &:hover {

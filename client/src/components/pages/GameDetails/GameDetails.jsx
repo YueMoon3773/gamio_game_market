@@ -21,7 +21,6 @@ import {
     ExpandInfoBtnIcon,
 } from '../../../assets/svgIcons';
 import NoImgAvailable from '../../../assets/img/prj/no_image_found.png';
-import helperFunctions from '../../../utils/helper';
 import gameApiHelper from '../../../utils/gameApiHelper';
 
 import PageLayout from '../../layout/PageLayout/PageLayout';
@@ -30,17 +29,24 @@ import FavGameBtn from '../../base/FavGameBtn/FavGameBtn';
 import pageBaseStyles from '../../../styles/modules/basePageStyles.module.scss';
 import './GameDetails.scss';
 
-import gameDetailsData from '../../../../details.json';
-const gameDetailsError = null;
-const gameDetailsLoading = false;
+// import gameDetailsData from '../../../../details.json';
+// const gameDetailsError = null;
+// const gameDetailsLoading = false;
 
-import gameDetailsImgData from '../../../../details_img.json';
-const gameDetailsImgError = null;
-const gameDetailsImgLoading = false;
+// import gameDetailsImgData from '../../../../details_img.json';
+// const gameDetailsImgError = null;
+// const gameDetailsImgLoading = false;
+
+// const gameDetailsData = null;
+// const gameDetailsError = null;
+// const gameDetailsLoading = true;
+
+// const gameDetailsImgData = null;
+// const gameDetailsImgError = null;
+// const gameDetailsImgLoading = true;
 
 const gameDetailsSchema = z.object({});
 
-const helper = helperFunctions();
 const api = gameApiHelper();
 
 const GameDetails = () => {
@@ -66,17 +72,17 @@ const GameDetails = () => {
 
     const { user: userAuthenData, loading: userAuthenLoading } = useAuthenticate();
 
-    // const {
-    //     data: gameDetailsData,
-    //     error: gameDetailsError,
-    //     loading: gameDetailsLoading,
-    // } = useFetchGetData(api.getGameDetailsUrl(gameId));
+    const {
+        data: gameDetailsData,
+        error: gameDetailsError,
+        loading: gameDetailsLoading,
+    } = useFetchGetData(api.getGameDetailsUrl(gameId));
 
-    // const {
-    //     data: gameDetailsImgData,
-    //     error: gameDetailsImgError,
-    //     loading: gameDetailsImgLoading,
-    // } = useFetchGetData(api.getGameMediaListUrl(gameId));
+    const {
+        data: gameDetailsImgData,
+        error: gameDetailsImgError,
+        loading: gameDetailsImgLoading,
+    } = useFetchGetData(api.getGameMediaListUrl(gameId));
 
     const {
         gameIdInCartList,
@@ -94,7 +100,6 @@ const GameDetails = () => {
     // LOGGING
     // console.log({ gameDetailsData, gameDetailsError, gameDetailsLoading });
     // console.log({ gameDetailsImgData, gameDetailsImgError, gameDetailsImgLoading });
-
     // console.log({ locationStates });
     // console.log({ gameId });
     // console.log({ imgList });
@@ -156,14 +161,14 @@ const GameDetails = () => {
     };
 
     // auto switch game image in the media list
-    useEffect(() => {
-        const changeImgTimer = setTimeout(() => {
-            if (!imgList) return;
-            else nextCarouselImgClickHandle();
-        }, 3600);
+    // useEffect(() => {
+    //     const changeImgTimer = setTimeout(() => {
+    //         if (!imgList) return;
+    //         else nextCarouselImgClickHandle();
+    //     }, 3600);
 
-        return () => clearTimeout(changeImgTimer);
-    }, [currentImgIndex, imgList]);
+    //     return () => clearTimeout(changeImgTimer);
+    // }, [currentImgIndex, imgList]);
 
     const favGameBtnOnClickHandle = async () => {
         setIsGameFav((prev) => !prev);
@@ -230,7 +235,13 @@ const GameDetails = () => {
                     <div className="gameDetailsWrapper">
                         <div className="detailsTopWrapper">
                             <Link
-                                to={locationStates !== null ? locationStates.fromUrl : '/'}
+                                to={
+                                    locationStates !== null
+                                        ? locationStates?.fromUrl !== '/games/search'
+                                            ? locationStates?.fromUrl
+                                            : '/'
+                                        : '/'
+                                }
                                 className="navigatePrevPage"
                                 onMouseEnter={() => setNavigatePrevPageBtnHover(true)}
                                 onMouseLeave={() => setNavigatePrevPageBtnHover(false)}

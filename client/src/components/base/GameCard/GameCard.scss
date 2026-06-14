@@ -5,9 +5,13 @@
     &.cardHovering {
         position: relative;
         z-index: 50;
-        transform: $game_card_hover_scale;
+        transform: $game_card_hover_scale_laptop;
 
         overflow: visible !important;
+
+        @media (max-width: 960px) {
+            transform: $game_card_hover_scale_mobile;
+        }
     }
 }
 
@@ -190,45 +194,6 @@
             border-radius: 4px;
         }
     }
-
-    // .gameFavBtn {
-    //     @include flexCenter;
-    //     padding: 0.6em;
-    //     cursor: pointer;
-    //     background-color: transparent;
-    //     transition: $transition_effect_md;
-
-    //     svg path,
-    //     svg line,
-    //     svg polyline {
-    //         // fill: currentColor;
-    //         stroke: currentColor;
-    //     }
-
-    //     svg {
-    //         fill: none;
-    //         height: $fs_normal_md;
-    //         color: var(--text_color);
-    //         transition: $transition_effect_md;
-    //     }
-
-    //     &:hover {
-    //         svg {
-    //             color: $primary_color;
-    //         }
-    //     }
-
-    //     &.clickedAnimation {
-    //         animation: gameCardFavBtnPump 660ms ease-in-out forwards;
-    //     }
-
-    //     &.active {
-    //         svg {
-    //             fill: currentColor;
-    //             color: $primary_color;
-    //         }
-    //     }
-    // }
 }
 
 .gameCardExtraInfo {

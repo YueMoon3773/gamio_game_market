@@ -1,4 +1,5 @@
 .gameDetailsWrapper {
+    flex-grow: 1;
     width: 100%;
     height: 100%;
     @include flexColumn;
@@ -7,6 +8,8 @@
 
 .detailsTopWrapper {
     @include flexCenter;
+    flex-wrap: wrap;
+    gap: clamp(10px, 1.6rem, 16px);
     justify-content: space-between;
 
     .navigatePrevPage {
@@ -16,12 +19,27 @@
         color: var(--text_color);
 
         gap: clamp(4px, 0.46em, 8px);
-        // transition: $transition_effect_md;
+
+        @media (max-width: 768px) {
+            gap: clamp(4px, 0.36em, 6px);
+        }
 
         svg {
             height: $fs_heading_ssm;
             color: var(--text_color);
             transition: $transition_effect_md;
+
+            @media (max-width: 1024px) {
+                height: $fs_heading_3sm;
+            }
+
+            @media (max-width: 768px) {
+                height: $fs_normal_xl;
+            }
+
+            @media (max-width: 460px) {
+                height: calc($fs_normal_xl * 0.96);
+            }
         }
 
         &:hover {
@@ -30,6 +48,18 @@
             svg {
                 color: $primary_light_color;
             }
+        }
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_lg * 0.9);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_md;
+        }
+
+        @media (max-width: 460px) {
+            font-size: calc($fs_normal_md * 0.96);
         }
     }
 
@@ -42,14 +72,39 @@
             color: var(--text_color);
             margin: 0;
             transition: $transition_effect_md;
+            text-wrap: pretty;
+
+            @media (max-width: 1024px) {
+                font-size: calc($fs_heading_md * 0.9);
+            }
+
+            @media (max-width: 768px) {
+                font-size: $fs_heading_sm;
+            }
+
+            @media (max-width: 460px) {
+                font-size: $fs_heading_ssm;
+            }
         }
 
         &:has(.detailsNameSkeleton) {
             align-self: stretch;
             align-items: stretch;
 
+            @media (max-width: 1024px) {
+                width: 60%;
+            }
+
+            @media (max-width: 768px) {
+                width: 46%;
+            }
+
+            @media (max-width: 460px) {
+                width: 30%;
+            }
+
             .detailsNameSkeleton {
-                width: 360px;
+                width: 100%;
                 height: 100%;
             }
         }
@@ -70,6 +125,18 @@
 
     & > * {
         min-width: 0;
+    }
+
+    @media (max-width: 960px) {
+        height: 0;
+        flex-grow: 1;
+        @include flexColumn;
+
+        &:has(.detailsCarouselSkeleton) {
+            @include displayGrid;
+            grid-template-columns: none;
+            grid-template-rows: 6fr, 4fr;
+        }
     }
 }
 
@@ -116,6 +183,21 @@
             gap: clamp(14px, 1.6rem, 16px);
             z-index: 10;
 
+            @media (max-width: 1024px) {
+                padding: 0 min(10%, 42px);
+                gap: clamp(10px, 1.2rem, 14px);
+            }
+
+            @media (max-width: 768px) {
+                padding: 0 min(6%, 30px);
+                gap: clamp(6px, 0.8rem, 10px);
+            }
+
+            @media (max-width: 460px) {
+                padding: 0 min(3%, 12px);
+                // gap: clamp(4px, 0.6rem, 8px);
+            }
+
             .gameImgThumbnail {
                 flex: 1;
                 aspect-ratio: 4.5 / 3;
@@ -127,6 +209,22 @@
                 border-radius: 4px;
                 border: 2px solid $snow_white_color;
                 cursor: pointer;
+
+                @media (max-width: 1024px) {
+                    max-width: min(16%, 72px);
+                }
+
+                @media (max-width: 768px) {
+                    max-width: min(16%, 56px);
+                }
+
+                @media (max-width: 460px) {
+                    max-width: min(14%, 46px);
+                }
+
+                @media (max-width: 360px) {
+                    max-width: min(10%, 30px);
+                }
 
                 &.active {
                     transform: scale(1.036);
@@ -182,6 +280,18 @@
     svg {
         color: $snow_white_color;
         height: $fs_heading_xxl;
+
+        @media (max-width: 1024px) {
+            height: $fs_heading_xl;
+        }
+
+        @media (max-width: 768px) {
+            height: $fs_heading_lg;
+        }
+
+        @media (max-width: 460px) {
+            height: $fs_heading_md;
+        }
     }
 
     &:hover {
@@ -194,12 +304,15 @@
 .detailsInfoWrapper {
     @include flexColumn;
     justify-content: space-between;
+    gap: clamp(20px, 2.4rem, 30px);
 
     &:has(.detailsInfoSkeleton) {
         height: 30%;
+
         .detailsInfoSkeleton {
             width: 100%;
             height: 100%;
+            border-radius: 10px;
         }
     }
 }
@@ -236,6 +349,18 @@
     font-weight: 700;
     transition: $transition_effect_md;
     margin-bottom: 0.26em;
+
+    @media (max-width: 1024px) {
+        font-size: $fs_normal_md;
+    }
+
+    @media (max-width: 768px) {
+        font-size: calc($fs_normal_md * 0.9);
+    }
+
+    @media (max-width: 460px) {
+        font-size: $fs_normal_sm;
+    }
 }
 
 .descriptionTextWrapper {
@@ -245,12 +370,25 @@
     .descriptionText,
     p {
         color: var(--text_color);
-        font-size: calc($fs_normal_sm * 0.95);
+        font-size: calc($fs_normal_sm * 0.96);
         line-height: 1.5;
         text-align: justify;
         max-width: 75ch;
         padding-right: 0.3em;
         transition: $transition_effect_md;
+
+        @media (max-width: 1024px) {
+            font-size: $fs_normal_ssm;
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_ssm;
+            font-size: calc($fs_normal_ssm * 0.96);
+        }
+
+        @media (max-width: 460px) {
+            font-size: $fs_normal_3sm;
+        }
     }
 }
 
@@ -318,8 +456,32 @@
     font-weight: 300;
     transition: $transition_effect_md;
 
+    @media (max-width: 1024px) {
+        font-size: calc($fs_normal_ssm * 0.96);
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_normal_3sm;
+    }
+
+    @media (max-width: 460px) {
+        font-size: calc($fs_normal_3sm * 0.96);
+    }
+
     span {
         font-size: $fs_normal_ssm;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_ssm * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_3sm;
+        }
+
+        @media (max-width: 460px) {
+            font-size: calc($fs_normal_3sm * 0.96);
+        }
     }
 }
 
@@ -338,9 +500,33 @@
     transition: $transition_effect_md;
     background-color: transparent;
 
+    @media (max-width: 1024px) {
+        font-size: calc($fs_normal_sm * 0.96);
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_normal_ssm;
+    }
+
+    @media (max-width: 460px) {
+        font-size: calc($fs_normal_ssm * 0.96);
+    }
+
     svg {
         height: $fs_normal_lg;
         transition: inherit;
+
+        @media (max-width: 1024px) {
+            height: calc($fs_normal_lg * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            height: $fs_normal_md;
+        }
+
+        @media (max-width: 460px) {
+            height: calc($fs_normal_md * 0.96);
+        }
 
         &.rotate {
             transform: rotate(-180deg);
@@ -373,6 +559,18 @@
         font-size: $fs_normal_lg;
         font-weight: 700;
         color: $primary_light_color;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_lg * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_md;
+        }
+
+        @media (max-width: 460px) {
+            font-size: calc($fs_normal_md * 0.96);
+        }
     }
 
     .oldDetailsInfoPrice {
@@ -381,6 +579,18 @@
         font-weight: 500;
         color: color-mix(in srgb, var(--text_color) 56%, transparent);
         transition: $transition_effect_md;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_md * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_sm;
+        }
+
+        @media (max-width: 460px) {
+            font-size: calc($fs_normal_sm * 0.96);
+        }
     }
 }
 
@@ -394,6 +604,19 @@
         font-weight: 600;
         color: var(--text_color);
         transition: $transition_effect_md;
+        text-wrap: pretty;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_lg * 0.9);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_md;
+        }
+
+        @media (max-width: 460px) {
+            font-size: calc($fs_normal_md * 0.96);
+        }
     }
 
     &:hover {

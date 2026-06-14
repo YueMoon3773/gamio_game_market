@@ -1,5 +1,4 @@
 .sideBar {
-    // position: sticky;
     overflow-y: auto;
     padding-left: $page_padding_left_right;
     padding-top: $page_content_padding_content_top;
@@ -7,6 +6,18 @@
     @include flexColumn;
     align-items: stretch;
     gap: clamp(36px, 3.8rem, 42px);
+
+    @media (max-width: 1024px) {
+        padding-left: calc($page_padding_left_right * 0.86);
+    }
+
+    @media (max-width: 768px) {
+        padding-left: calc($page_padding_left_right * 0.66);
+    }
+
+    @media (max-width: 460px) {
+        padding-left: calc($page_padding_left_right * 0.36);
+    }
 }
 
 .sideBarSection {
@@ -22,6 +33,18 @@
     margin-bottom: 0.6em;
     cursor: default;
     transition: $transition_effect_md;
+
+    @media (max-width: 1024px) {
+        font-size: $fs_heading_ssm;
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_heading_3sm;
+    }
+
+    @media (max-width: 460px) {
+        font-size: $fs_normal_xl;
+    }
 }
 
 .sideBarSectionContent {
@@ -45,6 +68,18 @@
         border-radius: calc($distance_sm * 1.06);
         border: 1px solid transparent;
         transition: $transition_effect_md;
+
+        @media (max-width: 1024px) {
+            transform: scale(0.96);
+        }
+
+        @media (max-width: 768px) {
+            transform: scale(0.9);
+        }
+
+        @media (max-width: 460px) {
+            transform: scale(0.86);
+        }
 
         svg {
             aspect-ratio: 1 / 1;
@@ -74,6 +109,18 @@
         font-weight: 500;
         color: var(--text_color);
         transition: $transition_effect_md;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_md * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_sm;
+        }
+
+        @media (max-width: 460px) {
+            font-size: $fs_normal_ssm;
+        }
     }
 
     &.active {
@@ -102,10 +149,6 @@
                 color: $primary_light_color;
             }
         }
-
-        // span {
-        //     color: $primary_light_color;
-        // }
     }
 }
 
@@ -125,6 +168,18 @@
         border-radius: calc($distance_sm * 1.06);
         border: 1px solid transparent;
         transition: $transition_effect_md;
+
+        @media (max-width: 1024px) {
+            transform: scale(0.96);
+        }
+
+        @media (max-width: 768px) {
+            transform: scale(0.9);
+        }
+
+        @media (max-width: 460px) {
+            transform: scale(0.86);
+        }
 
         svg {
             aspect-ratio: 1 / 1;
@@ -152,6 +207,18 @@
         font-weight: 500;
         color: var(--text_color);
         transition: $transition_effect_md;
+
+        @media (max-width: 1024px) {
+            font-size: calc($fs_normal_md * 0.96);
+        }
+
+        @media (max-width: 768px) {
+            font-size: $fs_normal_sm;
+        }
+
+        @media (max-width: 460px) {
+            font-size: $fs_normal_ssm;
+        }
     }
 
     &:hover {
@@ -165,6 +232,31 @@
 
         span {
             color: $primary_light_color;
+        }
+    }
+}
+
+.menuSideBar {
+    .sideBarSectionHeading,
+    .sideBarIconWrapper svg,
+    .sideBarLink span,
+    .showHideSideBarSectionBtn svg,
+    .showHideSideBarSectionBtn span {
+        color: $black_text !important;
+    }
+
+    .sideBarLink {
+        &.active {
+            .sideBarIconWrapper {
+                background-color: color-mix(in srgb, $dark_gray_color 96%, transparent) !important;
+            }
+        }
+
+        &:hover {
+            .sideBarIconWrapper {
+                background-color: color-mix(in srgb, $dark_gray_color 80%, transparent);
+                box-shadow: 2px 2px 3px color-mix(in srgb, $gray_color 50%, transparent);
+            }
         }
     }
 }

@@ -27,6 +27,10 @@
 /* Smooth scrolling, prevent sudden pop  */
 html {
     scroll-behavior: smooth;
+
+    &:has(.menuOverlayWrapper.show) {
+        overflow-y: hidden !important;
+    }
 }
 
 /* Reset CSS styles for some elements */
@@ -75,6 +79,19 @@ h6 {
 ::-webkit-scrollbar {
     width: $scroll_bar_width;
     height: $scroll_bar_width;
+
+    @media (max-width: 1024px) {
+    }
+
+    @media (max-width: 768px) {
+        width: calc($scroll_bar_width * 0.96);
+        height: calc($scroll_bar_width * 0.96);
+    }
+
+    @media (max-width: 460px) {
+        width: calc($scroll_bar_width * 0.9);
+        height: calc($scroll_bar_width * 0.9);
+    }
 }
 
 ::-webkit-scrollbar-track {

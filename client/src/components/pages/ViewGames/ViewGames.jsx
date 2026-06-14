@@ -16,9 +16,13 @@ import SelectionController from '../../base/SelectionController/SelectionControl
 import GameCard from '../../base/GameCard/GameCard';
 import MainBtn from '../../base/MainBtn/MainBtn';
 
-import gamesData from '../../../../data.json';
-const gamesLoading = false;
-const gamesError = null;
+// import gamesData from '../../../../data.json';
+// const gamesError = null;
+// const gamesLoading = false;
+
+// const gamesData = null;
+// const gamesError = null;
+// const gamesLoading = true;
 
 import './ViewGames.scss';
 
@@ -77,6 +81,7 @@ const ViewGames = () => {
 
     const [apiUrl, setApiUrl] = useState('');
 
+    // currently turn off
     // scroll to the top of page after navigation
     // useEffect(() => {
     //     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
@@ -95,7 +100,7 @@ const ViewGames = () => {
         setApiUrl(calculatedApi);
     }, [currentPageUrl, platformIds, orderByValue, gamesPerPageValue, gameNameSearchParam]);
 
-    // const { data: gamesData, error: gamesError, loading: gamesLoading } = useFetchGetData(apiUrl);
+    const { data: gamesData, error: gamesError, loading: gamesLoading } = useFetchGetData(apiUrl);
 
     // LOGGING
     // console.log({ currentPageUrl });
@@ -200,21 +205,27 @@ const ViewGames = () => {
                                 currentPageUrl !== api.FILTER_LINKS.BEST_OF_THIS_YEAR.value &&
                                 currentPageUrl !== api.FILTER_LINKS.POPULAR_LAST_YEAR.value &&
                                 currentPageUrl !== api.FILTER_LINKS.ALL_TIME_TOP.value && (
-                                    <SelectionController
-                                        labelText="Order by:"
-                                        selectId="orderBy"
-                                        selectOptionList={orderByOptsList}
-                                        selectValue={orderByValue}
-                                        selectOnChangeHandler={orderBySelectionOnChangeHandler}
-                                    ></SelectionController>
+                                    <>
+                                        {gamesData !== null && gamesLoading !== true && (
+                                            <SelectionController
+                                                labelText="Order by:"
+                                                selectId="orderBy"
+                                                selectOptionList={orderByOptsList}
+                                                selectValue={orderByValue}
+                                                selectOnChangeHandler={orderBySelectionOnChangeHandler}
+                                            ></SelectionController>
+                                        )}
+                                    </>
                                 )}
-                            <SelectionController
-                                labelText="Games per page:"
-                                selectId="gamesPerPage"
-                                selectOptionList={gamesPerPageOptsList}
-                                selectValue={gamesPerPageValue}
-                                selectOnChangeHandler={gamesPerPageSelectionOnChangeHandler}
-                            ></SelectionController>
+                            {gamesData !== null && gamesLoading !== true && (
+                                <SelectionController
+                                    labelText="Games per page:"
+                                    selectId="gamesPerPage"
+                                    selectOptionList={gamesPerPageOptsList}
+                                    selectValue={gamesPerPageValue}
+                                    selectOnChangeHandler={gamesPerPageSelectionOnChangeHandler}
+                                ></SelectionController>
+                            )}
                         </section>
                     )}
 
@@ -242,7 +253,7 @@ const ViewGames = () => {
 
                                     return (
                                         <GameCard
-                                            key={item.id + index}
+                                            key={item.id + 'z' + index}
                                             currentUrlLocationOfGameCard={location.pathname}
                                             isGameCardLoading={false}
                                             gamesInUserCartList={gameIdInCartList}

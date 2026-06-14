@@ -50,13 +50,30 @@
 
     .cartCardSkeletonImg {
         width: 100%;
-        min-height: 100px;
+        aspect-ratio: 3.5 / 3;
     }
 }
 
 .cartCardSkeletonName {
     font-size: $fs_normal_lg;
     color: transparent;
+
+    @media (max-width: 1024px) {
+        font-size: calc($fs_normal_lg * 0.9);
+        font-size: $fs_normal_md;
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_normal_sm;
+    }
+
+    @media (max-width: 460px) {
+        font-size: $fs_normal_4sm;
+    }
+
+    @media (max-width: 360px) {
+        font-size: $fs_normal_4sm;
+    }
 }
 
 .cartCardName {
@@ -95,6 +112,18 @@
 .cartCardSkeletonPrice {
     font-size: $fs_normal_md;
     color: transparent;
+
+    @media (max-width: 1024px) {
+        font-size: $fs_normal_sm;
+    }
+
+    @media (max-width: 768px) {
+        font-size: $fs_normal_3sm;
+    }
+
+    @media (max-width: 460px) {
+        font-size: $fs_normal_4sm;
+    }
 }
 
 .cartCardPrice {

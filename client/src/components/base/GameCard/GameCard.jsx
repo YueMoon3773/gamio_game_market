@@ -117,6 +117,7 @@ const GameCard = ({
         isGameInCart = gamesInUserCartList.includes(gameCardId);
 
     // LOGGING
+    // console.log({ currentUrlLocationOfGameCard });
     // console.log({ gameCardName });
     // console.log({ gameCardId });
     // console.log({ platformIcons });

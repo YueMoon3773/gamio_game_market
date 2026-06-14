@@ -30,7 +30,7 @@ const CartGameCard = ({ isCartGameCardLoading, gameId, gameName, gameImg, gamePr
                 </div>
 
                 {isCartGameCardLoading ? (
-                    <div className={`cartCardSkeletonName ${pageBaseStyles.skeletonLoading}`}>Game name skeleton</div>
+                    <div className={`cartCardSkeletonName ${pageBaseStyles.skeletonLoading}`}>Skeleton name</div>
                 ) : (
                     <Link to={`/game-detail/${gameId}`} className="cartCardName">
                         {gameName}
@@ -39,7 +39,7 @@ const CartGameCard = ({ isCartGameCardLoading, gameId, gameName, gameImg, gamePr
             </div>
             <div className="cartCardRight">
                 {isCartGameCardLoading ? (
-                    <div className={`cartCardSkeletonPrice ${pageBaseStyles.skeletonLoading}`}>Game price skeleton</div>
+                    <div className={`cartCardSkeletonPrice ${pageBaseStyles.skeletonLoading}`}>Skeleton price</div>
                 ) : (
                     <span className="cartCardPrice">${gamePrice}</span>
                 )}
