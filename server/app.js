@@ -49,23 +49,23 @@ app.use(cors(corsOptions));
 /* =================================================================== */
 /* Populate DB */
 /* =================================================================== */
-// const setupDB = async () => {
-//     if (process.env.POPULATE_DB === 'true') {
-//         try {
-//             console.log('STARTING SETUP DB');
-//             await populateDb();
-//             console.log('SETUP DB DONE');
-//         } catch (err) {
-//             console.log('SETUP DB FAILED', err);
-//         }
-//     } else {
-//         console.log('POPULATE_DB not enabled - skipping DB population.');
-//     }
-// };
+const setupDB = async () => {
+    if (process.env.POPULATE_DB === 'true') {
+        try {
+            console.log('STARTING SETUP DB');
+            await populateDb();
+            console.log('SETUP DB DONE');
+        } catch (err) {
+            console.log('SETUP DB FAILED', err);
+        }
+    } else {
+        console.log('POPULATE_DB not enabled - skipping DB population.');
+    }
+};
 
-// (async () => {
-//     await setupDB();
-// })();
+(async () => {
+    await setupDB();
+})();
 
 /* =================================================================== */
 /* Set up static directory */
