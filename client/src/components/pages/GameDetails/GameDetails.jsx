@@ -161,14 +161,14 @@ const GameDetails = () => {
     };
 
     // auto switch game image in the media list
-    // useEffect(() => {
-    //     const changeImgTimer = setTimeout(() => {
-    //         if (!imgList) return;
-    //         else nextCarouselImgClickHandle();
-    //     }, 3600);
+    useEffect(() => {
+        const changeImgTimer = setTimeout(() => {
+            if (!imgList) return;
+            else nextCarouselImgClickHandle();
+        }, 3600);
 
-    //     return () => clearTimeout(changeImgTimer);
-    // }, [currentImgIndex, imgList]);
+        return () => clearTimeout(changeImgTimer);
+    }, [currentImgIndex, imgList]);
 
     const favGameBtnOnClickHandle = async () => {
         setIsGameFav((prev) => !prev);
